@@ -1,4 +1,4 @@
-# bitcamp-newdeal-project
+﻿# bitcamp-newdeal-project
 
 ## 프로젝트 명
 
@@ -10,3 +10,6 @@
   - usecase model
   - dbmodel (model.exERD , ddl.sql, data.sql)
   - ppt 발표자료도 넣을 것
+
+
+## 머지
