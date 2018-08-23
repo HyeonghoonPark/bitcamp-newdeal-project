@@ -5,7 +5,7 @@
 <mapper namespace="bcms.dao.AuthDao">
 
 	<select id="findByEmailAndPassword" parameterType="Member" resultType="Member">
-		select MNO, NAME, EMAIL from member where EMAIL=#{email} and PWD=#{pwd}
+		select MNO, NAME, EMAIL from member where EMAIL=#{email} and PWD= password(#{pwd})
 	</select>
 
 	

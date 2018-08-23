@@ -52,6 +52,7 @@
           - 그 객체를 만들어 저장하는 것이 아니라
           - 그 객체의 getObject()를 호출하면 그 리턴 값을 저장한다. 
   -->
+  
   <bean id="sqlSessionFactory"
         class="org.mybatis.spring.SqlSessionFactoryBean">
     <property name="dataSource" ref="dataSource"/>  
@@ -83,9 +84,9 @@
   </bean>
   
   <!-- .properties 파일을 읽어서 그 데이터를 보관할 객체를 등록한다. -->
-  <context:property-placeholder 
-      location="classpath:bcms/config/jdbc.properties"/>
-
+ <!--  <context:property-placeholder 
+      location="classpath:bcms/config/jdbc.properties"/> -->
+<context:property-placeholder location="file:/securities/*.properties"/>
 
 </beans>
 

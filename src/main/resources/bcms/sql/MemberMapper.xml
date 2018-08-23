@@ -5,7 +5,7 @@
 <mapper namespace="bcms.dao.MemberDao">
 
 	<insert id="insert" parameterType="Member">
-		insert into member(NAME, PWD, EMAIL) values (#{name}, #{pwd}, #{email})
+		insert into member(NAME, PWD, EMAIL) values (#{name}, password(#{pwd}), #{email})
 	</insert>
 	
 	<select id="identifyEamil" parameterType="String" resultType="Integer">
