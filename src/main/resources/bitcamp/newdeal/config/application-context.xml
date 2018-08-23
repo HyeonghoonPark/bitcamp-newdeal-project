@@ -47,7 +47,7 @@
     <property name="mapperLocations" 
               value="classpath*:bitcamp/newdeal/mapper/**/*.xml" />  
     <property name="typeAliasesPackage" 
-              value="bitcamp.assignment.domain"/>               
+              value="bitcamp.newdeal.domain"/>               
   </bean>
 
   <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
@@ -68,6 +68,8 @@
   
   <context:property-placeholder 
       location="classpath:bitcamp/newdeal/config/jdbc.properties"/>
+      
+  <!-- <context:property-placeholder location="file:/securities/*.properties"/> -->
 
 </beans>
 
