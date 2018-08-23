@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>로그인</title>
+<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+<link rel="stylesheet" href="./Sign.css">
+
+</head>
+
+
+<body>
+<div id="fullBg" />
+
+<div class="container">
+  <form class="form-signin">       
+      <h1 class="form-signin-heading">Please Login</h1>
+      <input type="email" class="form-control" name="email" id="fEmail" placeholder="Email Address" required="" autofocus="" />
+      <input type="password" class="form-control" name="password" id="fPassWord" placeholder="Password" required=""/>     
+      
+      <button class="btn btn-lg btn-primary btn-block" id="btn" type="button">로그인</button>   
+  <p class="text-center sign-up" style="float:left"><input type="checkbox">이메일 기억하기</p></strong><strong style="float:right">비밀번호 찾기</strong>
+    </form>
+</div>
+
+
+<script src="../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../node_modules/popper.js/dist/popper.min.js"></script>
+<script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../commons/ServerAddr.js"></script>
+<script>
+$('#btn').click(() => {
+	
+	$.post(serverAddr+'/app/Auth/SignIn',{
+		email : $('#fEmail').val(),
+		pwd : $('#fPassWord').val()
+	},(result) => {
+		console.log(result.state);
+		if(result.state=='success'){
+			location.href = "../Management/list.html";
+		}else{
+			alert('이메일 혹은 비밀번호가 일치하지 않습니다.');
+		};
+	})
+	
+	
+})
+
+</script>
+
+</body>
+</html>
+</body>
+</html>
