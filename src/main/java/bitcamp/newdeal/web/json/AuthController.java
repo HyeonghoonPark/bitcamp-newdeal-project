@@ -12,25 +12,25 @@ import bitcamp.newdeal.service.MemberService;
 
 @RestController
 @RequestMapping("/member")
-public class MemberController {
+public class AuthController {
     
     @Autowired MemberService memberService;
-    
-    @PostMapping("signup")
-    public Object member(Member member) {
-        System.out.println("컨트롤러로 넘어옴");
-        System.out.println("member"+member);
-        HashMap<String,Object> result = new HashMap<>();
+
+    @PostMapping("forgotPwd")
+    public Object forgotPwd(String email) {
+        
+        HashMap<String, Object> result = new HashMap<>();
+        
         try {
-            memberService.add(member);
-            result.put("status", "success");
-        } catch (Exception e) {
-            result.put("status", "fail");
-            result.put("message", e.getMessage());
+            Member findPwd = memberService.findPwd(email);
+            
+            if(findPwd == null) 
+                throw new Exception("입력하신 이메일과 일치하는 회원이 없습니다.");
+            
+        }catch(Exception e){
+            
         }
+        
         return result;
     }
-    
-  
-    
 }

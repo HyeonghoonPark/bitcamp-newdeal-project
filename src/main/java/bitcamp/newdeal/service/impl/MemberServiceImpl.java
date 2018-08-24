@@ -28,6 +28,13 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findByEmailAndPassword(params);
     }
 
+    @Override
+    public Member findPwd(String email) {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("email", email);
+        return memberRepository.findPwd(params);
+    }
+
 }
 
 

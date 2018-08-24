@@ -14,7 +14,7 @@ $('#SignUp-form-btn').click(() => {
                 title: "회원 가입을 축하드립니다!",
                 icon: "success",
             }).then((value)=>{
-                location.href = 'index.html'
+                location.href = 'signIn.html'
             })
         } else {
             swal({
