@@ -311,9 +311,27 @@ function load(){
 $('#test').click(function(){
     $.getJSON(serverAddr+'/app/BusinessCard/list',
     		function(result){
+        	
+        	if(result.state == 'success'){
     	   	data = result;
     	    
     		console.log(data.choMap);
+    		
+    		console.log(data.firstName);
+    		
+    		for(var str in data.choMap){
+    		    console.log(str);
+    		    console.log(data.choMap[str]);
+    		}
+    		/* var trTemplateSrc = $('#li-template-src').text();
+    		var trTemplateFn = Handlebars.compile(trTemplateSrc);
+    		var trListHTML = trTemplateFn({list: data.choMap})
+    		tbody.html(trListHTML); */
+    		
+        	}else{
+        	    console.log(result.state)
+        	}
+        	
     });
 })
 

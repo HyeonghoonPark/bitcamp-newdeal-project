@@ -1,6 +1,7 @@
 package bcms.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -42,21 +43,19 @@ public class BusinessCardController {
 		
 		System.out.println("맨처음 카드리스트 = " +cardList);
 		// 초성 추출
-		HashMap<String, Object> choMap = getInitial(cardList);
+		HashMap<String, Object> buziCardList = getInitial(cardList);
 		
+		resultMap.put("firstName", buziCardList.get("cho"));
 		
-		
-		//choSettings(choMap, cardList);
-		
-		
-		resultMap.put("choMap", choMap);
-		
-		resultMap.put("cardList", cardList);
+		buziCardList.remove("cho");
+		resultMap.put("choMap", buziCardList);
 		
 		resultMap.put("member", member);
 		
+		resultMap.put("state", "success");
+		
 		}catch(Exception e) {
-			resultMap.put("error", e);
+			resultMap.put("state", e);
 		}
 		
 		return resultMap;
@@ -88,11 +87,16 @@ public class BusinessCardController {
 		
 		HashMap[] maps;
 		
-		maps = new HashMap[100];
+		maps = new HashMap[40];
 		
-		for(int i = 0; i < 50; i++) {
+		for(int i = 0; i < 40; i++) {
 			maps[i] = new HashMap();
+		
+			/*for(int j = 0; j < 40; j++) {
+				maps[i].put(j, new HashMap());
+			}*/
 		}
+		
 		
 		HashMap<Integer,String> listMap = new HashMap<>();
 		
@@ -104,6 +108,7 @@ public class BusinessCardController {
 		String state = "";
 		char compareHan = 0;
 		char compareEng = 0;
+		int moveCheck = 0;
 		
 		for(int i = 0; i < cardList.size(); i++) {
 			names.add(cardList.get(i).getName().substring(0, 1));
@@ -144,25 +149,37 @@ public class BusinessCardController {
 							
 							if(state != "한글") {
 								++count;
+								moveCheck = 0;
+							}else{
+								moveCheck++;
 							}
 							
 							resultMap.put(String.valueOf(cho), null);
 							
 							System.out.println(count);
 							
-							maps[count].put(cardList.get(j).getBcno(), cardList.get(j).getName());
+							// 할 것 : for문 안에서 초음 매칭해서 map배열 갯수만큼 생성하기!
+							// 방법! 키값을 번호로 지정하고 그냥 cardList를 싣기
+							
+							HashMap test = new HashMap();
+							
+							test.put("name", cardList.get(j).getBcno());
+							
+							//maps[count].put(cardList.get(j).getBcno(), cardList.get(j).getName());
+							maps[count].put(moveCheck, cardList.get(j));
 							
 							System.out.println("들어갔는지1 확인 hashMap[]" +maps[count]);
 							
 							resultMap.put(String.valueOf(cho), maps[count]);
 							
-							list.add(cardList.get(j).getName());
+							list.add(compareHan);
 							
 							state = "한글";
 							
 						}else {
 							
 							++count;
+							moveCheck = 0;
 							
 							compareHan = cho;
 							
@@ -170,13 +187,16 @@ public class BusinessCardController {
 							
 							System.out.println(count);
 							
-							maps[count].put(cardList.get(j).getBcno(), cardList.get(j).getName());
+							//maps[count].put(cardList.get(j).getBcno(), cardList.get(j).getName());
+							//maps[count].put("name", cardList.get(j).getBcno());
+							//maps[count].put("bcno", cardList.get(j).getName());
+							maps[count].put(moveCheck, cardList.get(j));
 							
 							System.out.println("들어갔는지2 확인 hashMap[]" +maps[count]);
 							
 							resultMap.put(String.valueOf(cho), maps[count]);
 							
-							list.add(cardList.get(j).getName());
+							list.add(compareHan);
 							
 							state = "한글";
 								
@@ -201,26 +221,34 @@ public class BusinessCardController {
 					
 					if(state != "영어") {
 						++count;
+						moveCheck = 0;
+					}else {
+						moveCheck ++;
 					}
 					
 					resultMap.put(String.valueOf(comVal), null);
 					
 					System.out.println(count);
 					
-					maps[count].put(cardList.get(j).getBcno(), cardList.get(j).getName());
+					//maps[count].put(cardList.get(j).getBcno(), cardList.get(j).getName());
+					//maps[count].put("name", cardList.get(j).getBcno());
+					//maps[count].put("bcno", cardList.get(j).getName());
+					maps[count].put(moveCheck, cardList.get(j));
 					
 					System.out.println("들어갔는지 확인1 hashMap[]" +maps[count]);
 					
 					resultMap.put(String.valueOf(comVal), maps[count]);
 					
-					list.add(cardList.get(j).getName());
+					list.add(compareEng);
 					
 					state = "영어";
+					
 					
 				}else {
 					
 					
 					++count;
+					moveCheck = 0;
 					
 					compareEng = comVal;
 
@@ -229,13 +257,16 @@ public class BusinessCardController {
 					System.out.println(count);
 
 					
-					maps[count].put(cardList.get(j).getBcno(), cardList.get(j).getName());
+					//maps[count].put(cardList.get(j).getBcno(), cardList.get(j).getName());
+					//maps[count].put("name", cardList.get(j).getBcno());
+					//maps[count].put("bcno", cardList.get(j).getName());
+					maps[count].put(moveCheck, cardList.get(j));
 					
 					System.out.println("들어갔는지 확인2 hashMap[]" +maps[count]);
 					
 					resultMap.put(String.valueOf(comVal), maps[count]);
 					
-					list.add(cardList.get(j).getName());
+					list.add(compareEng);
 					
 					state = "영어";
 					
@@ -245,22 +276,13 @@ public class BusinessCardController {
 			
 		}
 		
-		LinkedHashSet<String> duplicateRemoveList = new LinkedHashSet<String>(list);
+		Collections.sort(list);
 		
-		/*System.out.println("링크드해쉬셋 = " + duplicateRemoveList);
 		
-		resultMap.put("duplicateRemoveList", duplicateRemoveList);
-*/
-		System.out.println("중복제거  = "+duplicateRemoveList);
-	/*	Iterator it = duplicateRemoveList.iterator();
-		while(it.hasNext()) {
-			String str = String.valueOf(it.next());
-			System.out.println(str);
-			resultMap.put(str,null);
-		}*/
-			
-		System.out.println("duplicateRemoveList = " +duplicateRemoveList);
+		resultMap.put("cho", list);
 		
+		System.out.println("중복제거  = "+ list);
+
 		System.out.println("result 목록은 =" +resultMap);
 		
 		return resultMap;
