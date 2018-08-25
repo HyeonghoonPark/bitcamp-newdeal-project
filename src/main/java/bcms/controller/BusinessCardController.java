@@ -2,12 +2,10 @@ package bcms.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -61,29 +59,13 @@ public class BusinessCardController {
 		return resultMap;
 	}
 	
-	public void choSettings(LinkedHashSet<String> choMap, List<BusinessCard> cardList) {
-		
-		System.out.println("초맵 초성 ="+choMap);
-		System.out.println("초맵 리스트 ="+cardList);
-		
-		System.out.println(cardList.size());
-		
-		/*List duplicateRemoveList1 = (List)choMap.get("duplicateRemoveList");
-		List<BusinessCard> list1 = (List<BusinessCard>) choMap.get("cardList");
-		*/
-		
-		System.out.println(cardList.get(0).getName().substring(0, 1));
-		
-	
-		
-	}
-
 	// 초성 추출
+	@SuppressWarnings("unchecked")
 	public static HashMap<String, Object> getInitial(List<BusinessCard> cardList){
 
 		List names = new ArrayList();
 		
-		List list = new ArrayList();
+		ArrayList list = new ArrayList();
 		
 		HashMap[] maps;
 		
@@ -276,13 +258,27 @@ public class BusinessCardController {
 			
 		}
 		
-		Collections.sort(list);
 		
+		LinkedHashSet removeOverLap = new LinkedHashSet();
+		
+		
+		System.out.println("링크드리스트 들어가기 전 = "+list);
+		
+		Collections.sort(list);
+
+		System.out.println("컬렉션 들어간 후 = "+list);
+
+		removeOverLap.addAll(list);
+		
+		System.out.println("링크드리스트 들어갔을 때 = "+removeOverLap);
+		
+		list.clear();
+		list.add(removeOverLap);
+		
+		System.out.println("링크드리스트 들어갔을 때 = "+removeOverLap);
 		
 		resultMap.put("cho", list);
 		
-		System.out.println("중복제거  = "+ list);
-
 		System.out.println("result 목록은 =" +resultMap);
 		
 		return resultMap;
