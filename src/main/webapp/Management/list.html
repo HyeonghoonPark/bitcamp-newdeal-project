@@ -139,40 +139,13 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       
       
-      <ul class="sidebar-menu" data-widget="tree" id="usm" style="overflow:hidden; height: 500px;">
+      <ul class="sidebar-menu" data-widget="tree" id="cardList">
         
         <li class="header" id="">명함 목록</li>
                
-        <li class="treeview">
-          <a href="#">
-            <i class="">박1</i>              
-            <span>..</span>
-            <span class="pull-right-container">
-              <span class="label label-primary pull-right">4</span>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a class="text-center">박형훈</a>></li>
-            <li><a href=""><i class="fa fa-circle-o"></i> Boxed</a></li>
-            <li><a href=""><i class="fa fa-circle-o"></i> Fixed</a></li>
-            <li><a href=""><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
-          </ul>
+      
 
-          
-        </li>
-
-    
-
-      <li class="treeview" style="bottom:0; position:absolute;">  
-          <a href="#">     
-              <i class="">추가</i><br>         
-              <span><button class="btn btn-primary">추가하기</button>
-                <button class="btn btn-danger">삭제하기</button>
-              </span>          
-            </a>
-      </li>
-
-    </ul>
+    	</ul>
     </section>
     <!-- /.sidebar -->
   </aside>
@@ -271,48 +244,26 @@
 <script src="./js/adminlte.js"></script>
 <!-- templates -->
 <script id="li-template-src" type="text/x-handlebars-template">
-{{#each list}}
-     {{name}}, {{bcno}}
-{{/each}}
+
+<li class="treeview">
+	<a href="#">
+		<i class="">{{first}}</i>              
+		<span>..</span>
+		<span class="pull-right-container">
+			<span class="label label-primary pull-right">{{cardCount}}</span>
+		</span>
+	</a>
+	<ul class="treeview-menu">
+		{{#each list}}
+		<li><a>{{name}}</a></li>
+		{{/each}}
+	</ul>
+</li>
+
 </script>
 
 
- <!--   <li class="treeview">
-          <a href="#">
-            <i class="">{{name}}</i>              
-            <span>{{bcno}}</span>
-            <span class="pull-right-container">
-              <span class="label label-primary pull-right">4</span>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a class="text-center">박형훈</a>></li>
-            <li><a href=""><i class="fa fa-circle-o"></i> Boxed</a></li>
-            <li><a href=""><i class="fa fa-circle-o"></i> Fixed</a></li>
-            <li><a href=""><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
-          </ul>
-
-          
-        </li> -->
-
-
-
 <script>
-
-/* load();
-
-function load(){	
-	console.log('hihi')
-	$.getJSON(serverAddr+'/app/BusinessCard/list',
-		function(result){
-	   	data = result;
-	    
-	   	$('.userName').prepend(data.member.name)
-		
-		console.log(result);
-	});
-	
-} */
 
 $('#test').click(function(){
     $.getJSON(serverAddr+'/app/BusinessCard/list',
@@ -324,23 +275,22 @@ $('#test').click(function(){
     		var liTemplateSrc = $('#li-template-src').text();
     		var liTemplateFn = Handlebars.compile(liTemplateSrc);
     		
-    		console.log(data.firstName)
-    	 	
     		for(var first of data.firstName[0]){
-    			console.log("12");
-    			/* console.log(`data.choMap.${first}`) */
-    			/* var liListHTML = liTemplateFn({list : `data.choMap.${firstName}`})				
-    			console.log(liListHTML) */
+					
+    			var cardCount = 0;
+    			var liListHTML = "";
+    			
+    			for(var str in data.choMap){
+    				if(first == str){
+    					cardCount = Object.keys(data.choMap[str]).length;
+    					liListHTML = liTemplateFn({first, cardCount, list : data.choMap[str]})		
+    				}
+    			}
+    			
+  				$('#cardList').append(liListHTML)
+    			  
     		} 
     		
-    		
-    	/*  	for(var str in data.choMap){
-    		    console.log(data.choMap[str]);
-	    		var liListHTML = liTemplateFn({list : data.choMap[str]})				
-    			console.log(liListHTML)
-    		}
-    	 */	
-    		//$('#testheader').appendTo(liListHTML);
     		
         	}else{
         	    console.log(result.state)
