@@ -266,6 +266,22 @@
 <script>
 
 $('#test').click(function(){
+    var maxHeight = $('.content-wrapper').css('height').replace("px","");
+    var profileHeight = $('.user-panel').css('height').replace("px","");
+    var searchHeight = $('.sidebar-form').css('height').replace("px","");
+    
+    console.log(maxHeight);
+    console.log(profileHeight);
+    console.log(searchHeight);
+    
+    var sumHeight = maxHeight-profileHeight-searchHeight;
+
+    $('#cardList').css('height', sumHeight)
+    $('#cardList').css('overflow-y', "scroll")
+    $('#cardList').css('-ms-overflow-style', "none")
+     $('#cardList').css('&::-webkit-scrollbar {display: none !important}')
+    
+    
     $.getJSON(serverAddr+'/app/BusinessCard/list',
     		function(result){
         	
