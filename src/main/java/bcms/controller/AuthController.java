@@ -45,4 +45,22 @@ public class AuthController {
 		return resultMap;
 	}
 	
+    @PostMapping("forgotPwd")
+    public Object forgotPwd(String email) {
+        
+        HashMap<String, Object> result = new HashMap<>();
+        
+        try {
+            Member findPwd = authService.findPwd(email);
+            
+            if(findPwd == null) 
+                throw new Exception("입력하신 이메일과 일치하는 회원이 없습니다.");
+            
+        }catch(Exception e){
+            
+        }
+        
+        return result;
+    }
+	
 }

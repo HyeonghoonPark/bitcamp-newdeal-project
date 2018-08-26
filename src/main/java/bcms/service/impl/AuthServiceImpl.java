@@ -1,5 +1,7 @@
 package bcms.service.impl;
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,4 +18,12 @@ public class AuthServiceImpl implements AuthService {
 	public Member getMember(Member user) {
 		return authDao.findByEmailAndPassword(user);
 	}
+	
+	
+    @Override
+    public Member findPwd(String email) {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("email", email);
+        return authDao.findPwd(params);
+    }
 }

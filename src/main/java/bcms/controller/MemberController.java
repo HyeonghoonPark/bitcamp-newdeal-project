@@ -12,54 +12,26 @@ import bcms.domain.Member;
 import bcms.service.MemberService;
 
 @RestController
-@RequestMapping("/Member")
+@RequestMapping("/member")
 public class MemberController {
-
-	@Autowired MemberService memberService; 
-	
-	@PostMapping("SignUp")	
-	public Object signUp(Member user, Model model) {
-		
-		HashMap<String, Object> resultMap = new HashMap<>();
-		
-		int chkEmail = memberService.identify(user.getEmail());
-		
-		System.out.println(chkEmail);
-		
-		if(chkEmail == 0) {
-			
-			int cnt = memberService.add(user);
-			
-			if(cnt == 1) {
-			
-				resultMap.put("state", "success");
-				
-			}
-			
-		}else {
-			
-			resultMap.put("state", "fail");
-			
-		}
-		
-		return resultMap;
-	
-	}
-	
-	@RequestMapping("/chkEmail")
-	public Object chkEmail(String email, Model model) {
-
-		HashMap<String, Object> resultMap = new HashMap<>();
-		System.out.println(email);
-		int chkEmail = memberService.identify(email);
-		System.out.println(chkEmail);
-		if(chkEmail == 0) {
-			resultMap.put("state", "success");
-		}else {
-			resultMap.put("state", "fail");
-		}
-		
-		return resultMap;
-		
-	}
+    
+    @Autowired MemberService memberService;
+    
+    @PostMapping("signup")
+    public Object member(Member member) {
+        System.out.println("컨트롤러로 넘어옴");
+        System.out.println("member"+member);
+        HashMap<String,Object> result = new HashMap<>();
+        try {
+            memberService.add(member);
+            result.put("status", "success");
+        } catch (Exception e) {
+            result.put("status", "fail");
+            result.put("message", e.getMessage());
+        }
+        return result;
+    }
+    
+  
+    
 }

@@ -3,8 +3,12 @@
 <head>
 <meta charset="EUC-KR">
 <title>로그인</title>
-<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
-<link rel="stylesheet" href="./Sign.css">
+<link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css">
+<script src="./node_modules/jquery/dist/jquery.min.js"></script>
+<script src="./node_modules/popper.js/dist/popper.min.js"></script>
+<script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="./commons/ServerAddr.js"></script>
+
 
 </head>
 
@@ -24,10 +28,6 @@
 </div>
 
 
-<script src="../node_modules/jquery/dist/jquery.min.js"></script>
-<script src="../node_modules/popper.js/dist/popper.min.js"></script>
-<script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="../commons/ServerAddr.js"></script>
 <script>
 $('#btn').click(() => {
 	
@@ -37,7 +37,7 @@ $('#btn').click(() => {
 	},(result) => {
 		console.log(result.state);
 		if(result.state=='success'){
-			location.href = "../Management/list.html";
+			location.href = "./Management/list.html";
 		}else{
 			alert('이메일 혹은 비밀번호가 일치하지 않습니다.');
 		};

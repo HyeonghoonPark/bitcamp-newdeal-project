@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 *.project
 *.classpath
 *.class
@@ -15,3 +16,20 @@
 
 
 !build.gradle
+=======
+*.project
+*.classpath
+*.class
+*.log
+*jdbc.properties
+**/.gradle/
+**/.settings/
+**/bin
+**/build
+**/temp/
+**/.vscode
+*.DS_Store
+**/node_modules
+
+!build.gradle
+>>>>>>> branch 'minkyung01' of https://github.com/HyeonghoonPark/bitcamp-newdeal-project.git
