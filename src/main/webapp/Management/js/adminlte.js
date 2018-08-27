@@ -865,11 +865,8 @@ throw new Error('AdminLTE requires jQuery')
   // ========
   $(document).on('click', Selector.button, function (e) {
     e.preventDefault();
-    console.log("hihihihi")
-    console.log($('.content-wrapper').css('height'));
-    console.log($('.user-panel').css('height'));
-    console.log($('.sidebar-form').css('height'));
-    $('#usm').removeAttr('style')
+    $('#maxHeight').css('width','44')
+    $('#scrollBlind').css('width','65')
     Plugin.call($(this), 'toggle');
   });
   $(window).on('load', function () {
