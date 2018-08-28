@@ -10,9 +10,11 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import bcms.domain.BusinessCard;
 import bcms.domain.Member;
@@ -41,6 +43,9 @@ public class BusinessCardController {
 		
 		System.out.println("맨처음 카드리스트 = " +cardList);
 		// 초성 추출
+		
+		if(cardList.size() == 0)throw new Exception("firstUse");
+		
 		HashMap<String, Object> buziCardList = getInitial(cardList);
 		
 		resultMap.put("firstName", buziCardList.get("cho"));
@@ -53,7 +58,11 @@ public class BusinessCardController {
 		resultMap.put("state", "success");
 		
 		}catch(Exception e) {
+			if(e.getMessage()=="firstUse") {
+				resultMap.put("state", "first");
+			}else {
 			resultMap.put("state", e);
+			}
 		}
 		
 		return resultMap;
@@ -283,6 +292,18 @@ public class BusinessCardController {
 		
 		return resultMap;
 		
+	}
+	
+	@RequestMapping("/getCardInfo/{cardNo}")
+	public void getCardInfo(@PathVariable("cardNo") int cardNo)throws Exception{
+		
+		System.out.println(cardNo);
+	}
+	
+	@PostMapping("/addBziCard")
+	public void addBziCard(BusinessCard businessCard)throws Exception{
+		System.out.println("컨트롤러 들어옴");
+		System.out.println(businessCard);
 	}
 	
 }

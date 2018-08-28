@@ -1,0 +1,100 @@
+<style>
+h1{
+  text-align: center;
+}
+
+h2 {
+  text-align: center;
+  font-weight: 300;
+  margin-top: -30px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.businessCard {
+  width: 600px;
+  height: 300px;
+  background-color: #fff;
+  margin-right: auto;
+  margin-left: auto;
+  /* margin-top: 50px; */
+  box-shadow: 10px 10px 0px #7f8c8d;
+  padding: 1em;
+}
+.side{
+  width: 600px;
+   margin-right: auto;
+  margin-left: auto;
+  text-align:right;
+}
+
+div input {
+border:none;
+}
+</style>
+
+<div class="side">예시보기 / 미리보기</div>
+<form>
+<div class="businessCard">
+  <div class="row">
+  <div class="col-md-5">
+  <img src="./img/defaultImage.png" style="width:200px;heigh:250px; padding-top:40px;">
+  <input type="file" style="margin-top:5px; " >
+  </div>
+ 
+  <div class="col-md-7">
+
+  <ul>
+  <li><input style="margin-top:25px" type="text" id="CPOSI" placeholder="부서 / 직책"></li>
+  <li><h3 style="margin-top:0px"><input type="text" id="NAME" placeholder="이름"></h3></li>
+  
+    <li><input type="text" id="CNAME" placeholder="회사명"></li>
+ 	
+ 	<li><input type="text" id="CADDR" placeholder="회사주소"></li>
+ 	
+    <li><i class="fa fa-phone"></i>
+ 	<input type="text" id="TEL" placeholder="전화번호"></li>
+ 	
+    <li><i class="fa fa-phone"></i>
+    <input type="text" id="MTEL" placeholder="휴대전화번호"></li>
+    
+    <li><i class="fa fa-envelope"></i>
+    <input type="text" id="FAX" placeholder="팩스번호"></li>
+    
+    <li><i class="fa fa-envelope"></i>
+    <input type="text" id="EMAIL" placeholder="이메일주소"></li>
+    
+    <li><input type="text" id="HOMEPAGE" placeholder="홈페이지주소"></li>
+  </ul>
+  </div>
+  </div>
+</div>
+<br><br>
+<div class="text-center">빈칸을 입력해주세요</div>
+<div class="text-center"><button type="button" id="sbm">등록하기</button></div>
+</form>
+
+<script>
+$('#sbm').click(function(){
+    
+	$.post(serverAddr+'/app/BusinessCard/addBziCard',{
+		cposi : $('#CPOSI').val(),
+		name : $('#NAME').val(),
+		cname : $('#CNAME').val(),
+		caddr : $('#CADDR').val(),
+		tel : $('#TEL').val(),
+		mtel : $('#MTEL').val(),
+		fax : $('#FAX').val(),
+		email : $('#EMAIL').val(),
+		homepage : $('#HOMEPAGE').val()
+	},function(){
+	    
+	    
+	    
+	})
+
+})
+
+</script>

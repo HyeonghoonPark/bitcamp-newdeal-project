@@ -24,16 +24,9 @@
 <script src="../commons/ServerAddr.js"></script>
 <script src="../node_modules/handlebars/dist/handlebars.min.js"></script>
    
-   <Style>
-   .hiddenScrollBar{
-    -ms-overflow-style: none; 
-  	&::-webkit-scrollbar { 
-    display: none !important;
-  	}
-   </Style>
   
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body id="bodyState" class="hold-transition skin-blue sidebar-mini">
 
 
 <div class="wrapper">
@@ -146,9 +139,9 @@
       <!-- search form -->
       <form action="#" method="get" class="sidebar-form">
         <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="검색하기">
+          <input type="text" name="q" id="search-box" class="form-control" placeholder="검색하기">
           <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                <button type="button" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
                 </button>
               </span>
         </div>
@@ -188,7 +181,7 @@
 		
 		
 		</section>
-		
+	
  		 
       </div>
       <!-- /.row (main row) 오른쪽 로우 -->
@@ -242,7 +235,7 @@
 <!-- templates -->
 <script id="li-template-src" type="text/x-handlebars-template">
 
-<li class="treeview">
+<li class="liState treeview">
 	<a href="#">
 		<i class="">{{first}}</i>              
 		<span>..</span>
@@ -252,13 +245,16 @@
 	</a>
 	<ul class="treeview-menu">
 		{{#each list}}
-		<li><a class="text-center">{{name}}</a></li>
+		<li><a class="text-center cardChoice" data-no="{{bcno}}">{{name}}</a></li>
 		{{/each}}
 	</ul>
 </li>
 
-</script>
+</script id="firstUser-template-src" type="text/x-handlebars-template">
 
+<script>
+
+</script>
 
 <script>
 
@@ -311,12 +307,40 @@ $('#test').click(function(){
     		} 
     		
     		
-        	}else{
-        	    console.log(result.state)
+        	}else if(result.state == 'first'){
+        	    $('.cardSection').load(`${serverAddr}/Management/firstUser.html`)
         	}
         	
     });
 })
+
+
+$('#search-btn').click(function(){
+    
+    $.getJSON(serverAddr+'/app/BusinessCard/search',{
+        keyword : $('#search-box').val()
+    },function(){
+        
+    })
+    
+    console.log('안녕하세요')
+})
+
+
+$(document).ready(function(){
+    
+    $(document).on('click','.cardChoice',function(){
+        
+        var cardNo = $(this).attr('data-no');
+    	
+        $.getJSON(serverAddr+'/app/BusinessCard/getCardInfo/'+cardNo,function(){
+            console.log('들어갔다가 나옴')
+        })
+    })
+		
+    	
+})
+
 
 </script>
 

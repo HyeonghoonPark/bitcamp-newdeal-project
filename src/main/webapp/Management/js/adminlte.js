@@ -865,8 +865,13 @@ throw new Error('AdminLTE requires jQuery')
   // ========
   $(document).on('click', Selector.button, function (e) {
     e.preventDefault();
-    $('#maxHeight').css('width','44')
-    $('#scrollBlind').css('width','65')
+    
+    console.log('= 들어옴')
+
+    if($('#bodyState').attr('class').indexOf('sidebar-collapse') == -1){
+        $('.liState').attr('class','liState treeview');
+    }
+    
     Plugin.call($(this), 'toggle');
   });
   $(window).on('load', function () {
@@ -1091,6 +1096,14 @@ throw new Error('AdminLTE requires jQuery')
     var that = this;
 
     $(this.element).on('click', this.options.trigger, function (event) {
+       
+        console.log('들어옴 아래로 늘어남 !')
+ 
+        if($('#bodyState').attr('class').indexOf('sidebar-collapse') != -1){
+            $('.sidebar-toggle').trigger('click');
+        }
+            
+        
       that.toggle($(this), event);
     });
   };
