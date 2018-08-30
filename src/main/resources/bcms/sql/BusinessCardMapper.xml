@@ -16,7 +16,7 @@
   </resultMap>
   
 	<select id="getCardList" parameterType="int" resultMap="businesscardMap">
-		select NAME, BCNO from bizcard where MNO = #{mno}
+		select NAME, BCNO from bizcard where MNO = #{mno} order by NAME
 	</select>
 		
 	<insert id="addBusinessCard" parameterType="BusinessCard">

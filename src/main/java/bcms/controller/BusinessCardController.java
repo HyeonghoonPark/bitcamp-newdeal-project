@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.UUID;
@@ -32,173 +33,102 @@ public class BusinessCardController {
 	@RequestMapping("list")
 	public Object list(HttpSession session)throws Exception {
 		
+		
 		HashMap<String, Object> resultMap = new HashMap<>();
 
+		HashMap<String, Object> returnMap = new HashMap<>();
+		
 		try {
 			
 		System.out.println("들어옴");
-			
+		
+		// 세선에서 유저 정보 받아오기
 		Member member = (Member)session.getAttribute("user");
 		
+		// 멤버 정보 출력
 		System.out.println(member);
 		
+		// 카드 정보 추출 (NAME 내림차순)
 		List<BusinessCard> cardList = businessCardService.list(member.getMno());
 		
-		System.out.println("카드갯수"+cardList.size());
-		
-		System.out.println("맨처음 카드리스트 = " +cardList);
-		// 초성 추출
+		// return할 Map에 멤버 정보 담기
 		resultMap.put("member", member);
 		
+		// 처음 사용한 유저이면 Exception으로 바로 메시지 넘기기
 		if(cardList.size() == 0)throw new Exception("firstUse");
 		
-		HashMap<String, Object> buziCardList = getInitial(cardList);
+		// 멤버 리스트 정렬하기 위한 초성 출력, Map[]을 getInitial 안에서 사용하기 위해 count로 조건을 건다.
+		resultMap.put("count", 0);
 		
-		resultMap.put("firstName", buziCardList.get("cho"));
+		// 처음 들어가서 Map[]과 초성들을 출력, 초성 정렬을 한다.
+		getInitial(cardList, resultMap);
 		
-		buziCardList.remove("cho");
-		resultMap.put("choMap", buziCardList);
+		// 증가된 카운터를 확인
+		System.out.println(resultMap.get("count"));
 		
+		// 쌓여있는 resultMap을 확인
+		System.out.println("resultMap = "+resultMap);
 		
+		// 다 확인 됐으면 상태값을 넘겨줌.
 		resultMap.put("state", "success");
 		
 		}catch(Exception e) {
+			// 처음 사용하는 유저이면 처음 사용자임을 알려주는 상태값을 넘겨줌
 			if(e.getMessage()=="firstUse") {
 				resultMap.put("state", "first");
 			}else {
+			// try문 도중 에러가 발생하면 에러 메시지를 상태값으로 넘겨줌
 			resultMap.put("state", e);
 			}
 		}
 		
+		// 에러가 발생하지 않았으면 리턴값을 넘겨줌.
 		return resultMap;
 	}
 	
 	// 초성 추출
 	@SuppressWarnings("unchecked")
-	public static HashMap<String, Object> getInitial(List<BusinessCard> cardList){
+	public static Object getInitial(List<BusinessCard> cardList, HashMap<String, Object> resultMap){
 
-		List names = new ArrayList();
-		
-		ArrayList list = new ArrayList();
-		
+		// 초성들별로 카드 이름을 나누기 위해 Map[]안에 Map[]을 사용함.
 		HashMap[] maps;
 		
-		maps = new HashMap[40];
+		// 카드 리스트 이름 중 첫글자만 담기 위해 List를 사용
+		List names = new ArrayList();
 		
-		for(int i = 0; i < 40; i++) {
-			maps[i] = new HashMap();
+		// 초성들을 중복제거하고 순차적으로 나열하기 위한 List
+		List chonames = new ArrayList();
 		
-			/*for(int j = 0; j < 40; j++) {
-				maps[i].put(j, new HashMap());
-			}*/
-		}
-		
-		
-		HashMap<Integer,String> listMap = new HashMap<>();
-		
-		HashMap<String, Object> resultMap = new HashMap<>();
-		
-		int count = 0;
-		int hangulCount = 0;
-		int englishCount = 0;
-		String state = "";
-		char compareHan = 0;
-		char compareEng = 0;
-		int moveCheck = 0;
-		
+		// 반복문을 돌려 첫글자만 names list에 담음
 		for(int i = 0; i < cardList.size(); i++) {
 			names.add(cardList.get(i).getName().substring(0, 1));
 		}
-		
-		System.out.println("첫글자만 짜른 리스트" + names);
-		
-		for(int j = 0; j < names.size(); j++) {
-			
-			System.out.println("카운터세는곳 = "+count);
-			
-			String fullStr = (String) names.get(j);
-
-			char comVal = (char) (fullStr.charAt(0)-0xAC00);
-
-			if (comVal >= 0 && comVal <= 11172){
 				
+		
+		for (int i = 0; i < names.size(); i++) {
+			
+			String fullStr = (String) names.get(i);
+			
+			char comVal = (char) (fullStr.charAt(0)-0xAC00);
+			
+		
+			if (comVal >= 0 && comVal <= 11172){
+
 				// 한글일경우 
 
 					// 초성만 입력 했을 시엔 초성은 무시해서 List에 추가합니다.
+
 					char uniVal = (char)comVal;
 
+
+
 					// 유니코드 표에 맞추어 초성 중성 종성을 분리합니다..
+
 					char cho = (char) ((((uniVal - (uniVal % 28)) / 28) / 21) + 0x1100);
 
-					if(hangulCount==0) {
-						compareHan = cho;
-						System.out.println("한글 생성자 compareHan" + compareHan);
-						hangulCount++;
-					}
-					
+
 					if(cho!=4519){
-						
-						System.out.println("count는 "+count+" compareHan은" + compareHan);
-						System.out.println("count는 "+count+" cho는" + cho);
-
-						if(compareHan == cho){
-							
-							if(state != "한글") {
-								++count;
-								moveCheck = 0;
-							}else{
-								moveCheck++;
-							}
-							
-							resultMap.put(String.valueOf(cho), null);
-							
-							System.out.println(count);
-							
-							// 할 것 : for문 안에서 초음 매칭해서 map배열 갯수만큼 생성하기!
-							// 방법! 키값을 번호로 지정하고 그냥 cardList를 싣기
-							
-							HashMap test = new HashMap();
-							
-							test.put("name", cardList.get(j).getBcno());
-							
-							//maps[count].put(cardList.get(j).getBcno(), cardList.get(j).getName());
-							maps[count].put(moveCheck, cardList.get(j));
-							
-							System.out.println("들어갔는지1 확인 hashMap[]" +maps[count]);
-							
-							resultMap.put(String.valueOf(cho), maps[count]);
-							
-							list.add(compareHan);
-							
-							state = "한글";
-							
-						}else {
-							
-							++count;
-							moveCheck = 0;
-							
-							compareHan = cho;
-							
-							resultMap.put(String.valueOf(cho), null);
-							
-							System.out.println(count);
-							
-							//maps[count].put(cardList.get(j).getBcno(), cardList.get(j).getName());
-							//maps[count].put("name", cardList.get(j).getBcno());
-							//maps[count].put("bcno", cardList.get(j).getName());
-							maps[count].put(moveCheck, cardList.get(j));
-							
-							System.out.println("들어갔는지2 확인 hashMap[]" +maps[count]);
-							
-							resultMap.put(String.valueOf(cho), maps[count]);
-							
-							list.add(compareHan);
-							
-							state = "한글";
-								
-						}
-
-						
+						chonames.add(String.valueOf(cho));
 					}
 
 			} else {
@@ -206,97 +136,38 @@ public class BusinessCardController {
 				// 한글이 아닐경우
 
 				comVal = (char) (comVal+0xAC00);
-				
-				if(englishCount == 0) {
-					compareEng = comVal;
-					System.out.println("영어 생성자 들어옴 = "+ compareEng);
-					englishCount++;
-				}
-				
-				if(compareEng == comVal) {
-					
-					if(state != "영어") {
-						++count;
-						moveCheck = 0;
-					}else {
-						moveCheck ++;
-					}
-					
-					resultMap.put(String.valueOf(comVal), null);
-					
-					System.out.println(count);
-					
-					//maps[count].put(cardList.get(j).getBcno(), cardList.get(j).getName());
-					//maps[count].put("name", cardList.get(j).getBcno());
-					//maps[count].put("bcno", cardList.get(j).getName());
-					maps[count].put(moveCheck, cardList.get(j));
-					
-					System.out.println("들어갔는지 확인1 hashMap[]" +maps[count]);
-					
-					resultMap.put(String.valueOf(comVal), maps[count]);
-					
-					list.add(compareEng);
-					
-					state = "영어";
-					
-					
-				}else {
-					
-					
-					++count;
-					moveCheck = 0;
-					
-					compareEng = comVal;
 
-					resultMap.put(String.valueOf(comVal), null);
-					
-					System.out.println(count);
-
-					
-					//maps[count].put(cardList.get(j).getBcno(), cardList.get(j).getName());
-					//maps[count].put("name", cardList.get(j).getBcno());
-					//maps[count].put("bcno", cardList.get(j).getName());
-					maps[count].put(moveCheck, cardList.get(j));
-					
-					System.out.println("들어갔는지 확인2 hashMap[]" +maps[count]);
-					
-					resultMap.put(String.valueOf(comVal), maps[count]);
-					
-					list.add(compareEng);
-					
-					state = "영어";
-					
-				}				
+				chonames.add(String.valueOf(comVal));
 				
 			}
-			
+		}
+
+		if(resultMap.get("count").equals(0)) {
+		// LinkedHashSet으로 초성 중복 제거
+		LinkedHashSet removeOverLap = new LinkedHashSet(chonames); 
+		
+		chonames.clear();
+		
+		// 초성 제거한 것 다시 list로 변환 
+		// for문 돌때마다 일치하는 초성을 특정 HashMap에 저장하기 위한 비교 list - indexof 사용
+		chonames.addAll(removeOverLap); 
+		
+		// 전체 HashMap 비교 생성
+		maps = new HashMap[resultMap.size()];
+
+		for(int i = 0; i < resultMap.size(); i++) {
+			maps[i] = new HashMap();
 		}
 		
+		resultMap.put("chonames", chonames);
 		
-		LinkedHashSet removeOverLap = new LinkedHashSet();
-		
-		
-		System.out.println("링크드리스트 들어가기 전 = "+list);
-		
-		Collections.sort(list);
+		resultMap.put("maps",maps);
 
-		System.out.println("컬렉션 들어간 후 = "+list);
-
-		removeOverLap.addAll(list);
+		resultMap.put("count",resultMap.put("count",1));
 		
-		System.out.println("링크드리스트 들어갔을 때 = "+removeOverLap);
-		
-		list.clear();
-		list.add(removeOverLap);
-		
-		System.out.println("링크드리스트 들어갔을 때 = "+removeOverLap);
-		
-		resultMap.put("cho", list);
-		
-		System.out.println("result 목록은 =" +resultMap);
+		}
 		
 		return resultMap;
-		
 	}
 	
 	@RequestMapping("/getCardInfo/{cardNo}")
