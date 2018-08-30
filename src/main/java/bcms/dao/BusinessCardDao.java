@@ -8,4 +8,6 @@ public interface BusinessCardDao {
 
 	List<BusinessCard> getCardList(int mno);
 
+	int addBusinessCard(BusinessCard businessCard);
+
 }

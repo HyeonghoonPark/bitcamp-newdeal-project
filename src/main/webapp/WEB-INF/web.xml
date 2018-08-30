@@ -17,7 +17,7 @@
     
     <filter-mapping>
         <filter-name>CharacterEncodingFilter</filter-name>
-        <url-pattern>/app/*</url-pattern>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
 
     <listener>
@@ -37,6 +37,7 @@
             <param-value>classpath:bcms/config/app-servlet.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
+        <multipart-config/>
     </servlet>
 
     <servlet-mapping>

@@ -19,6 +19,10 @@
 		select NAME, BCNO from bizcard where MNO = #{mno}
 	</select>
 		
+	<insert id="addBusinessCard" parameterType="BusinessCard">
+		insert into bizcard(MNO, BCN, NAME, CNAME, CPOSI, CADDR, MTEL, TEL, FAX, EMAIL, HOMEPAGE, PCARD, IMG) 
+		values(#{mno}, #{bcn}, #{name}, #{cname}, #{cposi}, #{caddr}, #{mtel}, #{tel}, #{fax}, #{email}, #{homepage}, #{pcard}, #{img})
+	</insert>
 </mapper>
 
 

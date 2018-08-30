@@ -2,15 +2,14 @@ package bcms.domain;
 
 public class Member {
 	
-	private String mno;
+	private int mno;
 	private String email;
 	private String name;
 	private String pwd;
-	
-	public String getMno() {
+	public int getMno() {
 		return mno;
 	}
-	public void setMno(String mno) {
+	public void setMno(int mno) {
 		this.mno = mno;
 	}
 	public String getEmail() {
@@ -31,8 +30,10 @@ public class Member {
 	public void setPwd(String pwd) {
 		this.pwd = pwd;
 	}
+	
 	@Override
 	public String toString() {
 		return "Member [mno=" + mno + ", email=" + email + ", name=" + name + ", pwd=" + pwd + "]";
 	}
+
 }

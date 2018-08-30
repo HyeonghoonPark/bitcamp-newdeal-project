@@ -15,6 +15,8 @@ public class BusinessCard {
 	private String email;
 	private String homepage;
 	private String memo;
+	private int pcard;
+	private String img;
 	
 	public int getMno() {
 		return mno;
@@ -94,11 +96,25 @@ public class BusinessCard {
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
+	public int getPcard() {
+		return pcard;
+	}
+	public void setPcard(int pcard) {
+		this.pcard = pcard;
+	}
+	public String getImg() {
+		return img;
+	}
+	public void setImg(String img) {
+		this.img = img;
+	}
 	
 	@Override
 	public String toString() {
 		return "BusinessCard [mno=" + mno + ", bcno=" + bcno + ", bcn=" + bcn + ", name=" + name + ", cname=" + cname
 				+ ", cposi=" + cposi + ", caddr=" + caddr + ", mtel=" + mtel + ", tel=" + tel + ", fax=" + fax
-				+ ", email=" + email + ", homepage=" + homepage + ", memo=" + memo + "]";
+				+ ", email=" + email + ", homepage=" + homepage + ", memo=" + memo + ", pcard=" + pcard + ", img=" + img
+				+ "]";
 	}
+
 }

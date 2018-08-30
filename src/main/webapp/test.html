@@ -1,53 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <title>Bootstrap Example</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-   <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
-  <script src="./node_modules/jquery/dist/jquery.min.js"></script>
-  <script src="./node_modules/popper.js/dist/umd/popper.min.js"></script>
-  <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-  <style>
-  /* Make the image fully responsive */
-  .carousel-inner img {
-      width: 100%;
-      height: 100%;
-  }
-  </style>
+<meta charset="UTF-8">
+<title>ajax 파일 업로드</title>
+<!-- <link rel="stylesheet" href="node_modules/blueimp-file-upload/css/jquery.fileupload.css">
+<link rel="stylesheet" href="node_modules/blueimp-file-upload/css/jquery.fileupload-ui.css"> -->
 </head>
 <body>
+<h1>fileupload() 사용법 - 업로드 사진 미리보기</h1>
+<pre>
+1) jquery.fileupload() 함수
+   - 버튼을 클릭 했을 때 서버에 비동기 요청하도록 설정한다.
+   - 바로 파일을 업로드 하라는 의미가 아니다.
+   - processalways 이벤트에서 미리보기 이미지 태그를 출력하고 버튼의 이벤트 핸들러를 등록한다.
+</pre>
 
-<div id="demo" class="carousel slide" data-ride="carousel">
+이름: <input id='name' type='text'><br>
+나이: <input id='age' type='text'><br>
+사진: <input id="fileupload" type="file" name="files" multiple><br>
+<button id='upload-btn' type='button'>등록</button>
+<div id='images-div'></div>
 
-  <!-- Indicators -->
-  <ul class="carousel-indicators">
-    <li data-target="#demo" data-slide-to="0" class="active"></li>
-    <li data-target="#demo" data-slide-to="1"></li>
-    <li data-target="#demo" data-slide-to="2"></li>
-  </ul>
-  
-  <!-- The slideshow -->
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="data:image/jpeg;base64,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" alt="Los Angeles" width="1100" height="500">
-    </div>
-    <div class="carousel-item">
-      <img src="chicago.jpg" alt="Chicago" width="1100" height="500">
-    </div>
-    <div class="carousel-item">
-      <img src="ny.jpg" alt="New York" width="1100" height="500">
-    </div>
-  </div>
-  
-  <!-- Left and right controls -->
-  <a class="carousel-control-prev" href="#demo" data-slide="prev">
-    <span class="carousel-control-prev-icon"></span>
-  </a>
-  <a class="carousel-control-next" href="#demo" data-slide="next">
-    <span class="carousel-control-next-icon"></span>
-  </a>
-</div>
+<script src="./commons/ServerAddr.js"></script>
+<script src='node_modules/jquery/dist/jquery.js'></script>
+<script src="node_modules/blueimp-file-upload/js/vendor/jquery.ui.widget.js"></script>
+<script src="node_modules/blueimp-load-image/js/load-image.all.min.js"></script>
+<script src="node_modules/blueimp-canvas-to-blob/js/canvas-to-blob.js"></script>
+<script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+<script src="node_modules/blueimp-file-upload/js/jquery.iframe-transport.js"></script>
+<script src="node_modules/blueimp-file-upload/js/jquery.fileupload.js"></script>
+<script src="node_modules/blueimp-file-upload/js/jquery.fileupload-process.js"></script> 
+<script src="node_modules/blueimp-file-upload/js/jquery.fileupload-image.js"></script>  
+
+<script>
+"use strict"
+
+$('#fileupload').fileupload({
+  /* url: `${serverAddr}/app/BusinessCard/addBziCard`,  */       // 서버에 요청할 URL
+  url: 'app/BusinessCard/addBziCard',
+  dataType: 'json',         // 서버가 보낸 응답이 JSON임을 지정하기
+  sequentialUploads: true,  // 여러 개의 파일을 업로드 할 때 순서대로 요청하기.
+  singleFileUploads: false, // 한 요청에 여러 개의 파일을 전송시키기.
+  autoUpload: false,        // 파일을 추가할 때 자동 업로딩 하지 않도록 설정.
+  disableImageResize: /Android(?!.*Chrome)|Opera/
+        .test(window.navigator && navigator.userAgent), // 안드로이드와 오페라 브라우저는 크기 조정 비활성 시키기
+  previewMaxWidth: 100,   // 미리보기 이미지 너비
+  previewMaxHeight: 100,  // 미리보기 이미지 높이 
+  previewCrop: true,      // 미리보기 이미지를 출력할 때 원본에서 지정된 크기로 자르기
+  processalways: function(e, data) {
+      console.log('fileuploadprocessalways()...');
+      console.log(data.files);
+      var imagesDiv = $('#images-div');
+      imagesDiv.html("");
+      for (var i = 0; i < data.files.length; i++) {
+        try {
+          if (data.files[i].preview.toDataURL) {
+            $("<img>")
+              .attr('src', data.files[i].preview.toDataURL())
+              .css('height', '80px')
+              .appendTo(imagesDiv);
+          }
+        } catch (err) {}
+      }
+      $('#upload-btn').unbind("click");
+      $('#upload-btn').click(function() {
+          data.submit();
+      });
+  }, 
+  submit: function (e, data) { // 서버에 전송하기 직전에 호출된다.
+    console.log('submit()...');
+    data.formData = {
+        name: $('#name').val(),
+        age: $('#age').val()
+    };
+  }, 
+  done: function (e, data) { // 서버에서 응답이 오면 호출된다. 각 파일 별로 호출된다.
+    console.log('done()...');
+    console.log(data.result);
+    $('<p/>').text("name : " + data.result.name).appendTo(document.body);
+    $('<p/>').text("age : " + data.result.age).appendTo(document.body);
+    $.each(data.result.filenames, function(index, filename) {
+      $('<p/>').text(filename).appendTo(document.body);
+    });
+  }
+});
+
+</script>
 
 </body>
 </html>
+
+
+
+
+
+

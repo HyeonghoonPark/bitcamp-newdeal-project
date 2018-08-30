@@ -19,4 +19,9 @@ public class BusinessCardServiceImpl implements BusinessCardService {
 		System.out.println("mno"+ mno);
 		return businessCardDao.getCardList(mno);
 	}
+	
+	@Override
+	public int addBusinessCard(BusinessCard businessCard) {
+		return businessCardDao.addBusinessCard(businessCard);
+	}
 }

@@ -7,5 +7,7 @@ import bcms.domain.BusinessCard;
 public interface BusinessCardService {
 
 	List<BusinessCard> list(int mno);
+
+	int addBusinessCard(BusinessCard businessCard);
 	
 }

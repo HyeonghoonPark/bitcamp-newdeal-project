@@ -1,20 +1,21 @@
 package bcms.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.UUID;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.multipart.MultipartFile;
 
 import bcms.domain.BusinessCard;
 import bcms.domain.Member;
@@ -25,6 +26,8 @@ import bcms.service.BusinessCardService;
 public class BusinessCardController {
 
 	@Autowired BusinessCardService businessCardService;
+	
+	@Autowired ServletContext sc;
 	
 	@RequestMapping("list")
 	public Object list(HttpSession session)throws Exception {
@@ -39,10 +42,13 @@ public class BusinessCardController {
 		
 		System.out.println(member);
 		
-		List<BusinessCard> cardList = businessCardService.list(Integer.parseInt(member.getMno()));
+		List<BusinessCard> cardList = businessCardService.list(member.getMno());
+		
+		System.out.println("카드갯수"+cardList.size());
 		
 		System.out.println("맨처음 카드리스트 = " +cardList);
 		// 초성 추출
+		resultMap.put("member", member);
 		
 		if(cardList.size() == 0)throw new Exception("firstUse");
 		
@@ -53,7 +59,6 @@ public class BusinessCardController {
 		buziCardList.remove("cho");
 		resultMap.put("choMap", buziCardList);
 		
-		resultMap.put("member", member);
 		
 		resultMap.put("state", "success");
 		
@@ -300,10 +305,52 @@ public class BusinessCardController {
 		System.out.println(cardNo);
 	}
 	
-	@PostMapping("/addBziCard")
-	public void addBziCard(BusinessCard businessCard)throws Exception{
-		System.out.println("컨트롤러 들어옴");
-		System.out.println(businessCard);
-	}
+	@RequestMapping("/addBziCard")
+	 public Object addBziCard(
+	            BusinessCard businessCard,
+	            MultipartFile[] files,
+	            HttpSession session) {
+	        
+	        System.out.println("upload01()...호출됨!");
+	        
+	        System.out.println(businessCard);
+	        
+	        Member member = (Member)session.getAttribute("user");
+			
+	        
+	        HashMap<String,Object> resultMap = new HashMap<>();
+	        
+	        ArrayList<String> filenames = new ArrayList<>();
+	        
+	        try {
+	        	if(member==null)throw new Exception("login");
+	            
+	        	for (MultipartFile file : files) {
+	                if (file.isEmpty()) continue;
+	                
+	                String newfilename = UUID.randomUUID().toString(); 
+	                String path = sc.getRealPath("/files/" + newfilename);
+	                System.out.println(path);
+	                
+	                businessCard.setMno(member.getMno());
+	                businessCard.setImg(newfilename);
+	                
+	                int returnInt = businessCardService.addBusinessCard(businessCard);
+	                
+	                System.out.println("들어갓나?" + returnInt);
+	                
+	                file.transferTo(new File(path));
+	            }
+	        } catch (Exception e) {
+	        	if(e.getMessage()=="login") {
+	        		resultMap.put("state", "session");
+	        		return resultMap;
+	        	}else {        		
+	        		e.printStackTrace();
+	        	}
+	        }
+	        
+	        return "성공했습니다!";
+	    }
 	
 }
