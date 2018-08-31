@@ -26,4 +26,10 @@ public class AuthServiceImpl implements AuthService {
         params.put("email", email);
         return authDao.findPwd(params);
     }
+    
+    @Override
+    public void changePassword(Member member) {
+
+    	authDao.changePassword(member);
+    }
 }

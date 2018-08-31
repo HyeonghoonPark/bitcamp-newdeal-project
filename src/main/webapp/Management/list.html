@@ -185,7 +185,7 @@
 
 		<button id="test">테스트 버튼</button>
 		
-		<section class="cardSection">
+		<section class="centerSection">
 		
 		
 		</section>
@@ -205,9 +205,9 @@
     <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
     reserved.
   </footer>
-
+  
   <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
+  <aside class="control-sidebar control-sidebar-dark" id="right-sidebar">
     <!-- Create the tabs -->
     <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
      
@@ -219,7 +219,7 @@
       <button class="btn btn-default" style="width:100%">엑셀파일 추출</button>
       <br>
 
-      <button class="btn btn-default" style="width:100%">비밀번호 변경</button>
+      <button class="btn btn-default" style="width:100%" id="passwordChange">개인정보 변경</button>
       <br>
 
       <button class="btn btn-default" style="width:100%">회원탈퇴</button>
@@ -245,10 +245,10 @@
 
 <li class="liState treeview">
 	<a href="#">
-		<i class="">{{first}}</i>              
+		<i class="">{{no}}</i>              
 		<span>..</span>
 		<span class="pull-right-container">
-			<span class="label label-primary pull-right">{{cardCount}}</span>
+			<span class="label label-primary pull-right">{{firstLength}}</span>
 		</span>
 	</a>
 	<ul class="treeview-menu">
@@ -265,6 +265,9 @@
 
 $(document).ready(function(){
   
+    userEmail = '';
+    userName = '';
+    
     var contentHeight = $('.content-wrapper').css('height').replace("px","");
     var profileHeight = $('.user-panel').css('height').replace("px","");
     var searchHeight = $('.sidebar-form').css('height').replace("px","");
@@ -295,29 +298,37 @@ $(document).ready(function(){
 
     	   	if(result.state == 'success'){
     	    
-    	   	$('.userName').prepend(data.member.name);
+    	   	userName = data.member.name;
+    	   	console.log(userName)
+    	   	userEmail = data.member.email;
+    	   	console.log(userEmail)
+    	   	
+    	   	$('.userName').prepend(userName);
     		var liTemplateSrc = $('#li-template-src').text();
     		var liTemplateFn = Handlebars.compile(liTemplateSrc);
     		
-    		for(var first of data.firstName[0]){
-					
-    			var cardCount = 0;
+    		var choCount = 0;
+    		
+     		for(var first of data.maps){
+				
+     		    console.log(first);
+     		         		   
+     		    // 해당 초음에 몇개의 리스트가 있는지
+     		    var firstLength = Object.keys(first).length;
+     		    
     			var liListHTML = "";
     			
-    			for(var str in data.choMap){
-    				if(first == str){
-    					cardCount = Object.keys(data.choMap[str]).length;
-    					liListHTML = liTemplateFn({first, cardCount, list : data.choMap[str]})		
-    				}
-    			}
+    			liListHTML = liTemplateFn({ no : data.chonames[choCount], list : first, firstLength})		
     			
-  				$('#cardList').append(liListHTML)
+  				$('#cardList').append(liListHTML) 
     			  
+  				choCount++;
+    			
     		} 
     		
     		
         	}else if(result.state == 'first'){
-        	    $('.userName').prepend(data.member.name);
+        	    $('.userName').prepend(userName);
         	    console.log('처음온 회원입니다 환영메시지 띄울 곳!')
         	}
         	
@@ -352,9 +363,11 @@ $(document).ready(function(){
 })
 
 $('#addBtn').click(function(){
-    $('.cardSection').load(`${serverAddr}/Management/cardform/DefaultCard.html`)
+    $('.centerSection').load(`${serverAddr}/Management/cardform/DefaultCard.html`)
 })
-
+$('#passwordChange').click(function(){ 
+    $('.centerSection').load(`${serverAddr}/Management/changeUserInfo.html`)
+})
 
 </script>
 

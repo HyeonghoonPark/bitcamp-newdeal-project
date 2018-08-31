@@ -62,5 +62,18 @@ public class AuthController {
         
         return result;
     }
-	
+    
+    @PostMapping("changePassword")
+	public Object changePassword(Member member)throws Exception{
+		
+    	try {
+    		
+    		authService.changePassword(member);
+    		
+    	}catch(Exception e) {
+    		
+    	}
+    	
+    	return 0;
+    }
 }

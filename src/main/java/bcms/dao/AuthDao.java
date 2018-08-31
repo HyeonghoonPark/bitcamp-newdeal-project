@@ -9,5 +9,7 @@ public interface AuthDao {
 	Member findByEmailAndPassword(Member user);
 	
 	Member findPwd(HashMap<String, Object> params);
+
+	void changePassword(Member member);
 	
 }
