@@ -10,6 +10,8 @@ public interface AuthDao {
 	
 	Member findPwd(HashMap<String, Object> params);
 
-	void changePassword(Member member);
+	int changePassword(HashMap<String, Object> params);
+
+	int checkPassword(Member member);
 	
 }

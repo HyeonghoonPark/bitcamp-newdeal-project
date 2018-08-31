@@ -8,6 +8,8 @@ public interface AuthService {
 	
 	Member findPwd(String email);
 
-	void changePassword(Member member);
-	 
+	int changePassword(int mno, String changePassword);
+
+	int checkPassword(Member member);
+
 }

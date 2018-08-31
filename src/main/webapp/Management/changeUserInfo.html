@@ -5,10 +5,12 @@
       <!-- left column -->
       <div class="col-md-3">
         <div class="text-center">
+          <div id="imgTag">
           <img src="//placehold.it/100" class="avatar img-circle" alt="avatar">
+          </div>
           <h6>Upload a different photo...</h6>
           
-          <input type="file" class="form-control">
+          <input type="file" class="form-control" id="fileupload">
         </div>
       </div>
       
@@ -17,20 +19,20 @@
         <div class="alert alert-info alert-dismissable">
           <a class="panel-close close" data-dismiss="alert">×</a> 
           <i class="fa fa-coffee"></i>
-          This is an <strong>.alert</strong>. Use this to show important messages to the user.
+          사진만 <strong>.변경하실 경우</strong>. 현재 비밀번호만 입력해주세요.
         </div>
         <h3>Personal info</h3>
         
         <form class="form-horizontal" role="form">
           <div class="form-group">
-            <label class="col-lg-3 control-label">이메일</label>
+            <label class="col-lg-3 control-label">이메일:</label>
             <div class="col-lg-8">
               <input class="form-control" type="email" id="userEmailForm" readonly>
             </div>
           </div>
 
           <div class="form-group">
-            <label class="col-lg-3 control-label">이름</label>
+            <label class="col-lg-3 control-label">이름:</label>
             <div class="col-lg-8">
               <input class="form-control" type="text" id="userNameForm">
             </div>
@@ -38,15 +40,21 @@
           
     
           <div class="form-group">
-            <label class="col-md-3 control-label">Password:</label>
-            <div class="col-md-8">
-              <input class="form-control" type="password">
+            <label class="col-lg-3 control-label">현재 비밀번호:</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="password" id="userPasswordForm">
             </div>
           </div>
           <div class="form-group">
-            <label class="col-md-3 control-label">Confirm password:</label>
-            <div class="col-md-8">
-              <input class="form-control" type="password">
+            <label class="col-lg-3 control-label">새 비밀번호:</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="password" id="changePassword1">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-3 control-label">새 비밀번호 확인:</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="password" id="changePassword2">
             </div>
           </div>
           <div class="form-group">
@@ -63,11 +71,52 @@
 </div>
 <hr>
 
-<Script>
+<script>
 $('#userEmailForm').attr("value",userEmail);
 $('#userNameForm').attr("value",userName);
 
-$('#changeBtn').click(function(){
-    $.post(serverAddr+'app/')
-})
-</Script>
+$('#fileupload').fileupload({
+    url: `${serverAddr}/app/Auth/changePassword`,       // 서버에 요청할 URL
+    dataType: 'json',         // 서버가 보낸 응답이 JSON임을 지정하기
+    sequentialUploads: true,  // 여러 개의 파일을 업로드 할 때 순서대로 요청하기.
+    singleFileUploads: false, // 한 요청에 여러 개의 파일을 전송시키기.
+    autoUpload: false,        // 파일을 추가할 때 자동 업로딩 하지 않도록 설정.
+    disableImageResize: /Android(?!.*Chrome)|Opera/
+          .test(window.navigator && navigator.userAgent), // 안드로이드와 오페라 브라우저는 크기 조정 비활성 시키기
+    previewMaxWidth: 100,   // 미리보기 이미지 너비
+    previewMaxHeight: 100,  // 미리보기 이미지 높이 
+    previewCrop: true,      // 미리보기 이미지를 출력할 때 원본에서 지정된 크기로 자르기
+    processalways: function(e, data) {
+        console.log('fileuploadprocessalways()...');
+        console.log(data.files);
+        var imgTag = $('#imgTag');
+        imgTag.html("");
+        for (var i = 0; i < data.files.length; i++) {
+          try {
+            if (data.files[i].preview.toDataURL) {
+              $("<img>")
+                .attr({'src': data.files[i].preview.toDataURL(), 'class' : 'avatar img-circle', 'alt' : 'avatar'})
+                .appendTo(imgTag);
+            }
+          } catch (err) {console.log('에러임')}
+        }
+        $('#changeBtn').unbind("click");
+        $('#changeBtn').click(function() {
+            data.submit();
+        });
+    }, 
+    submit: function (e, data) { // 서버에 전송하기 직전에 호출된다.
+      console.log('submit()...');
+      console.log($('#NAME').val());
+      data.formData = {
+          password : $('#userPasswordForm').val(),
+          changePassword : $('#changePassword2').val()
+      };
+    }, 
+    done: function (e, data) { // 서버에서 응답이 오면 호출된다. 각 파일 별로 호출된다.
+      console.log('done()...');
+      console.log(data);
+      console.log(e);
+    }
+  });
+</script>
