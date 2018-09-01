@@ -9,7 +9,6 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
-  <link rel="stylesheet" href="./css/bootstrap.min.css">
   <!-- Font Awesome 아이콘 -->
   <link rel="stylesheet" href="./css/font-awesome/css/font-awesome.min.css">
   <!-- Theme style -->
@@ -20,7 +19,13 @@
   <link rel="stylesheet" href="./css/card/default.css">
    <link rel="stylesheet" href="./css/card/number1.css">
   <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <link rel="stylesheet" href="./css/bootstrap.min.css">
 <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+ -->
+ 
 <script src="../commons/ServerAddr.js"></script>
 <script src="../node_modules/handlebars/dist/handlebars.min.js"></script>
    
@@ -34,7 +39,7 @@
 <script src="../node_modules/blueimp-file-upload/js/jquery.fileupload-image.js"></script>  
   
 </head>
-<body id="bodyState" class="hold-transition skin-blue sidebar-mini">
+<body id="bodyState" class="hold-transition sidebar-mini skin-black">
 
 
 <div class="wrapper">
@@ -183,6 +188,7 @@
       <!-- Small boxes (Stat box) -->
       <div class="row">
 
+<button id="testbtn" style="width:500px">테스트 버튼</button>
 		<section class="centerSection">
 		
 		
@@ -301,7 +307,8 @@ $(document).ready(function(){
     	   	if(result.state == 'success'){
     	    
     	   	$('.userName').prepend(userName);
-    		var liTemplateSrc = $('#li-template-src').text();
+    		
+    	   	var liTemplateSrc = $('#li-template-src').text();
     		var liTemplateFn = Handlebars.compile(liTemplateSrc);
     		
     		var choCount = 0;
@@ -381,6 +388,9 @@ $('#signOut').click(function(){
 	}
 })
 
+$('#testbtn').click(function(){
+	$('.centerSection').load(`${serverAddr}/Management/cardform/testCard.html`)
+})
 </script>
 
 </body>
