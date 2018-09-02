@@ -82,10 +82,10 @@ $('#SignUp-form-btn').click(function(){
     		
     		if(state == "success"){
     			swal({
-                    title: "입력한 이메일에서 가입 확인을 눌러주세요",
+                    title: "이메일에서 가입 확인을 눌러주세요",
                     icon: "success",
                 }).then((value)=>{
-                    location.href = 'signIn.html'
+                    location.href = 'http://localhost:8000/hello/email='+111111
                 })
     		}else{
     			swal({
