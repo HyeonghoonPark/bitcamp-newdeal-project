@@ -19,11 +19,6 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.insert(user);
 	}
 	
-	@Override
-	public int identify(String email) {
-		return memberDao.identifyEamil(email);
-	}
-	
     @Override
     public int changeUserPassword(Member member) {
     	return memberDao.changeUserPassword(member);

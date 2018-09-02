@@ -21,16 +21,16 @@ public class MemberController {
     @Autowired MemberService memberService;
     @Autowired AuthService authService;
     
-    @PostMapping("signup")
+    @PostMapping("signUp")
     public Object member(Member member) {
         System.out.println("컨트롤러로 넘어옴");
         System.out.println("member"+member);
         HashMap<String,Object> result = new HashMap<>();
         try {
             memberService.add(member);
-            result.put("status", "success");
+            result.put("state", "success");
         } catch (Exception e) {
-            result.put("status", "fail");
+            result.put("state", "fail");
             result.put("message", e.getMessage());
         }
         return result;

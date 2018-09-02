@@ -15,14 +15,19 @@
     <result column="MEMO" property="memo"/>
   </resultMap>
   
-	<select id="getCardList" parameterType="int" resultMap="businesscardMap">
-		select NAME, BCNO, CNAME, CPOSI, CADDR, MTEL, TEL, FAX, EMAIL, HOMEPAGE from bizcard where MNO = #{mno} order by NAME
+	<select id="getBusinessCardList" parameterType="int" resultMap="businesscardMap">
+		select NAME, BCNO, CNAME, CPOSI, CADDR, MTEL, TEL, FAX, EMAIL, HOMEPAGE, IMG from bizcard where MNO = #{mno} order by NAME
 	</select>
 		
 	<insert id="addBusinessCard" parameterType="BusinessCard">
 		insert into bizcard(MNO, BCN, NAME, CNAME, CPOSI, CADDR, MTEL, TEL, FAX, EMAIL, HOMEPAGE, PCARD, IMG) 
 		values(#{mno}, #{bcn}, #{name}, #{cname}, #{cposi}, #{caddr}, #{mtel}, #{tel}, #{fax}, #{email}, #{homepage}, #{pcard}, #{img})
 	</insert>
+	
+	<select id="getSingleBusinessCardInfo" parameterType="Map" resultType="BusinessCard">
+		select NAME, BCNO, CNAME, CPOSI, CADDR, MTEL, TEL, FAX, EMAIL, HOMEPAGE, IMG from bizcard where BCNO = #{cardNo} and MNO = #{mno}
+	</select>
+	
 </mapper>
 
 

@@ -45,6 +45,24 @@ public class AuthController {
 		return resultMap;
 	}
 	
+	
+	@RequestMapping("/identifyEmailAddr")
+	public Object chkEmail(String email, Model model) {
+
+		HashMap<String, Object> resultMap = new HashMap<>();
+		System.out.println(email);
+		int chkEmail = authService.identifyEmailAddr(email);
+		System.out.println(chkEmail);
+		if(chkEmail == 0) {
+			resultMap.put("state", "success");
+		}else {
+			resultMap.put("state", "fail");
+		}
+		
+		return resultMap;
+		
+	}
+	
     @PostMapping("forgotPwd")
     public Object forgotPwd(String email) {
         

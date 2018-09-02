@@ -1,5 +1,6 @@
 package bcms.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +16,23 @@ public class BusinessCardServiceImpl implements BusinessCardService {
 	@Autowired BusinessCardDao businessCardDao;
 	
 	@Override
-	public List<BusinessCard> list(int mno) {
+	public List<BusinessCard> getBusinessCardList(int mno) {
 		System.out.println("mno"+ mno);
-		return businessCardDao.getCardList(mno);
+		return businessCardDao.getBusinessCardList(mno);
 	}
 	
 	@Override
 	public int addBusinessCard(BusinessCard businessCard) {
 		return businessCardDao.addBusinessCard(businessCard);
 	}
+
+	@Override
+	public BusinessCard getSingleBusinessCardInfo(int mno, int cardNo) {
+		
+		HashMap<String, Object> params = new HashMap<>();
+		params.put("mno", mno);
+		params.put("cardNo", cardNo);
+		return businessCardDao.getSingleBusinessCardInfo(params);
+	}
+	
 }

@@ -1,6 +1,6 @@
 <style>
 
-@media (min-width: 768px) {
+@media (min-width: 631px) {
 h1{
   text-align: center;
 }
@@ -15,9 +15,6 @@ ul {
   list-style-type: none;
 }
 
-#imgDiv{
-  border : solid 1px black;
-}
 
 .businessCard {
   width: 600px;
@@ -25,9 +22,16 @@ ul {
   background-color: #fff;
   margin-right: auto;
   margin-left: auto;
-  /* margin-top: 50px; */
+  margin-top: 50px;
+  margin-bottom: 50px;
   box-shadow: 10px 10px 0px #7f8c8d;
   padding: 1em;
+ }
+ #upload-btn{
+  margin-right: auto;
+  margin-left: auto;
+  width:200px;
+  
  }
 
   div input {
@@ -40,17 +44,16 @@ ul {
   padding-top:40px;
   }
  
- 
  }
  
- @media (max-width: 460px) {
+ @media (max-width: 630px) {
  
  h1{
-  text-align: center;
+  text-align: left;
 }
 
 h2{
-  text-align: center;
+  text-align: left;
   font-weight: 100;
   margin-top: -30px;
 }
@@ -59,7 +62,9 @@ ul {
   list-style-type: none;
 }
 
+
 .right-text input{
+	text-align: left;
 	width:100%;
 }
 
@@ -69,7 +74,7 @@ ul {
 
 .businessCard {
   width: 330px;
-  height: 400px;
+  height: 350px;
   background-color: #fff;
   margin-right: auto;
   margin-left: auto;
@@ -87,7 +92,11 @@ ul {
   heigh:60px; 
   padding-top:40px;
   }
- 
+
+  
+  .readBusinessCard input{
+  readyonly
+  }
  
  }
 
@@ -95,19 +104,20 @@ ul {
 </style>
 
 <div class="container">
+<legend class="text-center" style="margin-top:40px">명함 추가하기</legend>
 
-<div class="businessCard row" card-form-no="1">
-  <div class="col-md-5 col-sm-5 col-xs-5">
+<div class="businessCard row" id="cardForm" card-form-no="1">
+  <div class="col-md-5 col-sm-5 col-xs-4 imgZone">
   <div id="imgDiv">
   <img src="./img/defaultImage.png" id="imgSrc">
   </div>
   <input id="fileupload" type="file" name="files" style="margin-top:5px; ">
   </div>
  
-  <div class="col-md-7 col-sm-7 col-xs-7 right-text">
+  <div class="col-md-7 col-sm-7 col-xs-8 right-text">
 
   <ul>
-  <li><input style="margin-top:25px" type="text" id="CPOSI" placeholder="부서 / 직책"></li>
+  <li><input style="margin-top:25px" type="text" id="CPOSI" placeholder="부서 / 직책" value=""></li>
   <li><h3 style="margin-top:0px"><input type="text" id="NAME" placeholder="이름"></h3></li>
   
     <li><input type="text" id="CNAME" placeholder="회사명"></li>
@@ -130,10 +140,10 @@ ul {
   </ul>
   </div>
 </div>
+<br>
 
-<br><br>
-<div class="text-center">빈칸을 입력해주세요</div>
-<div class="text-center"><button type="button" id="upload-btn">등록하기</button></div>
+
+<button type="button" class="btn btn-default btn-lg cardActionBtn" id="upload-btn">등록하기</button>
 
 </div>
 
@@ -206,5 +216,30 @@ $('#upload-btn').click(function(){
 	}) */
 })
 
+$(document).ready(function(){
+	
+	if(cardState == 'read'){
+	$('#cardForm input').attr('readonly',true);
+	$('#CPOSI').attr('value', cposi )
+	$('#NAME').attr('value', name )
+	$('#CNAME').attr('value', cname )
+	$('#CADDR').attr('value', caddr )
+	$('#TEL').attr('value', tel )
+	$('#MTEL').attr('value', mtel )
+	$('#FAX').attr('value', fax )
+	$('#EMAIL').attr('value', email )
+	$('#HOMEPAGE').attr('value', homepage )
+	$('#imgSrc').attr('src' , '../files/'+img)
+	$('.imgZone input').remove();
+	$('.cardActionBtn').attr('id', 'modifyBtn').html('수정하기')
+	
+	}
+	
+	$('#modifyBtn').click(function(){
+		$('#cardForm input').attr('readonly',false);
+		$('.cardActionBtn').html('저장하기')
+	})
+	
+})
  
 </script>

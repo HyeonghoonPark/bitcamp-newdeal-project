@@ -32,7 +32,7 @@
 <script src="../node_modules/blueimp-file-upload/js/jquery.fileupload.js"></script>
 <script src="../node_modules/blueimp-file-upload/js/jquery.fileupload-process.js"></script> 
 <script src="../node_modules/blueimp-file-upload/js/jquery.fileupload-image.js"></script>  
-  
+
 </head>
 <body id="bodyState" class="hold-transition sidebar-mini skin-black">
 
@@ -180,7 +180,6 @@
       <!-- Small boxes (Stat box) -->
       <div class="row">
 
-<button id="testbtn" style="width:500px">테스트 버튼</button>
 		<section class="centerSection">
 		
 		
@@ -335,21 +334,52 @@ $('#search-btn').click(function(){
 
 $(document).ready(function(){
     
+	cposi = "";
+	name = "";
+	cname = "";
+	caddr = "";
+	tel = "";
+	mtel = "";
+	fax = "";
+	email = "";
+	homepage = "";
+	img = "";
+	cardState = "";
+	
     $(document).on('click','.cardChoice',function(){
         
         var cardNo = $(this).attr('data-no');
     	
-        $.getJSON(serverAddr+'/app/BusinessCard/getCardInfo/'+cardNo,function(){
-            console.log('들어갔다가 나옴')
+        $.getJSON(serverAddr+'/app/BusinessCard/getCardInfo/'+cardNo
+        		,function(result){
+        	
+        	if(result.state=='success'){
+        	    $('.centerSection').load(`${serverAddr}/Management/cardform/DefaultCard.html`)
+        	    cposi = result.card.cposi;
+        	    name = result.card.name;
+        	    cname = result.card.cname;
+        	    caddr = result.card.caddr;
+        	    tel = result.card.tel;
+        	    mtel = result.card.mtel;
+        	    fax = result.card.fax;
+        	    email = result.card.email;
+        	    homepage = result.card.homepage;
+        	    img = result.card.img;	
+        		cardState = 'read'
+        		
+        	}else{
+        		alert('로그인 후 다시 시도해주세요!')
+        	}
         })
     })
 		
     	
 })
 
-//$('#addBtn').click(function(){
+$('#addBtn').click(function(){
     $('.centerSection').load(`${serverAddr}/Management/cardform/DefaultCard.html`)
-//})
+    cardState = 'add';
+})
 
 $('.memberInfoChange').click(function(){ 
     $('.centerSection').load(`${serverAddr}/Management/changeUserInfo.html`)
@@ -370,9 +400,6 @@ $('#signOut').click(function(){
 	}
 })
 
-$('#testbtn').click(function(){
-	$('.centerSection').load(`${serverAddr}/Management/cardform/testCard.html`)
-})
 
 $('#search-box').keyup(function(e){
 	var key = $(this).val();
@@ -384,10 +411,6 @@ $('#search-box').keyup(function(e){
 			console.log(value)
 	})
 })
-
-function checkedSearchName(){
-	
-}
 
 </script>
 

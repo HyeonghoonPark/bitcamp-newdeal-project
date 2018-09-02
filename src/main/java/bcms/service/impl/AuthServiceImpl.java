@@ -19,6 +19,11 @@ public class AuthServiceImpl implements AuthService {
 		return authDao.findByEmailAndPassword(user);
 	}
 	
+	@Override
+	public int identifyEmailAddr(String email) {
+		return authDao.identifyEmailAddr(email);
+	}
+	
 	
     @Override
     public Member findPwd(String email) {

@@ -49,7 +49,7 @@ public class BusinessCardController {
 		System.out.println(member);
 		
 		// 카드 정보 추출 (NAME 내림차순)
-		List<BusinessCard> cardList = businessCardService.list(member.getMno());
+		List<BusinessCard> cardList = businessCardService.getBusinessCardList(member.getMno());
 		
 		// return할 Map에 멤버 정보 담기
 		resultMap.put("member", member);
@@ -215,9 +215,30 @@ public class BusinessCardController {
 	}
 	
 	@RequestMapping("/getCardInfo/{cardNo}")
-	public void getCardInfo(@PathVariable("cardNo") int cardNo)throws Exception{
+	public Object getCardInfo(
+							@PathVariable("cardNo") int cardNo,
+							HttpSession session)throws Exception{
 		
-		System.out.println(cardNo);
+		HashMap<String,Object> resultMap = new HashMap<>();
+		
+		try {
+		Member member = (Member)session.getAttribute("user");
+	    
+		int mno = member.getMno();
+		
+		BusinessCard selectoneCard =  businessCardService.getSingleBusinessCardInfo(mno, cardNo);
+		
+		resultMap.put("card", selectoneCard);
+		
+		resultMap.put("state", "success");
+		
+		}catch(Exception e) {
+			
+			resultMap.put("state", "error");
+			
+		}
+		
+		return resultMap;
 	}
 	
 	@RequestMapping("/addBziCard")

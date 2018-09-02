@@ -6,9 +6,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="commons/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="node_modules/animate/animate.css">
-	<link rel="stylesheet" type="text/css" href="node_modules/css-hamburgers/hamburgers.min.css">
-	<link rel="stylesheet" type="text/css" href="node_modules/select2/dist/css/select2.min.css">
 	<link rel="stylesheet" type="text/css" href="commons/css/util.css">
 	<link rel="stylesheet" type="text/css" href="commons/css/main.css">
 </head>
@@ -16,28 +13,31 @@
 	<div class="limiter">
 		<div class="container-SignUp">
 			<div class="wrap-SignUp">
+			
+		
 				<div class="login100-pic js-tilt" data-tilt>
-					<img src="images/img-01.png" alt="IMG">
+					<img src="commons/images/img-01.png" alt="IMG">
 				</div>
 
 				<form class="SignUp-form validate-form">
 				<br>
 					<span class="SignUp-form-title">
-						SignUp
+						회원가입
 					</span>
 
 					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-						<input class="input100" type="text" name="mEmail" id="mEmail" placeholder="Email">
+						<input class="input100" type="email" name="mEmail" id="fEmail" placeholder="이메일">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
 						</span>
 					</div>
 					
+					
 					<!-- 이메일 인증은 로그인 페이지 참고-->
 
                     <div class="wrap-input100 validate-input" data-validate = "Password is required">
-                        <input class="input100" type="text" name="mName" id="mName" placeholder="Name">
+                        <input class="input100" type="text" name="mName" id="fName" placeholder="이름">
                         <span class="focus-input100"></span>
                         <span class="symbol-input100">
                             <i class="fa fa-user" aria-hidden="true"></i>
@@ -45,7 +45,15 @@
                     </div>
 
 					<div class="wrap-input100 validate-input" data-validate = "Password is required">
-						<input class="input100" type="password" name="mPassword" id="mPassword" placeholder="Password">
+						<input class="input100" type="password" name="mPassword" id="fPassword1" placeholder="비밀번호">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-lock" aria-hidden="true"></i>
+						</span>
+					</div>
+					
+					<div class="wrap-input100 validate-input" data-validate = "Password is required">
+						<input class="input100" type="password" name="mPassword" id="fPassword2" placeholder="비밀번호 재확인">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-lock" aria-hidden="true"></i>
@@ -54,7 +62,7 @@
 					
 					<div class="container-SignUp-form-btn">
 						<button type="button" class="SignUp-form-btn" id="SignUp-form-btn">
-							Create
+							가입하기
 						</button>
 					</div>
 
@@ -67,15 +75,9 @@
 	<script src="node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-	<script src="node_modules/select2/dist/css/select2.min.css"></script>
 	<script src="node_modules/vanilla-tilt/dist/vanilla-tilt.js"></script>
 	<script src="node_modules/sweetalert/dist/sweetalert.min.js"></script>
-	<script >
-		$('.js-tilt').tilt({
-			scale: 1.1
-		})
-	</script>
-	<script src="commons/js/common.js"></script>
+	<script src="commons/ServerAddr.js"></script>
 	<script src="commons/js/signUp.js"></script>
     
 
