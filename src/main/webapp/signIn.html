@@ -6,9 +6,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="commons/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="node_modules/animate/animate.css">
-    <link rel="stylesheet" type="text/css" href="node_modules/css-hamburgers/hamburgers.min.css">
-    <link rel="stylesheet" type="text/css" href="node_modules/select2/dist/css/select2.min.css">
 	<link rel="stylesheet" type="text/css" href="commons/css/util.css">
 	<link rel="stylesheet" type="text/css" href="commons/css/main.css">
 </head>
@@ -23,7 +20,7 @@
 
 				<form class="login100-form validate-form">
 					<span class="login100-form-title">
-						Member Login
+						로그인
 					</span>
 
 					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
@@ -35,7 +32,7 @@
 					</div>
 
 					<div class="wrap-input100 validate-input" data-validate = "Password is required">
-						<input class="input100" type="password" name="pass" placeholder="비밀번호를 입력해주세요" id="fPassWord">
+						<input class="input100" type="password" name="pass" placeholder="비밀번호를 입력해주세요" id="fPassword">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-lock" aria-hidden="true"></i>
@@ -72,39 +69,50 @@
 	<script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="node_modules/select2/dist/css/select2.min.css"></script>
     <script src="node_modules/vanilla-tilt/dist/vanilla-tilt.js"></script>
     <script src="node_modules/sweetalert/dist/sweetalert.min.js"></script>
-   <!--  <script >
-        $('.js-tilt').tilt({
-            scale: 1.1
-        })
-    </script> -->
     <script src="commons/ServerAddr.js"></script>
 	<script src="commons/js/signIn.js"></script>
 
 <script>
 $('#btn').click(function(){
 	
+	console.log($('#fEmail').val())
+	console.log($('#fPassword').val())
+
 	if($('#fEmail').val().length==0){
-		alert('이메일을 입력해주세요.')
+		swal({
+            title: "이메일을 입력해주세요",
+            icon: "error",
+        })
 		return;
-	}else if($('#fPassWord').val().length==0){
-		alert('비밀번호를 입력해주세요.')
+	}else if($('#fPassword').val().length==0){
+		swal({
+            title: "비밀번호를 입력해주세요",
+            icon: "error",
+        })
 		return;
 	}
 	
-	$.post(serverAddr+'/app/Auth/SignIn',{
+ 	$.post(serverAddr+'/app/Auth/signIn',{
 		email : $('#fEmail').val(),
-		pwd : $('#fPassWord').val()
+		pwd : $('#fPassword').val()
 	},function(result){
 		console.log(result.state);
 		if(result.state=='success'){
 			location.href = "./Management/list.html";
+		}else if(result.state='notAuthEmail'){
+			swal({
+	            title: "이메일 인증을 하셔야 이용이 가능합니다.",
+	            icon: "error",
+	        })
 		}else{
-			alert('이메일 혹은 비밀번호가 일치하지 않습니다.');
+			swal({
+	            title: "비밀번호 혹은 이메일이 일치하지 않습니다.",
+	            icon: "error",
+	        })
 		};
-	})
+	}) 
 	
 	
 })

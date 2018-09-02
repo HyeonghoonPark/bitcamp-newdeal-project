@@ -22,25 +22,38 @@ public class AuthController {
 	
 	@Autowired AuthService authService; 
 	
-	@PostMapping("SignIn")
-	public Object SignIn(Member user, HttpSession session) {
+	@PostMapping("signIn")
+	public Object SignIn(Member user, 
+							HttpSession session) {
 		
 		HashMap<String,Object> resultMap = new HashMap<>();
 
-		
 		try {
+			
 			Member loginUser = authService.getMember(user); 
 
-			if(loginUser == null)throw new Exception("에러가 발생했습니다!");
+			if(loginUser == null)throw new Exception("notFindUser");
 		
+			
+			System.out.println("돌아온값은? " +authService.checkAuthedEmail(loginUser));
+			
+			if(authService.checkAuthedEmail(loginUser)!=1)throw new Exception("notAuthEmail");
+					
+			//if(AuthedEmailUser != authService.checkAuthedEmail(user))throw new Exception("notAuthEmail");
+			
 			session.setAttribute("user", loginUser);
 			resultMap.put("state","success");
 		
 		}catch(Exception e) {
-			resultMap.put("state", "error");
-			resultMap.put("message", e.getMessage());
+			if(e.getMessage()=="notFindUser") {
+				resultMap.put("state", "notFind");
+			}else if(e.getMessage()=="notAuthEmail"){
+				resultMap.put("state", "notAuthEmail");
+			}else{
+				resultMap.put("state", "error");
+				resultMap.put("message", e.getMessage());
+			}
 		}
-		
 		
 		return resultMap;
 	}

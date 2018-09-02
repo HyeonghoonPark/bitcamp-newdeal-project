@@ -392,7 +392,7 @@ $('#membershipWithdrawal').click(function(){
 $('#signOut').click(function(){
 	if(confirm('로그아웃 하시겠습니까?')){
 	    sessionStorage.clear();
-	    location.href = '../SignIn.html';
+	    location.href = '../signIn.html';
 	}else{
 	 	console.log('안들어옴')   
 	 	console.log(sessionStorage.getItem("user"))

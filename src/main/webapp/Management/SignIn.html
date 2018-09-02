@@ -31,15 +31,15 @@
 <script>
 $('#btn').click(function(){
 	
-	$.post(serverAddr+'/app/Auth/SignIn',{
+	$.post(serverAddr+'/app/Auth/signIn',{
 		email : $('#fEmail').val(),
 		pwd : $('#fPassWord').val()
 	},function(result){
 		console.log(result.state);
 		if(result.state=='success'){
 			location.href = "./Management/list.html";
-		}else{
-			alert('이메일 혹은 비밀번호가 일치하지 않습니다.');
+		}else if(result.state == 'notFind'){
+			alert('존재하지않는 회원입니다.');
 		};
 	})
 	

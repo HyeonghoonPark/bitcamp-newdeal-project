@@ -15,5 +15,8 @@
 	<select id="passwordValidation" parameterType="Member" resultType="int">
 		select	count(MNO) from member where MNO = #{mno} and PWD = password(#{pwd})
 	</select>
-		
+	
+	<select id="checkAuthedEmail" parameterType="Member" resultType="int">
+		select count(MNO) from member where MNO = #{mno} and state = ''
+	</select>		
 </mapper>

@@ -59,7 +59,7 @@ $('#SignUp-form-btn').click(function(){
 		warningMessage = '비밀번호를 한번 더 입력해주세요.';
 	}else if($('#fPassword1').val()!=$('#fPassword2').val()){
 		warningMessage = '비밀번호가 서로 일치하지 않습니다.';
-	}else if($('#fPassword1').val().length > 6 || $('#fPassword2').val().length >){
+	}else if($('#fPassword1').val().length > 6 || $('#fPassword2').val().length > 6){
 		warningMessage = '비밀번호는 여섯글자 이상만 가능합니다.';
 	}
 

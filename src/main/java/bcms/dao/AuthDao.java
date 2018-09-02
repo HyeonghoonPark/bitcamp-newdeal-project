@@ -13,5 +13,7 @@ public interface AuthDao {
 	Member findPwd(HashMap<String, Object> params);
 
 	int passwordValidation(Member member);
+
+	int checkAuthedEmail(Member user);
 	
 }

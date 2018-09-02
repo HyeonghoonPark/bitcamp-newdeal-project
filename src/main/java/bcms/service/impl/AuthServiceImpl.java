@@ -37,4 +37,9 @@ public class AuthServiceImpl implements AuthService {
     	System.out.println("다오들어옴");
     	return authDao.passwordValidation(member);
     }
+
+	@Override
+	public int checkAuthedEmail(Member user) {
+		return authDao.checkAuthedEmail(user);
+	}
 }

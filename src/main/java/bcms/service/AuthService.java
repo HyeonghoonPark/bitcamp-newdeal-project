@@ -12,4 +12,6 @@ public interface AuthService {
 
 	int passwordValidation(Member member);
 
+	int checkAuthedEmail(Member user);
+
 }
