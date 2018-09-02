@@ -63,36 +63,4 @@ public class AuthController {
         return result;
     }
     
-    @PostMapping("changePassword")
-	public Object changePassword(
-						String password,
-						String changePassword,
-						HttpSession session)throws Exception{
-		
-    	HashMap<String, Object> resultMap = new HashMap<String, Object>(); 
-
-    	try {
-    		
-    		Member member = (Member)session.getAttribute("user");
-    		member.setPwd(password);
-    		System.out.println("들어온 멤버는 ? = "+member);
-    		System.out.println(changePassword);
-    		System.out.println("비밀번호 확인 후 값은? = "+authService.checkPassword(member));
-    		if(authService.checkPassword(member)==0)throw new Exception("passwordFail");
-    		
-    		int mno = member.getMno();
-    		if(authService.changePassword(mno, changePassword)==1){
-    			resultMap.put("state", "success");
-    		}
-    		
-    	}catch(Exception e) {
-    		if(e.getMessage().equals("passwordFail")) {
-    			resultMap.put("state", "passwordFail");
-    		}else {
-    		resultMap.put("state", "error");
-    		}
-    	}
-    	
-    	return resultMap;
-    }
 }

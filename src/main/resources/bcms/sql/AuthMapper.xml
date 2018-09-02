@@ -8,12 +8,8 @@
 		select MNO, NAME, EMAIL from member where EMAIL=#{email} and PWD= password(#{pwd})
 	</select>
 
-	<select id="checkPassword" parameterType="Member" resultType="int">
+	<select id="passwordValidation" parameterType="Member" resultType="int">
 		select	count(MNO) from member where MNO = #{mno} and PWD = password(#{pwd})
 	</select>
-	
-	<update id="changePassword" parameterType="Map">
-		update member set PWD = password(#{pwd}) where MNO = #{mno}
-	</update>
-	
+		
 </mapper>

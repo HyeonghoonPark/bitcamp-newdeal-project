@@ -1,8 +1,6 @@
 <style>
 
-@media only screen
-and (min-width : 321px) {
-
+@media (min-width: 768px) {
 h1{
   text-align: center;
 }
@@ -17,24 +15,9 @@ ul {
   list-style-type: none;
 }
 
-.businessCard {
-  width: 200px;
-  height: 150px;
-  background-color: #fff;
-  margin-right: auto;
-  margin-left: auto;
-  /* margin-top: 50px; */
-  box-shadow: 10px 10px 0px #7f8c8d;
-  padding: 1em;
+#imgDiv{
+  border : solid 1px black;
 }
-.side{
-  width: 400px;
-   margin-right: auto;
-  margin-left: auto;
-  text-align:right;
-}                
-}
-
 
 .businessCard {
   width: 600px;
@@ -45,32 +28,83 @@ ul {
   /* margin-top: 50px; */
   box-shadow: 10px 10px 0px #7f8c8d;
   padding: 1em;
-}
-.side{
-  width: 600px;
-   margin-right: auto;
-  margin-left: auto;
-  text-align:right;
+ }
+
+  div input {
+   border:none;
+  }
+
+  #imgSrc{
+  width:150px;
+  heigh:100px; 
+  padding-top:40px;
+  }
+ 
+ 
+ }
+ 
+ @media (max-width: 460px) {
+ 
+ h1{
+  text-align: center;
 }
 
-div input {
-border:none;
+h2{
+  text-align: center;
+  font-weight: 100;
+  margin-top: -30px;
 }
+
+ul {
+  list-style-type: none;
+}
+
+.right-text input{
+	width:100%;
+}
+
+#fileupload{
+	width:60%;
+}
+
+.businessCard {
+  width: 330px;
+  height: 400px;
+  background-color: #fff;
+  margin-right: auto;
+  margin-left: auto;
+  /* margin-top: 50px; */
+  box-shadow: 10px 10px 0px #7f8c8d;
+  padding: 1em;
+ }
+
+  div input {
+   border:none;
+  }
+
+  #imgSrc{
+  width:80px;
+  heigh:60px; 
+  padding-top:40px;
+  }
+ 
+ 
+ }
+
+
 </style>
 
 <div class="container">
 
-<div class="side">예시보기 / 미리보기</div>
-
 <div class="businessCard row" card-form-no="1">
   <div class="col-md-5 col-sm-5 col-xs-5">
   <div id="imgDiv">
-  <img src="./img/defaultImage.png" style="width:150px;heigh:100px; padding-top:40px;">
+  <img src="./img/defaultImage.png" id="imgSrc">
   </div>
-  <input id="fileupload" type="file" name="files" style="margin-top:5px; " multiple>
+  <input id="fileupload" type="file" name="files" style="margin-top:5px; ">
   </div>
  
-  <div class="col-md-7 col-sm-7 col-xs-7">
+  <div class="col-md-7 col-sm-7 col-xs-7 right-text">
 
   <ul>
   <li><input style="margin-top:25px" type="text" id="CPOSI" placeholder="부서 / 직책"></li>
@@ -160,16 +194,17 @@ $('#fileupload').fileupload({
   }
 });
 
-/* $('#upload-btn').click(function(){
-    
-	$.getJSON(serverAddr+'/app/BusinessCard/addBziCard',{
+$('#upload-btn').click(function(){
+
+	
+/* 	$.getJSON(serverAddr+'/app/BusinessCard/addBziCard',{
 		name : $('#NAME').val()		
 	},function(){
 	    
 	    
 	    
-	})
+	}) */
 })
- */
+
  
 </script>

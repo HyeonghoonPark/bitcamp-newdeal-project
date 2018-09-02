@@ -26,18 +26,10 @@ public class AuthServiceImpl implements AuthService {
         params.put("email", email);
         return authDao.findPwd(params);
     }
-    
+        
     @Override
-    public int changePassword(int mno, String changePassword) {
-    	HashMap<String, Object>params = new HashMap<>();
-    	params.put("mno", mno);
-    	params.put("pwd", changePassword);
-    	return authDao.changePassword(params);
-    }
-    
-    @Override
-    public int checkPassword(Member member) {
+    public int passwordValidation(Member member) {
     	System.out.println("다오들어옴");
-    	return authDao.checkPassword(member);
+    	return authDao.passwordValidation(member);
     }
 }

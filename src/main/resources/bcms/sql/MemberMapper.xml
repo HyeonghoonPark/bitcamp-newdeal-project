@@ -12,6 +12,14 @@
 		select count(EMAIL) from member where email = #{email}
 	</select>
 		
+	<update id="changeUserPassword" parameterType="Member">
+		update member set PWD = password(#{pwd}) where MNO = #{mno}
+	</update>
+	
+	<delete id="deleteUserMemberShip">
+		delete from member where MNO = #{mno}
+	</delete>
+	
 </mapper>
 
 

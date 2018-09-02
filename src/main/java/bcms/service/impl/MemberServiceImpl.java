@@ -1,5 +1,7 @@
 package bcms.service.impl;
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,4 +24,13 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.identifyEamil(email);
 	}
 	
+    @Override
+    public int changeUserPassword(Member member) {
+    	return memberDao.changeUserPassword(member);
+    }
+    
+    @Override
+    public int deleteUserMemberShip(Member member) {
+    	return memberDao.deleteUserMemberShip(member);
+    }
 }

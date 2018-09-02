@@ -1,0 +1,58 @@
+<style>
+form {
+  margin-top: 40px;
+  max-width: 400px;
+}
+
+</style>
+
+<div class="container">
+
+	<div class="row text-center">
+		 <form class="center-block">
+    <fieldset>
+      <legend>회원 탈퇴 하기</legend>
+      <div class="form-group">
+        <label for="username">이메일</label>
+        <input type="text" id="fEmail" class="form-control text-center" readonly/>
+      </div>
+      <div class="form-group">
+        <label for="password">비밀번호</label>
+        <input type="password" id="password" class="form-control text-center" />
+      </div>
+      <div class="checkbox">
+        <label><input type="checkbox" id="agreement"　value="true">약관 동의</label>
+      </div>
+      <button type="button" class="btn btn-primary" id="sbmBtn">탈퇴하기</button>
+    </fieldset>
+  </form>
+	</div>
+</div>
+
+<script>
+
+$('#fEmail').val(userEmail);
+
+$('#sbmBtn').click(function(){
+	
+	if(confirm('정말 탈퇴하시겠습니까?')){
+		
+	$.post(serverAddr+'/app/member/withdrawal',{
+		existingUserPassword : $('#password').val()
+	},function(result){
+		
+		if(result=='passwordMatchingFail'){
+			alert('비밀번호가 일치하지 않습니다.')
+		}else if(result=='error'){
+			alert('정상적인 접근이 아닙니다.')
+		}else if(result=='success'){
+			alert('탈퇴가 완료 됐습니다!')
+			location.href = '../signIn.html';
+		}
+		console.log(result);
+	})
+	
+	} /* confirm */
+})
+
+</script>

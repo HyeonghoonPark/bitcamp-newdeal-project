@@ -8,4 +8,8 @@ public interface MemberService {
 	
 	int identify(String email);
 	
+	int changeUserPassword(Member member);
+	
+	int deleteUserMemberShip(Member member);
+
 }

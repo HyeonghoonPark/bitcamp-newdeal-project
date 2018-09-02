@@ -20,17 +20,12 @@
    <link rel="stylesheet" href="./css/card/number1.css">
   <script src="../node_modules/jquery/dist/jquery.min.js"></script>
   <link rel="stylesheet" href="./css/bootstrap.min.css">
-<script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
 
-<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
- -->
- 
 <script src="../commons/ServerAddr.js"></script>
 <script src="../node_modules/handlebars/dist/handlebars.min.js"></script>
    
-   
-   <script src="../node_modules/blueimp-file-upload/js/vendor/jquery.ui.widget.js"></script>
+<script src="../node_modules/blueimp-file-upload/js/vendor/jquery.ui.widget.js"></script>
 <script src="../node_modules/blueimp-load-image/js/load-image.all.min.js"></script>
 <script src="../node_modules/blueimp-canvas-to-blob/js/canvas-to-blob.js"></script>
 <script src="../node_modules/blueimp-file-upload/js/jquery.iframe-transport.js"></script>
@@ -48,9 +43,9 @@
     <!-- Logo -->
     <a href="list.html" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>A</b>LT</span>
+      <span class="logo-mini"><b>B</b>cm</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Admin</b>LTE</span>
+      <span class="logo-lg"><b>BusinessCard</b>Manager</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -130,14 +125,11 @@
     <section class="sidebar" style="padding-bottom:0px;">
       <!-- Sidebar user panel -->
        <div class="user-panel">
-        <div class="pull-left image">
-          <img src="./img/user2-160x160.jpg" class="img-circle memberInfoChange" style="cursor:pointer" alt="User Image">
-        </div>
         <div class="pull-left info">
+          <a class="userName">님</a><br>
           <a><i class="fa fa-circle text-success"></i> Online</a><br>
-          <a class="userName">님</a>
         </div>
-        <br><br><br>
+        <br><br>
         <div class="text-center sidebar-form">
         <button class="btn btn-default" id="addBtn" style="width:50%">추가하기</button>
         <button class="btn btn-default" style="width:50%">삭제하기</button>
@@ -271,7 +263,9 @@ $(document).ready(function(){
   
     userEmail = '';
     userName = '';
-    userNo = 0;
+    cardElement = $('.cardChoice').text();
+    
+    cardArray = []; // 검색용 배열
     
     var contentHeight = $('.content-wrapper').css('height').replace("px","");
     var profileHeight = $('.user-panel').css('height').replace("px","");
@@ -279,28 +273,13 @@ $(document).ready(function(){
     var buzicardSignPostHeight = $('#buzicard-list-signpost').css('height').replace("px","");
     var footerHeight = $('.main-footer').css('height').replace("px","");
     
-    console.log("컨텐츠 사이즈" ,contentHeight);
-    console.log("프로필 사이즈" ,profileHeight);
-    console.log("명함리스트 표지 사이즈" ,buzicardSignPostHeight);
-    console.log("검색창 사이즈" ,searchHeight);
-    console.log("풋터 사이즈" ,footerHeight);
-    
-    console.log(contentHeight + footerHeight);
-    console.log(parseInt(contentHeight) + parseInt(footerHeight));
-    
     busicardlistMaxHeight = parseInt(contentHeight) + parseInt(footerHeight) - profileHeight - buzicardSignPostHeight - searchHeight - 29
-	console.log(busicardlistMaxHeight)
     $('#maxHeight').css('height', busicardlistMaxHeight)
-    /*$('#cardList').addClass('hiddenScrollBar');
-    $('#cardList').css('overflow-y', "scroll")
-    $('#cardList').css('-webkit-scrollbar', 'display(none)') */
     $.getJSON(serverAddr+'/app/BusinessCard/list',
     		function(result){
         	
     	   	data = result;
 			
-    	   	console.log(data);
-
     	   	userName = data.member.name;
     	   	userEmail = data.member.email;
     	   	
@@ -311,30 +290,32 @@ $(document).ready(function(){
     	   	var liTemplateSrc = $('#li-template-src').text();
     		var liTemplateFn = Handlebars.compile(liTemplateSrc);
     		
-    		var choCount = 0;
+    		var index = 0;
     		
      		for(var first of data.maps){
 				
-     		    console.log(first);
-     		         		   
+     		    cardArray[index] = first
+     		   
      		    // 해당 초음에 몇개의 리스트가 있는지
      		    var firstLength = Object.keys(first).length;
      		    
     			var liListHTML = "";
     			
-    			liListHTML = liTemplateFn({ no : data.chonames[choCount], list : first, firstLength})		
+    			liListHTML = liTemplateFn({ no : data.chonames[index], list : first, firstLength})		
     			
   				$('#cardList').append(liListHTML) 
     			  
-  				choCount++;
+  				index ++;
     			
     		} 
-    		
-    		
+     		
+     		
         	}else if(result.state == 'first'){
         	    $('.userName').prepend(userName);
         	    console.log('처음온 회원입니다 환영메시지 띄울 곳!')
         	}
+    	   	
+    	   	
         	
     });
 
@@ -366,9 +347,10 @@ $(document).ready(function(){
     	
 })
 
-$('#addBtn').click(function(){
+//$('#addBtn').click(function(){
     $('.centerSection').load(`${serverAddr}/Management/cardform/DefaultCard.html`)
-})
+//})
+
 $('.memberInfoChange').click(function(){ 
     $('.centerSection').load(`${serverAddr}/Management/changeUserInfo.html`)
 })
@@ -391,6 +373,22 @@ $('#signOut').click(function(){
 $('#testbtn').click(function(){
 	$('.centerSection').load(`${serverAddr}/Management/cardform/testCard.html`)
 })
+
+$('#search-box').keyup(function(e){
+	var key = $(this).val();
+	
+	console.log(cardArray);
+	
+	$(cardArray).each(function(index, value){		
+			console.log(index)
+			console.log(value)
+	})
+})
+
+function checkedSearchName(){
+	
+}
+
 </script>
 
 </body>
