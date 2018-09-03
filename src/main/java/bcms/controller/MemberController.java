@@ -1,6 +1,7 @@
 package bcms.controller;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
@@ -27,6 +28,9 @@ public class MemberController {
         System.out.println("member"+member);
         HashMap<String,Object> result = new HashMap<>();
         try {
+        	String RID = UUID.randomUUID().toString().substring(0, 6);
+        	member.setRid(RID);
+        	System.out.println("합쳐진 맴버 = "+member);
             memberService.add(member);
             result.put("state", "success");
         } catch (Exception e) {

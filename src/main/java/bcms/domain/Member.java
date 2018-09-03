@@ -6,6 +6,8 @@ public class Member {
 	private String email;
 	private String name;
 	private String pwd;
+	private String rid;
+	
 	public int getMno() {
 		return mno;
 	}
@@ -30,10 +32,16 @@ public class Member {
 	public void setPwd(String pwd) {
 		this.pwd = pwd;
 	}
+	public String getRid() {
+		return rid;
+	}
+	public void setRid(String rid) {
+		this.rid = rid;
+	}
 	
 	@Override
 	public String toString() {
-		return "Member [mno=" + mno + ", email=" + email + ", name=" + name + ", pwd=" + pwd + "]";
+		return "Member [mno=" + mno + ", email=" + email + ", name=" + name + ", pwd=" + pwd + ", rid=" + rid + "]";
 	}
 
 }

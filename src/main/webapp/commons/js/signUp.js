@@ -85,7 +85,7 @@ $('#SignUp-form-btn').click(function(){
                     title: "이메일에서 가입 확인을 눌러주세요",
                     icon: "success",
                 }).then((value)=>{
-                    location.href = 'http://localhost:8000/hello/email='+111111
+                    location.href = `http://localhost:8000/sesServer/sendEmail?sendmail=`+$('#fEmail').val()
                 })
     		}else{
     			swal({
