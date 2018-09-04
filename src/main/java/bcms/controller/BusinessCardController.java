@@ -23,7 +23,7 @@ import bcms.domain.Member;
 import bcms.service.BusinessCardService;
 
 @RestController
-@RequestMapping("/BusinessCard")
+@RequestMapping("/businesscard")
 public class BusinessCardController {
 
 	@Autowired BusinessCardService businessCardService;
@@ -287,5 +287,13 @@ public class BusinessCardController {
 	        
 	        return "성공했습니다!";
 	    }
+	
+	@RequestMapping("/deleteBziCard")
+	public Object deleteBziCard()throws Exception{
+		
+		System.out.println("컨트롤러 들어옴");
+		
+		return 0;
+	}
 	
 }

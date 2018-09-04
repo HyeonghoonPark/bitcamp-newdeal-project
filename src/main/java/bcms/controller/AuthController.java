@@ -17,7 +17,7 @@ import bcms.domain.Member;
 import bcms.service.AuthService;
 
 @RestController
-@RequestMapping("/Auth")
+@RequestMapping("/auth")
 public class AuthController {
 	
 	@Autowired AuthService authService; 

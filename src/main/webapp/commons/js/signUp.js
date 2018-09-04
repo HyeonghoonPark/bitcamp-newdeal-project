@@ -3,7 +3,7 @@
 $('#fEmail').focusout(function(){ // 이메일 형식, 이미 가입한 이메일인지 검사
 	console.log('들어옴')
 	if(alertMessage()){
-	$.getJSON(serverAddr+`/app/Auth/identifyEmailAddr`,{
+	$.getJSON(serverAddr+`/app/auth/identifyEmailAddr`,{
 		email : $('#fEmail').val()
 	},
 	function(data){

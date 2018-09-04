@@ -20,9 +20,6 @@ form {
         <label for="password">비밀번호</label>
         <input type="password" id="password" class="form-control text-center" />
       </div>
-      <div class="checkbox">
-        <label><input type="checkbox" id="agreement"　value="true">약관 동의</label>
-      </div>
       <button type="button" class="btn btn-primary" id="sbmBtn">탈퇴하기</button>
     </fieldset>
   </form>
@@ -32,6 +29,8 @@ form {
 <script>
 
 $('#fEmail').val(userEmail);
+$('#title').html('개인정보변경')
+$('#title-detail').html('회원탈퇴')
 
 $('#sbmBtn').click(function(){
 	

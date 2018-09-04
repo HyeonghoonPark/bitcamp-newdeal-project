@@ -104,7 +104,6 @@ ul {
 </style>
 
 <div class="container">
-<legend class="text-center" style="margin-top:40px">명함 추가하기</legend>
 
 <div class="businessCard row" id="cardForm" card-form-no="1">
   <div class="col-md-5 col-sm-5 col-xs-4 imgZone">
@@ -142,16 +141,17 @@ ul {
 </div>
 <br>
 
-
+<div class="text-center" style="margin-bottom:20px;">
 <button type="button" class="btn btn-default btn-lg cardActionBtn" id="upload-btn">등록하기</button>
-
+<button type="button" class="btn btn-default btn-lg" id="delete-btn">삭제하기</button>
+</div>
 </div>
 
 <script>
 "use strict"
 
 $('#fileupload').fileupload({
-  url: `${serverAddr}/app/BusinessCard/addBziCard`,       // 서버에 요청할 URL
+  url: `${serverAddr}/app/businesscard/addBziCard`,       // 서버에 요청할 URL
   dataType: 'json',         // 서버가 보낸 응답이 JSON임을 지정하기
   sequentialUploads: true,  // 여러 개의 파일을 업로드 할 때 순서대로 요청하기.
   singleFileUploads: false, // 한 요청에 여러 개의 파일을 전송시키기.
@@ -201,20 +201,16 @@ $('#fileupload').fileupload({
     console.log('done()...');
     console.log(data);
     console.log(e);
+    location.reload(true);
   }
 });
 
-$('#upload-btn').click(function(){
-
-	
-/* 	$.getJSON(serverAddr+'/app/BusinessCard/addBziCard',{
-		name : $('#NAME').val()		
-	},function(){
-	    
-	    
-	    
-	}) */
+$('#delete-btn').click(function(){
+    $.getJSON(serverAddr+'/app/businesscard/deleteBziCard'),function(result){
+		console.log(result);        
+    }
 })
+
 
 $(document).ready(function(){
 	
@@ -232,11 +228,12 @@ $(document).ready(function(){
 	$('#imgSrc').attr('src' , '../files/'+img)
 	$('.imgZone input').remove();
 	$('.cardActionBtn').attr('id', 'modifyBtn').html('수정하기')
-	
+	$('#title-detail').html('명함보기')
 	}
 	
 	$('#modifyBtn').click(function(){
 		$('#cardForm input').attr('readonly',false);
+		$('#title-detail').html('수정하기')
 		$('.cardActionBtn').html('저장하기')
 	})
 	

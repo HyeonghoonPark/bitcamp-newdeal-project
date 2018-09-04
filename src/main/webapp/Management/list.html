@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1">
   
-  <title>AdminLTE 2 | Dashboard</title>
+  <title>Businesscard Manager</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -131,8 +131,7 @@
         </div>
         <br><br>
         <div class="text-center sidebar-form">
-        <button class="btn btn-default" id="addBtn" style="width:50%">추가하기</button>
-        <button class="btn btn-default" style="width:50%">삭제하기</button>
+        <button class="btn btn-default" id="addBtn" style="width:100%">명함 추가</button>
       	</div>
       </div>
       
@@ -142,9 +141,9 @@
         
     	</ul>
       <!-- search form -->
-      <form action="#" method="get" class="sidebar-form">
+      <form class="sidebar-form" id="search-form">
         <div class="input-group">
-          <input type="text" name="q" id="search-box" class="form-control" placeholder="검색하기">
+          <input type="text" id="search-box" class="form-control" placeholder="검색하기">
           <span class="input-group-btn">
                 <button type="button" name="search" id="searchBtn" class="btn btn-flat"><i class="fa fa-search"></i>
                 </button>
@@ -170,8 +169,8 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i>명함관리</a></li>
-        <li class="active">명함추가하기</li>
+        <li><i class="fa fa-dashboard"></i><a id="title">명함관리</a></li>
+        <li class="active" id="title-detail">명함추가하기</li>
       </ol>
     </section>
 
@@ -266,6 +265,10 @@ $(document).ready(function(){
     
     cardArray = []; // 검색용 배열
     
+    viewCardList();
+    
+    function viewCardList(){
+        
     var contentHeight = $('.content-wrapper').css('height').replace("px","");
     var profileHeight = $('.user-panel').css('height').replace("px","");
     var searchHeight = $('.sidebar-form').css('height').replace("px","");
@@ -274,7 +277,7 @@ $(document).ready(function(){
     
     busicardlistMaxHeight = parseInt(contentHeight) + parseInt(footerHeight) - profileHeight - buzicardSignPostHeight - searchHeight - 29
     $('#maxHeight').css('height', busicardlistMaxHeight)
-    $.getJSON(serverAddr+'/app/BusinessCard/list',
+    $.getJSON(serverAddr+'/app/businesscard/list',
     		function(result){
         	
     	   	data = result;
@@ -284,6 +287,9 @@ $(document).ready(function(){
     	   	
     	   	if(result.state == 'success'){
     	    
+    	   	$('.userName').html('님');
+    	   	$('.userName').eq(0).append(' 환영합니다.')
+    	   	
     	   	$('.userName').prepend(userName);
     		
     	   	var liTemplateSrc = $('#li-template-src').text();
@@ -309,16 +315,44 @@ $(document).ready(function(){
     		} 
      		
      		
+     		$('.cardChoice').eq(0).trigger('click');
+     		
         	}else if(result.state == 'first'){
-        	    $('.userName').prepend(userName);
+         	   	$('.userName').html('님');
+         	   $('.userName').eq(0).append(' 환영합니다.')
+         	   	
         	    console.log('처음온 회원입니다 환영메시지 띄울 곳!')
         	}
     	   	
     	   	
         	
     });
-
-})
+    
+    } // viewCardList
+    
+    
+    
+    $("#search-box").keydown(function(event) {
+        
+        console.log('키이벤트들어옴')
+        
+       if (event.keyCode == 8){
+            
+            console.log('지우는중', $(this).val().length)
+            
+	        if($(this).val().length == 1){
+	            
+	            $('#cardList > *').remove();
+	            
+				console.log('다지워짐');	            
+	            viewCardList();
+	            
+	        }
+	        
+        }
+    }); // keydown
+    
+ })
 
 $(document).ready(function(){
     
@@ -333,13 +367,12 @@ $(document).ready(function(){
 	homepage = "";
 	img = "";
 	cardState = "";
-	existCardList = [];
 	
     $(document).on('click','.cardChoice',function(){
         
         var cardNo = $(this).attr('data-no');
     	
-        $.getJSON(serverAddr+'/app/BusinessCard/getCardInfo/'+cardNo
+        $.getJSON(serverAddr+'/app/businesscard/getCardInfo/'+cardNo
         		,function(result){
         	
         	if(result.state=='success'){
@@ -361,8 +394,13 @@ $(document).ready(function(){
         	}
         })
     })
-		
-    	
+    
+    $("#search-form").on("submit", function(event) {
+        event.preventDefault();
+        
+        $("#searchBtn").trigger('click');  // 실행할 이벤트
+    });
+       	
 })
 
 $('#addBtn').click(function(){
@@ -393,7 +431,10 @@ $('#searchBtn').click(function(){
 	
 	var key = $('#search-box').val();
 	
-	elementcount = 0;
+	existCardList = [];
+	
+	var elementcount1 = 0;
+	
 	
  	for(var element of cardArray){	
  		
@@ -402,25 +443,27 @@ $('#searchBtn').click(function(){
 	   for(var i = 0; i < Object.keys(element).length; i++){
 
 		   
-		   for(ele in element[elementcount]){
-			   //console.log(element[elementcount][ele],"11111111")
+		   for(ele in element[elementcount1]){
 			   var str = '';
-				str = element[elementcount][ele];
-				if(str!='' && key.indexOf(str)!=-1){
-					existCardList.push(element[elementcount]['bcno']);
+				str = String(element[elementcount1][ele]);
+				if(str!='' && str.indexOf(key)!=-1){
+				    console.log('일치하는 카테고리는..',element[elementcount1][ele])
+					existCardList.push(String(element[elementcount1]['bcno']));
 				}
 		  }
-		  elementcount++;
-	  } 
-	} 
-
-  	console.log('자르기 전 = ',existCardList)
+		  elementcount1++;
+	  }
+	   
+	}
+ 	
+console.log('자르기 전 = ',existCardList)
  	
  	var arrayLength = existCardList.length
  	var jArrayLength = arrayLength -1;
   	var kArrayLength = arrayLength -2;
  	
- 	for(var j = 8; j >= 1; j--){
+  	
+ 	for(var j = jArrayLength; j >= 1; j--){
  		
  		for(var k = j-1; k >= 0; k--){
  			
@@ -434,9 +477,38 @@ $('#searchBtn').click(function(){
  		
  	}
 	
+/* 로직 시작 */
+	console.log('로직 시작 기존 배열에 담은 것은? = ',cardArray) 
+	
+	elementcount1 = 0;
+	
+	$('#cardList > *').remove();
 
-	console.log(existCardList) 
-	console.log(existCardList.length)
+ 	for(var element of cardArray){
+	    
+		elementcount2 = 0;
+	    
+		console.log('하나씩 뺴냄!! = ', element);
+		console.log('뺴낸거의 길이는?', Object.keys(element).length)    
+	
+		  for(elementcount2; elementcount2 < Object.keys(element).length; elementcount2++){
+				
+		      console.log(element[elementcount1]['bcno']);
+
+		      if(existCardList.indexOf(String(element[elementcount1]['bcno']))!= -1){
+		          
+			      console.log('일치하는 bno는 = ',element[elementcount1]['bcno']);
+			      
+			      $('#cardList').append(`<li><a class='text-center cardChoice' style='cursor:pointer' data-no=${element[elementcount1]['bcno']}>${element[elementcount1]['name']}</a></li>`); 
+			      
+		      }
+		      
+		      elementcount1++;
+		  }
+		
+		elementcount2 = 0;
+	        
+	} 
 	
 })
 
