@@ -251,6 +251,8 @@ public class BusinessCardController {
 	        
 	        System.out.println(businessCard);
 	        
+	        System.out.println(files);
+	        
 	        Member member = (Member)session.getAttribute("user");
 	        
 	        HashMap<String,Object> resultMap = new HashMap<>();
@@ -276,17 +278,81 @@ public class BusinessCardController {
 	                
 	                file.transferTo(new File(path));
 	            }
+	        	
+	        	resultMap.put("state", "success");
+	        	
 	        } catch (Exception e) {
 	        	if(e.getMessage()=="login") {
 	        		resultMap.put("state", "session");
 	        		return resultMap;
 	        	}else {        		
 	        		e.printStackTrace();
+	        		resultMap.put("state", "error");
 	        	}
 	        }
 	        
-	        return "성공했습니다!";
-	    }
+	        return resultMap;
+	}
+	
+	@RequestMapping("/updateBziCard/{cardNo}")
+	 public Object updateBziCard(
+			    @PathVariable("cardNo") int cardNo,
+	            BusinessCard businessCard,
+	            MultipartFile[] files,
+	            HttpSession session) {
+	        
+	        System.out.println("upload01()...호출됨!");
+	        
+	        System.out.println(businessCard);
+	        
+	        System.out.println(files);
+	        
+	        Member member = (Member)session.getAttribute("user");
+	        
+	        HashMap<String,Object> resultMap = new HashMap<>();
+	        
+	        ArrayList<String> filenames = new ArrayList<>();
+	        
+	        try {
+	        	if(member==null)throw new Exception("login");
+	            
+	        	for (MultipartFile file : files) {
+	                if (file.isEmpty()) {
+	                	businessCard.setMno(member.getMno());
+	                	businessCard.setBcno(cardNo);
+	                	int returnInt = businessCardService.updateBusinessCard(businessCard);
+	                	continue;
+	                }
+	                
+	                String newfilename = UUID.randomUUID().toString(); 
+	                String path = sc.getRealPath("/files/" + newfilename);
+	                System.out.println(path);
+	                
+	                businessCard.setMno(member.getMno());
+	                businessCard.setImg(newfilename);
+	                businessCard.setBcno(cardNo);
+	                
+	                int returnInt = businessCardService.updateBusinessCard(businessCard);
+	                
+	                System.out.println("들어갓나?" + returnInt);
+	                
+	                file.transferTo(new File(path));
+	            }
+	        	
+	        	resultMap.put("state", "success");
+	        	
+	        } catch (Exception e) {
+	        	if(e.getMessage()=="login") {
+	        		resultMap.put("state", "session");
+	        		return resultMap;
+	        	}else {        		
+	        		e.printStackTrace();
+	        		resultMap.put("state", "error");
+	        	}
+	        }
+	        
+	        return resultMap;
+	}
 	
 	@RequestMapping("/deleteBziCard")
 	public Object deleteBziCard(String bcno, HttpSession session)throws Exception{

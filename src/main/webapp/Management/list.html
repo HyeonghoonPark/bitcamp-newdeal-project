@@ -283,6 +283,9 @@ $(document).ready(function(){
         	
     	   	data = result;
 			
+    	   	console.log('hihihi')
+    	   	console.log(data.member.name);
+    	   	
     	   	userName = data.member.name;
     	   	userEmail = data.member.email;
     	   	
@@ -399,8 +402,8 @@ $(document).ready(function(){
 })
 
 $('#addBtn').click(function(){
+    CARDSTATE = 'add';
     $('.centerSection').load(`${serverAddr}/Management/cardform/DefaultCard.html`)
-    cardState = 'add';
 })
 
 $('.memberInfoChange').click(function(){ 
@@ -413,7 +416,14 @@ $('#membershipWithdrawal').click(function(){
 
 $('#signOut').click(function(){
 	if(confirm('로그아웃 하시겠습니까?')){
-	    sessionStorage.clear();
+	    var doc = document,
+	      domain = domain || doc.domain,
+	      path = path || '/',
+	      cookies = doc.cookie.split(';'),
+	      now = +(new Date);
+	  for (var i = cookies.length - 1; i >= 0; i--) {
+	    doc.cookie = cookies[i].split('=')[0] + '=; expires=' + now + '; domain=' + domain + '; path=' + path;
+	  }
 	    location.href = '../signIn.html';
 	}else{
 	 	console.log('안들어옴')   

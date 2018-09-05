@@ -28,6 +28,10 @@
 		select NAME, BCNO, CNAME, CPOSI, CADDR, MTEL, TEL, FAX, EMAIL, HOMEPAGE, IMG from bizcard where BCNO = #{cardNo} and MNO = #{mno}
 	</select>
 	
+	<update id="updateBusinessCard" parameterType="BusinessCard">
+		update bizcard  set BCN=#{bcn}, NAME=#{name}, CNAME=#{cname}, CPOSI=#{cposi}, CADDR=#{caddr}, MTEL=#{mtel}, TEL=#{tel}, FAX=#{fax}, EMAIL=#{email}, HOMEPAGE=#{homepage}<if test="img != null">, IMG=#{img}</if> where BCNO = #{bcno}
+	</update>
+	
 	<delete id="deleteCard" parameterType="Map">
 		delete from bizcard where MNO = #{mno} and BCNO = #{bcno}
 	</delete>

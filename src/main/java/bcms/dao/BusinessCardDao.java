@@ -11,8 +11,12 @@ public interface BusinessCardDao {
 
 	int addBusinessCard(BusinessCard businessCard);
 
-	BusinessCard getSingleBusinessCardInfo(HashMap<String, Object>params);
+	int updateBusinessCard(BusinessCard businessCard);
 
 	int deleteCard(HashMap<String, Object> params);
+
+	BusinessCard getSingleBusinessCardInfo(HashMap<String, Object>params);
+
+
 
 }

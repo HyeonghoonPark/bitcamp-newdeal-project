@@ -106,6 +106,8 @@ ul {
 <div class="container">
 
 <div class="businessCard row" id="cardForm" card-form-no="1">
+  <form method="post" id="bizcardForm">
+      
   <div class="col-md-5 col-sm-5 col-xs-4 imgZone">
   <div id="imgDiv">
   <img src="./img/defaultImage.png" id="imgSrc">
@@ -116,33 +118,35 @@ ul {
   <div class="col-md-7 col-sm-7 col-xs-8 right-text">
 
   <ul id="ulId" value="">
-  <li><input style="margin-top:25px" type="text" id="cposi" placeholder="부서 / 직책" value=""></li>
-  <li><h3 style="margin-top:0px"><input type="text" id="name" placeholder="이름"></h3></li>
+  <li><input style="margin-top:25px" type="text" id="cposi" name="cposi" placeholder="부서 / 직책" value=""></li>
+  <li><h3 style="margin-top:0px"><input type="text" id="name" name="name" placeholder="이름"></h3></li>
   
-    <li><input type="text" id="cname" placeholder="회사명"></li>
+    <li><input type="text" id="cname" name="cname" placeholder="회사명"></li>
  	
- 	<li><input type="text" id="caddr" placeholder="회사주소"></li>
- 	
-    <li><i class="fa fa-phone"></i>
- 	<input type="text" id="tel" placeholder="전화번호"></li>
+ 	<li><input type="text" id="caddr" name="caddr" placeholder="회사주소"></li>
  	
     <li><i class="fa fa-phone"></i>
-    <input type="text" id="mtel" placeholder="휴대전화번호"></li>
+ 	<input type="text" id="tel" name="tel" placeholder="전화번호"></li>
+ 	
+    <li><i class="fa fa-phone"></i>
+    <input type="text" id="mtel" name="mtel" placeholder="휴대전화번호"></li>
     
     <li><i class="fa fa-envelope"></i>
-    <input type="text" id="fax" placeholder="팩스번호"></li>
+    <input type="text" id="fax" name="fax" placeholder="팩스번호"></li>
     
     <li><i class="fa fa-envelope"></i>
-    <input type="text" id="email" placeholder="이메일주소"></li>
+    <input type="text" id="email" name="email" placeholder="이메일주소"></li>
     
-    <li><input type="text" id="homepage" placeholder="홈페이지주소"></li>
+    <li><input type="text" id="homepage" name="homepage" placeholder="홈페이지주소"></li>
   </ul>
   </div>
+  
+  </form>
 </div>
 <br>
 
 <div class="text-center" style="margin-bottom:20px;">
-<button type="button" class="btn btn-default btn-lg cardActionBtn" id="upload-btn">등록하기</button>
+<button type="button" class="btn btn-default btn-lg cardActionBtn" name="sbmBtn" id="upload-btn">등록하기</button>
 <button type="button" class="btn btn-default btn-lg" id="delete-btn">삭제하기</button>
 </div>
 </div>
@@ -150,66 +154,94 @@ ul {
 <script>
 "use strict"
 
-$('#fileupload').fileupload({
-  url: `${serverAddr}/app/businesscard/addBziCard`,       // 서버에 요청할 URL
-  dataType: 'json',         // 서버가 보낸 응답이 JSON임을 지정하기
-  sequentialUploads: true,  // 여러 개의 파일을 업로드 할 때 순서대로 요청하기.
-  singleFileUploads: false, // 한 요청에 여러 개의 파일을 전송시키기.
-  autoUpload: false,        // 파일을 추가할 때 자동 업로딩 하지 않도록 설정.
-  disableImageResize: /Android(?!.*Chrome)|Opera/
-        .test(window.navigator && navigator.userAgent), // 안드로이드와 오페라 브라우저는 크기 조정 비활성 시키기
-  previewMaxWidth: 100,   // 미리보기 이미지 너비
-  previewMaxHeight: 100,  // 미리보기 이미지 높이 
-  previewCrop: true,      // 미리보기 이미지를 출력할 때 원본에서 지정된 크기로 자르기
-  processalways: function(e, data) {
-      console.log('fileuploadprocessalways()...');
-      console.log(data.files);
-      var imgDiv = $('#imgDiv');
-      imgDiv.html("");
-      for (var i = 0; i < data.files.length; i++) {
-        try {
-          if (data.files[i].preview.toDataURL) {
-            $("<img>")
-              .attr('src', data.files[i].preview.toDataURL())
-              .css({'height': '150px','width':'150px','padding-top':'30px'})
-              .appendTo(imgDiv);
-          }
-        } catch (err) {console.log('에러임')}
-      }
-      $('#upload-btn').unbind("click");
-      $('#upload-btn').click(function() {
-          data.submit();
-      });
-  }, 
-  submit: function (e, data) { // 서버에 전송하기 직전에 호출된다.
-    console.log('submit()...');
-    console.log($('#NAME').val());
-    data.formData = {
-            cposi : $('#cposi').val(),
-    		name : $('#name').val(),
-    		cname : $('#cname').val(),
-    		caddr : $('#caddr').val(),
-    		tel : $('#tel').val(),
-    		mtel : $('#mtel').val(),
-    		fax : $('#fax').val(),
-    		email : $('#email').val(),
-    		homepage : $('#homepage').val(),
-    		bcn : $('.businessCard').attr('card-form-no')
-    };
-  }, 
-  done: function (e, data) { // 서버에서 응답이 오면 호출된다. 각 파일 별로 호출된다.
-    console.log('done()...');
-    console.log(data);
-    console.log(e);
-    console.log('등록완료?')
-    swal({
-        title: '등록이 완료 됐습니다!',
-        icon: 'success',
-    })
-  }
+// 페이지에 따른 상태 값 변환
+$(document).ready(function(){ 
+  
+    if(CARDSTATE == 'add'){
+        
+        $('#delete-btn').css('display','none')
+        
+    }else if(CARDSTATE == 'read'){
+	    
+	$('#cardForm input').attr('readonly',true);
+
+	for(var i = 0; i < $('#ulId li').length; i ++){
+	    var id = $('#ulId input').eq(i).attr('id')
+	    var ele = cInfo[0][id];
+	    if(cInfo[0][id]==''){
+	    $('#ulId input').eq(i).css('display','none')
+	    }else{
+	    $('#ulId input').eq(i).attr('value', ele)
+	    }
+	}
+	
+		$('#imgSrc').attr('src' , '../files/'+IMG)
+		$('#ulId').attr('value',BCNO);
+		
+		$('.imgZone input').hide();
+		$('.cardActionBtn').attr('id', 'modify-btn').html('수정하기')
+		$('#title-detail').html('명함보기')
+	
+	}else if(CARDSTATE == 'add'){
+	    
+	    
+	}
+    
+})
+
+$("button[name='sbmBtn']").click(function(){ // 버튼 클릭 이벤트
+    
+    var btnName = $(this).attr('id');
+    
+    // 폼 데이터
+    var form = $('#bizcardForm')[0];
+    
+    //FormData parameter에 담아줌
+    var formData = new FormData(form);
+    
+    
+    
+    if(btnName=='upload-btn'){ // 등록하기 버튼
+       
+        $.ajax({
+	          url: `${serverAddr}/app/businesscard/addBziCard`,
+	          processData: false,
+	              contentType: false,
+	          data: formData,
+	          type: 'POST',
+	          success: function(result){
+	              console.log(result);
+	          }
+	   });
+        
+    }else if(btnName=='modify-btn'){ // 수정버튼 눌렀을 때
+        $('.imgZone input').show();
+		$('#cardForm input').attr('readonly',false);
+		$('#title-detail').html('수정하기')
+		$('.cardActionBtn').html('저장하기')
+		$('#delete-btn').css('display','none')
+		$(this).attr('id','modify-sbm-btn');
+    }else if(btnName=='modify-sbm-btn'){
+        
+		var cardNo = $('#ulId').attr('value')
+        
+        $.ajax({
+	          url: `${serverAddr}/app/businesscard/updateBziCard/${cardNo}`,
+	          processData: false,
+	              contentType: false,
+	          data: formData,
+	          type: 'POST',
+	          success: function(result){
+	              alert("업로드 성공!!");
+	          }
+	   });
+        
+    }
+			
 });
 
-$('#delete-btn').click(function(){
+//삭제하기 버튼
+$('#delete-btn').click(function(){ 
     $.getJSON(serverAddr+'/app/businesscard/deleteBziCard',{
         bcno : $('#ulId').attr('value')
     },
@@ -225,59 +257,30 @@ $('#delete-btn').click(function(){
 		}
     })
 })
+	
+// 사진 미리보기 함수
+function readURL(input) { 
+    
+    if (input.files && input.files[0]) {
 
+   
+   var reader = new FileReader(); //파일을 읽기 위한 FileReader객체 생성
 
-$(document).ready(function(){
-	
-	if(CARDSTATE == 'read'){
-	$('#cardForm input').attr('readonly',true);
+   reader.onload = function (e) {
 
+   $('#imgSrc').attr('src', e.target.result);
+
+   } 
+    
+   reader.readAsDataURL(input.files[0]);
+
+   }
+ }
 	
-	for(var i = 0; i < $('#ulId li').length; i ++){
-	    //console.log($('#ulId input').eq(i).attr('id'));
-	    var id = $('#ulId input').eq(i).attr('id')
-	    var ele = cInfo[0][id];
-	    if(cInfo[0][id]==''){
-	    $('#ulId input').eq(i).css('display','none')
-	    }else{
-	    $('#ulId input').eq(i).attr('value', ele)
-	    }
-	    //console.log($('#ulId li').eq(i));
-	}
-	
-	$('#imgSrc').attr('src' , '../files/'+IMG)
-	$('#ulId').attr('value',BCNO);
-	
-	$('.imgZone input').hide();
-	$('.cardActionBtn').attr('id', 'modifyBtn').html('수정하기')
-	$('#title-detail').html('명함보기')
-	}
-	
-	$('#modifyBtn').click(function(){
-	    $('.imgZone input').show();
-		$('#cardForm input').attr('readonly',false);
-		$('#title-detail').html('수정하기')
-		$('.cardActionBtn').html('저장하기')
-	})
-	
-})
- 
- 
- $('#upload-btn').click(function(){
-     
-     $.getJSON(`${serverAddr}/app/businesscard/addBziCard`,{
-        cposi : $('#cposi').val(),
- 		name : $('#name').val(),
- 		cname : $('#cname').val(),
- 		caddr : $('#caddr').val(),
- 		tel : $('#tel').val(),
- 		mtel : $('#mtel').val(),
- 		fax : $('#fax').val(),
- 		email : $('#email').val(),
- 		homepage : $('#homepage').val(),
- 		bcn : $('.businessCard').attr('card-form-no') 
-     },function(){
-         
-     })
- })
+//파일 변경 시 이미지 로드
+$("#fileupload").change(function(){
+    readURL(this); 
+}); 
+  
+
 </script>

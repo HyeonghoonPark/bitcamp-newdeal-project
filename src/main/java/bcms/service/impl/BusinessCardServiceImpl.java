@@ -25,14 +25,10 @@ public class BusinessCardServiceImpl implements BusinessCardService {
 	public int addBusinessCard(BusinessCard businessCard) {
 		return businessCardDao.addBusinessCard(businessCard);
 	}
-
+	
 	@Override
-	public BusinessCard getSingleBusinessCardInfo(int mno, int cardNo) {
-		
-		HashMap<String, Object> params = new HashMap<>();
-		params.put("mno", mno);
-		params.put("cardNo", cardNo);
-		return businessCardDao.getSingleBusinessCardInfo(params);
+	public int updateBusinessCard(BusinessCard businessCard) {
+		return businessCardDao.updateBusinessCard(businessCard);
 	}
 
 	@Override
@@ -45,5 +41,15 @@ public class BusinessCardServiceImpl implements BusinessCardService {
 		
 		return businessCardDao.deleteCard(params);
 	}
+	
+	@Override
+	public BusinessCard getSingleBusinessCardInfo(int mno, int cardNo) {
+		
+		HashMap<String, Object> params = new HashMap<>();
+		params.put("mno", mno);
+		params.put("cardNo", cardNo);
+		return businessCardDao.getSingleBusinessCardInfo(params);
+	}
+
 	
 }

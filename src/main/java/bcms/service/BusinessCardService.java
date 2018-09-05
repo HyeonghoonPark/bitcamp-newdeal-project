@@ -10,9 +10,11 @@ public interface BusinessCardService {
 
 	int addBusinessCard(BusinessCard businessCard);
 
-	BusinessCard getSingleBusinessCardInfo(int mno, int cardNo);
+	int updateBusinessCard(BusinessCard businessCard);
 
 	int deleteCard(String bcno, int mno);
+
+	BusinessCard getSingleBusinessCardInfo(int mno, int cardNo);
 
 	
 }
