@@ -319,10 +319,11 @@ $(document).ready(function(){
      		$('.cardChoice').eq(0).trigger('click');
      		
         	}else if(result.state == 'first'){
-         	   	$('.userName').html('님');
+         	   $('.userName').html('님');
          	   $('.userName').eq(0).append(' 환영합니다.')
-         	   	
-        	    console.log('처음온 회원입니다 환영메시지 띄울 곳!')
+         	   $('.userName').prepend(userName);
+         	   $('.centerSection').load(`${serverAddr}/Management/welcome.html`)
+        	   console.log('처음온 회원입니다 환영메시지 띄울 곳!')
         	}
     	   	
     	   	
@@ -357,17 +358,18 @@ $(document).ready(function(){
 
 $(document).ready(function(){
     
-	cposi = "";
-	name = "";
-	cname = "";
-	caddr = "";
-	tel = "";
-	mtel = "";
-	fax = "";
-	email = "";
-	homepage = "";
-	img = "";
-	cardState = "";
+    cInfo = [];
+    CPOSI = "";
+	NAME = "";
+	CNAME = "";
+	CADDR = "";
+	TEL = "";
+	MTEL = "";
+	FAX = "";
+	EMAIL = "";
+	HOMEPAGE = "";
+	IMG = "";
+	CARDSTATE = "";
 	
     $(document).on('click','.cardChoice',function(){
         
@@ -378,17 +380,23 @@ $(document).ready(function(){
         	
         	if(result.state=='success'){
         	    $('.centerSection').load(`${serverAddr}/Management/cardform/DefaultCard.html`)
-        	    cposi = result.card.cposi;
-        	    name = result.card.name;
-        	    cname = result.card.cname;
-        	    caddr = result.card.caddr;
-        	    tel = result.card.tel;
-        	    mtel = result.card.mtel;
-        	    fax = result.card.fax;
-        	    email = result.card.email;
-        	    homepage = result.card.homepage;
-        	    img = result.card.img;	
-        		cardState = 'read'
+        	    
+				cInfo.push(result.card)
+				
+        	    /*  CPOSI = result.card.cposi;
+        	    NAME = result.card.name;
+        	    CNAME = result.card.cname;
+        	    CADDR = result.card.caddr;
+        	    TEL = result.card.tel;
+        	    MTEL = result.card.mtel;
+        	    FAX = result.card.fax;
+        	    EMAIL = result.card.email;
+        	    HOMEPAGE = result.card.homepage;
+        	    */
+        	    console.log('담긴 배열은? = ',cInfo)
+        	    
+        	    IMG = result.card.img;
+        		CARDSTATE = 'read'
         		
         	}else{
         		alert('로그인 후 다시 시도해주세요!')

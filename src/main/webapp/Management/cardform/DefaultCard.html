@@ -115,27 +115,27 @@ ul {
  
   <div class="col-md-7 col-sm-7 col-xs-8 right-text">
 
-  <ul>
-  <li><input style="margin-top:25px" type="text" id="CPOSI" placeholder="부서 / 직책" value=""></li>
-  <li><h3 style="margin-top:0px"><input type="text" id="NAME" placeholder="이름"></h3></li>
+  <ul id="ulId">
+  <li><input style="margin-top:25px" type="text" id="cposi" placeholder="부서 / 직책" value=""></li>
+  <li><h3 style="margin-top:0px"><input type="text" id="name" placeholder="이름"></h3></li>
   
-    <li><input type="text" id="CNAME" placeholder="회사명"></li>
+    <li><input type="text" id="cname" placeholder="회사명"></li>
  	
- 	<li><input type="text" id="CADDR" placeholder="회사주소"></li>
- 	
-    <li><i class="fa fa-phone"></i>
- 	<input type="text" id="TEL" placeholder="전화번호"></li>
+ 	<li><input type="text" id="caddr" placeholder="회사주소"></li>
  	
     <li><i class="fa fa-phone"></i>
-    <input type="text" id="MTEL" placeholder="휴대전화번호"></li>
+ 	<input type="text" id="tel" placeholder="전화번호"></li>
+ 	
+    <li><i class="fa fa-phone"></i>
+    <input type="text" id="mtel" placeholder="휴대전화번호"></li>
     
     <li><i class="fa fa-envelope"></i>
-    <input type="text" id="FAX" placeholder="팩스번호"></li>
+    <input type="text" id="fax" placeholder="팩스번호"></li>
     
     <li><i class="fa fa-envelope"></i>
-    <input type="text" id="EMAIL" placeholder="이메일주소"></li>
+    <input type="text" id="email" placeholder="이메일주소"></li>
     
-    <li><input type="text" id="HOMEPAGE" placeholder="홈페이지주소"></li>
+    <li><input type="text" id="homepage" placeholder="홈페이지주소"></li>
   </ul>
   </div>
 </div>
@@ -201,7 +201,11 @@ $('#fileupload').fileupload({
     console.log('done()...');
     console.log(data);
     console.log(e);
-    location.reload(true);
+    console.log('등록완료?')
+    swal({
+        title: '등록이 완료 됐습니다!',
+        icon: 'success',
+    })
   }
 });
 
@@ -214,24 +218,36 @@ $('#delete-btn').click(function(){
 
 $(document).ready(function(){
 	
-	if(cardState == 'read'){
+	if(CARDSTATE == 'read'){
 	$('#cardForm input').attr('readonly',true);
-	$('#CPOSI').attr('value', cposi )
-	$('#NAME').attr('value', name )
-	$('#CNAME').attr('value', cname )
-	$('#CADDR').attr('value', caddr )
-	$('#TEL').attr('value', tel )
-	$('#MTEL').attr('value', mtel )
-	$('#FAX').attr('value', fax )
-	$('#EMAIL').attr('value', email )
-	$('#HOMEPAGE').attr('value', homepage )
-	$('#imgSrc').attr('src' , '../files/'+img)
-	$('.imgZone input').remove();
+	$('#CPOSI').attr('value', CPOSI)
+	$('#NAME').attr('value', NAME)
+	$('#CNAME').attr('value', CNAME)
+	$('#CADDR').attr('value', CADDR)
+	$('#TEL').attr('value', TEL)
+	$('#MTEL').attr('value', MTEL)
+	$('#FAX').attr('value', FAX)
+	$('#EMAIL').attr('value', EMAIL)
+	$('#HOMEPAGE').attr('value', HOMEPAGE)
+	
+	for(var i = 0; i < $('#ulId li').length; i ++){
+	    //console.log($('#ulId input').eq(i).attr('id'));
+	    console.log(cInfo[0].name);
+	    //console.log($('#ulId li').eq(i));
+	}
+	
+	if(HOMEPAGE==""){
+	    //console.log('hompage == 없음')
+	}
+	
+	$('#imgSrc').attr('src' , '../files/'+IMG)
+	$('.imgZone input').hide();
 	$('.cardActionBtn').attr('id', 'modifyBtn').html('수정하기')
 	$('#title-detail').html('명함보기')
 	}
 	
 	$('#modifyBtn').click(function(){
+	    $('.imgZone input').show();
 		$('#cardForm input').attr('readonly',false);
 		$('#title-detail').html('수정하기')
 		$('.cardActionBtn').html('저장하기')
