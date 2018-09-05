@@ -41,14 +41,23 @@ $('#sbmBtn').click(function(){
 	},function(result){
 		
 		if(result=='passwordMatchingFail'){
-			alert('비밀번호가 일치하지 않습니다.')
+			swal({
+            title: '비밀번호가 일치하지 않습니다.',
+            icon: 'error',
+        	})
 		}else if(result=='error'){
-			alert('정상적인 접근이 아닙니다.')
+		    swal({
+	            title: '정상적인 접근이 아닙니다.',
+	            icon: 'error',
+	        })
 		}else if(result=='success'){
-			alert('탈퇴가 완료 됐습니다!')
-			location.href = '../signIn.html';
+		    swal({
+	            title: '탈퇴가 완료 됐습니다!',
+	            icon: 'error',
+	        }).then((value)=>{
+	            location.href = '../signIn.html';
+            })
 		}
-		console.log(result);
 	})
 	
 	} /* confirm */

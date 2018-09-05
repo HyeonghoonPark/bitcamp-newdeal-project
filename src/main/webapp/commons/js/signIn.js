@@ -54,3 +54,47 @@
     
 
 })(jQuery);
+
+
+
+$('#btn').click(function(){
+    
+    console.log($('#fEmail').val())
+    console.log($('#fPassword').val())
+
+    if($('#fEmail').val().length==0){
+        swal({
+            title: "이메일을 입력해주세요",
+            icon: "error",
+        })
+        return;
+    }else if($('#fPassword').val().length==0){
+        swal({
+            title: "비밀번호를 입력해주세요",
+            icon: "error",
+        })
+        return;
+    }
+    
+    $.post(serverAddr+'/app/auth/signIn',{
+        email : $('#fEmail').val(),
+        pwd : $('#fPassword').val()
+    },function(result){
+        console.log(result.state);
+        if(result.state=='success'){
+            location.href = "./Management/list.html";
+        }else if(result.state=='notAuthEmail'){
+            swal({
+                title: "이메일 인증을 하셔야 이용이 가능합니다.",
+                icon: "error",
+            })
+        }else if(result.state=='notFind'){
+            swal({
+                title: "비밀번호 혹은 이메일이 일치하지 않습니다.",
+                icon: "error",
+            })
+        };
+    }) 
+    
+    
+})

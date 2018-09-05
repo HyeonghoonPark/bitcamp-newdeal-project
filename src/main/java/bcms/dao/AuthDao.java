@@ -10,10 +10,10 @@ public interface AuthDao {
 	
 	int identifyEmailAddr(String email);
 
-	Member findPwd(HashMap<String, Object> params);
-
 	int passwordValidation(Member member);
 
 	int checkAuthedEmail(Member user);
+
+	int identifyTemailAddr(String email);
 	
 }

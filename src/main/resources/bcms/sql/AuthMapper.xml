@@ -5,15 +5,20 @@
 <mapper namespace="bcms.dao.AuthDao">
 
 	<select id="findByEmailAndPassword" parameterType="Member" resultType="Member">
-		select MNO, NAME, EMAIL from member where EMAIL=#{email} and PWD= password(#{pwd})
+		select MNO, NAME, EMAIL from member where EMAIL=#{email} and (PWD= password(#{pwd}) or TPWD= #{pwd})
 	</select>
 	
 	<select id="identifyEmailAddr" parameterType="String" resultType="Integer">
 		select count(EMAIL) from member where email = #{email}
 	</select>
+	
+	<select id="identifyTemailAddr" parameterType="String" resultType="Integer">
+	    select count(TPWD) from member where email = #{email}
+	</select>
+	
 
 	<select id="passwordValidation" parameterType="Member" resultType="int">
-		select	count(MNO) from member where MNO = #{mno} and PWD = password(#{pwd})
+		select	count(MNO) from member where MNO = #{mno} and (PWD= password(#{pwd}) or TPWD= #{pwd})
 	</select>
 	
 	<select id="checkAuthedEmail" parameterType="Member" resultType="int">

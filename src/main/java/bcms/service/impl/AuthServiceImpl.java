@@ -20,18 +20,27 @@ public class AuthServiceImpl implements AuthService {
 	}
 	
 	@Override
-	public int identifyEmailAddr(String email) {
-		return authDao.identifyEmailAddr(email);
+	public int identifyEmailAddr(String email, String checkPage) {
+		System.out.println("이메일은 = "+ email);
+		System.out.println("확인 페이지는 = "+ checkPage);
+		
+		int count;
+		
+		count = authDao.identifyEmailAddr(email);
+		
+		if(checkPage!=null) { // 비밀번호 찾기 시 사용하는 서비스 
+		 
+			// 2가 되면 이미 비밀번호 찾기 이메일이 날라간 계정임
+			if(authDao.identifyTemailAddr(email)==1) {
+				count = 2;
+			}
+			
+		}
+		
+		return count;
+		
 	}
 	
-	
-    @Override
-    public Member findPwd(String email) {
-        HashMap<String, Object> params = new HashMap<>();
-        params.put("email", email);
-        return authDao.findPwd(params);
-    }
-        
     @Override
     public int passwordValidation(Member member) {
     	System.out.println("다오들어옴");

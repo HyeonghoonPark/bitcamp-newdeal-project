@@ -60,14 +60,16 @@ public class AuthController {
 	
 	
 	@RequestMapping("/identifyEmailAddr")
-	public Object chkEmail(String email, Model model) {
+	public Object chkEmail(String email, String checkPage) {
 
 		HashMap<String, Object> resultMap = new HashMap<>();
 		System.out.println(email);
-		int chkEmail = authService.identifyEmailAddr(email);
+		int chkEmail = authService.identifyEmailAddr(email, checkPage);
 		System.out.println(chkEmail);
 		if(chkEmail == 0) {
 			resultMap.put("state", "success");
+		}else if(chkEmail == 2) {
+			resultMap.put("state", "checkEmail");
 		}else {
 			resultMap.put("state", "fail");
 		}
@@ -76,22 +78,4 @@ public class AuthController {
 		
 	}
 	
-    @PostMapping("forgotPwd")
-    public Object forgotPwd(String email) {
-        
-        HashMap<String, Object> result = new HashMap<>();
-        
-        try {
-            Member findPwd = authService.findPwd(email);
-            
-            if(findPwd == null) 
-                throw new Exception("입력하신 이메일과 일치하는 회원이 없습니다.");
-            
-        }catch(Exception e){
-            
-        }
-        
-        return result;
-    }
-    
 }
