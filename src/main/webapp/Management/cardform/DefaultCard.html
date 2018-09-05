@@ -1,0 +1,258 @@
+<style>
+
+@media (min-width: 631px) {
+h1{
+  text-align: center;
+}
+
+h2{
+  text-align: center;
+  font-weight: 300;
+  margin-top: -30px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+
+.businessCard {
+  width: 600px;
+  height: 300px;
+  background-color: #fff;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  box-shadow: 10px 10px 0px #7f8c8d;
+  padding: 1em;
+ }
+ #upload-btn{
+  margin-right: auto;
+  margin-left: auto;
+  width:200px;
+  
+ }
+
+  div input {
+   border:none;
+  }
+
+  #imgSrc{
+  width:150px;
+  heigh:100px; 
+  padding-top:40px;
+  }
+ 
+ }
+ 
+ @media (max-width: 630px) {
+ 
+ h1{
+  text-align: left;
+}
+
+h2{
+  text-align: left;
+  font-weight: 100;
+  margin-top: -30px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+
+.right-text input{
+	text-align: left;
+	width:100%;
+}
+
+#fileupload{
+	width:60%;
+}
+
+.businessCard {
+  width: 330px;
+  height: 350px;
+  background-color: #fff;
+  margin-right: auto;
+  margin-left: auto;
+  /* margin-top: 50px; */
+  box-shadow: 10px 10px 0px #7f8c8d;
+  padding: 1em;
+ }
+
+  div input {
+   border:none;
+  }
+
+  #imgSrc{
+  width:80px;
+  heigh:60px; 
+  padding-top:40px;
+  }
+
+  
+  .readBusinessCard input{
+  readyonly
+  }
+ 
+ }
+
+
+</style>
+
+<div class="container">
+
+<div class="businessCard row" id="cardForm" card-form-no="1">
+  <div class="col-md-5 col-sm-5 col-xs-4 imgZone">
+  <div id="imgDiv">
+  <img src="./img/defaultImage.png" id="imgSrc">
+  </div>
+  <input id="fileupload" type="file" name="files" style="margin-top:5px; ">
+  </div>
+ 
+  <div class="col-md-7 col-sm-7 col-xs-8 right-text">
+
+  <ul id="ulId">
+  <li><input style="margin-top:25px" type="text" id="cposi" placeholder="부서 / 직책" value=""></li>
+  <li><h3 style="margin-top:0px"><input type="text" id="name" placeholder="이름"></h3></li>
+  
+    <li><input type="text" id="cname" placeholder="회사명"></li>
+ 	
+ 	<li><input type="text" id="caddr" placeholder="회사주소"></li>
+ 	
+    <li><i class="fa fa-phone"></i>
+ 	<input type="text" id="tel" placeholder="전화번호"></li>
+ 	
+    <li><i class="fa fa-phone"></i>
+    <input type="text" id="mtel" placeholder="휴대전화번호"></li>
+    
+    <li><i class="fa fa-envelope"></i>
+    <input type="text" id="fax" placeholder="팩스번호"></li>
+    
+    <li><i class="fa fa-envelope"></i>
+    <input type="text" id="email" placeholder="이메일주소"></li>
+    
+    <li><input type="text" id="homepage" placeholder="홈페이지주소"></li>
+  </ul>
+  </div>
+</div>
+<br>
+
+<div class="text-center" style="margin-bottom:20px;">
+<button type="button" class="btn btn-default btn-lg cardActionBtn" id="upload-btn">등록하기</button>
+<button type="button" class="btn btn-default btn-lg" id="delete-btn">삭제하기</button>
+</div>
+</div>
+
+<script>
+"use strict"
+
+$('#fileupload').fileupload({
+  url: `${serverAddr}/app/businesscard/addBziCard`,       // 서버에 요청할 URL
+  dataType: 'json',         // 서버가 보낸 응답이 JSON임을 지정하기
+  sequentialUploads: true,  // 여러 개의 파일을 업로드 할 때 순서대로 요청하기.
+  singleFileUploads: false, // 한 요청에 여러 개의 파일을 전송시키기.
+  autoUpload: false,        // 파일을 추가할 때 자동 업로딩 하지 않도록 설정.
+  disableImageResize: /Android(?!.*Chrome)|Opera/
+        .test(window.navigator && navigator.userAgent), // 안드로이드와 오페라 브라우저는 크기 조정 비활성 시키기
+  previewMaxWidth: 100,   // 미리보기 이미지 너비
+  previewMaxHeight: 100,  // 미리보기 이미지 높이 
+  previewCrop: true,      // 미리보기 이미지를 출력할 때 원본에서 지정된 크기로 자르기
+  processalways: function(e, data) {
+      console.log('fileuploadprocessalways()...');
+      console.log(data.files);
+      var imgDiv = $('#imgDiv');
+      imgDiv.html("");
+      for (var i = 0; i < data.files.length; i++) {
+        try {
+          if (data.files[i].preview.toDataURL) {
+            $("<img>")
+              .attr('src', data.files[i].preview.toDataURL())
+              .css({'height': '150px','width':'150px','padding-top':'30px'})
+              .appendTo(imgDiv);
+          }
+        } catch (err) {console.log('에러임')}
+      }
+      $('#upload-btn').unbind("click");
+      $('#upload-btn').click(function() {
+          data.submit();
+      });
+  }, 
+  submit: function (e, data) { // 서버에 전송하기 직전에 호출된다.
+    console.log('submit()...');
+    console.log($('#NAME').val());
+    data.formData = {
+            cposi : $('#CPOSI').val(),
+    		name : $('#NAME').val(),
+    		cname : $('#CNAME').val(),
+    		caddr : $('#CADDR').val(),
+    		tel : $('#TEL').val(),
+    		mtel : $('#MTEL').val(),
+    		fax : $('#FAX').val(),
+    		email : $('#EMAIL').val(),
+    		homepage : $('#HOMEPAGE').val(),
+    		bcn : $('.businessCard').attr('card-form-no')
+    };
+  }, 
+  done: function (e, data) { // 서버에서 응답이 오면 호출된다. 각 파일 별로 호출된다.
+    console.log('done()...');
+    console.log(data);
+    console.log(e);
+    console.log('등록완료?')
+    swal({
+        title: '등록이 완료 됐습니다!',
+        icon: 'success',
+    })
+  }
+});
+
+$('#delete-btn').click(function(){
+    $.getJSON(serverAddr+'/app/businesscard/deleteBziCard'),function(result){
+		console.log(result);        
+    }
+})
+
+
+$(document).ready(function(){
+	
+	if(CARDSTATE == 'read'){
+	$('#cardForm input').attr('readonly',true);
+	$('#CPOSI').attr('value', CPOSI)
+	$('#NAME').attr('value', NAME)
+	$('#CNAME').attr('value', CNAME)
+	$('#CADDR').attr('value', CADDR)
+	$('#TEL').attr('value', TEL)
+	$('#MTEL').attr('value', MTEL)
+	$('#FAX').attr('value', FAX)
+	$('#EMAIL').attr('value', EMAIL)
+	$('#HOMEPAGE').attr('value', HOMEPAGE)
+	
+	for(var i = 0; i < $('#ulId li').length; i ++){
+	    //console.log($('#ulId input').eq(i).attr('id'));
+	    console.log(cInfo[0].name);
+	    //console.log($('#ulId li').eq(i));
+	}
+	
+	if(HOMEPAGE==""){
+	    //console.log('hompage == 없음')
+	}
+	
+	$('#imgSrc').attr('src' , '../files/'+IMG)
+	$('.imgZone input').hide();
+	$('.cardActionBtn').attr('id', 'modifyBtn').html('수정하기')
+	$('#title-detail').html('명함보기')
+	}
+	
+	$('#modifyBtn').click(function(){
+	    $('.imgZone input').show();
+		$('#cardForm input').attr('readonly',false);
+		$('#title-detail').html('수정하기')
+		$('.cardActionBtn').html('저장하기')
+	})
+	
+})
+ 
+</script>

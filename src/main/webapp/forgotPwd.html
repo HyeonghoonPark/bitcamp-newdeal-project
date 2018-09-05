@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>비밀번호 찾기 페이지</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="commons/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="node_modules/select2/dist/css/select2.min.css">
+	<link rel="stylesheet" type="text/css" href="commons/css/util.css">
+	<link rel="stylesheet" type="text/css" href="commons/css/main.css">
+</head>
+<body>
+	<div class="limiter">
+		<div class="container-SignUp">
+			<div class="wrap-SignUp">
+				<div class="login100-pic js-tilt" data-tilt>
+					<img src="commons/images/img-01.png" alt="IMG">
+				</div>
+
+				<form class="SignUp-form validate-form">
+				<br>
+					<span class="SignUp-form-title">
+						Forgot Password?
+					</span>
+
+					<div class="wrap-input100 validate-input" data-validate = "유효하지 않은 이메일입니다: ex@google.com">
+						<input class="input100" type="text" name="fEmail" id="fEmail" placeholder="이메일을 작성해주세요.">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-envelope" aria-hidden="true"></i>
+						</span>
+					</div>
+					
+                    <div class="wrap-input100 validate-input" data-validate = "Password is required">
+                        회원 가입 시 작성해 주신 이메일로 임시 비밀번호를 발급해 드리겠습니다.
+                    </div>
+
+					<div class="container-SignUp-form-btn">
+						<button type="button" class="forgotPwd-form-btn" id="forgotPwd-form-btn">
+							Ok
+						</button>
+					</div>
+
+					
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<script src="node_modules/jquery/dist/jquery.min.js"></script>
+	<script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="node_modules/vanilla-tilt/dist/vanilla-tilt.js"></script>
+	<script src="node_modules/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="commons/js/common.js"></script>
+	<script src="commons/js/forgotPwd.js"></script>
+    
+    
+</body>
+</html>

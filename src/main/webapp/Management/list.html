@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title>Businesscard Manager</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.7 -->
+  <!-- Font Awesome 아이콘 -->
+  <link rel="stylesheet" href="./css/font-awesome/css/font-awesome.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="./css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="./css/_all-skins.min.css">
+  <link rel="stylesheet" href="./css/card/default.css">
+   <link rel="stylesheet" href="./css/card/number1.css">
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <link rel="stylesheet" href="./css/bootstrap.min.css">
+<script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+
+<script src="../commons/js/common.js"></script>
+<script src="../node_modules/handlebars/dist/handlebars.min.js"></script>
+   
+<script src="../node_modules/blueimp-file-upload/js/vendor/jquery.ui.widget.js"></script>
+<script src="../node_modules/blueimp-load-image/js/load-image.all.min.js"></script>
+<script src="../node_modules/blueimp-canvas-to-blob/js/canvas-to-blob.js"></script>
+<script src="../node_modules/blueimp-file-upload/js/jquery.iframe-transport.js"></script>
+<script src="../node_modules/blueimp-file-upload/js/jquery.fileupload.js"></script>
+<script src="../node_modules/blueimp-file-upload/js/jquery.fileupload-process.js"></script> 
+<script src="../node_modules/blueimp-file-upload/js/jquery.fileupload-image.js"></script>  
+<script src="../node_modules/sweetalert/dist/sweetalert.min.js"></script>
+
+</head>
+<body id="bodyState" class="hold-transition sidebar-mini skin-black">
+
+
+<div class="wrapper">
+
+  <header class="main-header">
+    <!-- Logo -->
+    <a href="list.html" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>B</b>cm</span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><b>BusinessCard</b>Manager</span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" id="actionBtn" data-toggle="push-menu" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <!-- Messages: style can be found in dropdown.less-->
+         
+          <!-- Notifications: style can be found in dropdown.less -->
+          <li class="dropdown notifications-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-bell-o"></i>
+              <span class="label label-warning">10</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="header">You have 10 notifications</li>
+              <li>
+                <!-- inner menu: contains the actual data -->
+                <ul class="menu">
+                  <li>
+                    <a href="#">
+                      <i class="fa fa-users text-aqua"></i> 5 new members joined today
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the
+                      page and may cause design problems
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fa fa-users text-red"></i> 5 new members joined
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fa fa-shopping-cart text-green"></i> 25 sales made
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fa fa-user text-red"></i> You changed your username
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="footer"><a href="#">View all</a></li>
+            </ul>
+          </li>
+     
+
+          <!-- User Account: style can be found in dropdown.less -->
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              
+              <span class="hidden-xs userName">님 환영합니다.</span>
+            </a>
+        
+
+          </li>
+          <!-- Control Sidebar Toggle Button -->
+          <li>
+            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar" style="padding-bottom:0px;">
+      <!-- Sidebar user panel -->
+       <div class="user-panel">
+        <div class="pull-left info">
+          <a class="userName">님</a><br>
+          <a><i class="fa fa-circle text-success"></i> Online</a><br>
+        </div>
+        <br><br>
+        <div class="text-center sidebar-form">
+        <button class="btn btn-default" id="addBtn" style="width:100%">명함 추가</button>
+      	</div>
+      </div>
+      
+          <ul class="sidebar-menu" data-widget="tree" id="buzicard-list-signpost">
+        
+        	<li class="header" id="">명함 목록</li>
+        
+    	</ul>
+      <!-- search form -->
+      <form class="sidebar-form" id="search-form">
+        <div class="input-group">
+          <input type="text" id="search-box" class="form-control" placeholder="검색하기">
+          <span class="input-group-btn">
+                <button type="button" name="search" id="searchBtn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+        </div>
+      </form>
+      <!-- /.search form -->
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      	<div id="maxHeight" style="width:230px; overflow-y:hidden; overflow-x:hidden; position:absolute;">
+    	<div id="scrollBlind" style="width:250px;  height:100%; overflow-y:scroll; overflow-x:hidden;">
+	    <ul class="sidebar-menu" data-widget="tree" id="cardList">
+        
+        
+    	</ul>
+    	</div>
+    	</div>
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper" style="min-height:800px;">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+     <ol class="breadcrumb">
+        <li><i class="fa fa-dashboard"></i><a id="title">명함관리</a></li>
+        <li class="active" id="title-detail">명함추가하기</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <!-- Small boxes (Stat box) -->
+      <div class="row">
+
+		<section class="centerSection">
+		
+		
+		</section>
+	
+ 		 
+      </div>
+      <!-- /.row (main row) 오른쪽 로우 -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 2.4.0
+    </div>
+    <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
+    reserved.
+  </footer>
+  
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark" id="right-sidebar">
+    <!-- Create the tabs -->
+    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+     
+      <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <a id="excelDownload">
+      <button class="btn btn-default" style="width:100%">엑셀파일 추출</button>
+      </a>
+      <br>
+
+      <button class="btn btn-default memberInfoChange" style="width:100%">개인정보 변경</button>
+      <br>
+
+      <button class="btn btn-default" style="width:100%" id="membershipWithdrawal">회원탈퇴</button>
+      <br>
+      
+      <button class="btn btn-default" style="width:100%" id="signOut">로그아웃</button>
+    
+    
+    </div>
+  </aside>
+  <!-- /.control-sidebar -->
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
+</div>
+<!-- ./wrapper -->
+
+
+<!-- AdminLTE App -->
+<script src="./js/adminlte.js"></script>
+<!-- templates -->
+<script id="li-template-src" type="text/x-handlebars-template">
+
+<li class="liState treeview">
+	<a href="#">
+		<i class="">{{no}}</i>              
+		<span>..</span>
+		<span class="pull-right-container">
+			<span class="label label-primary pull-right">{{firstLength}}</span>
+		</span>
+	</a>
+	<ul class="treeview-menu">
+		{{#each list}}
+		<li><a class="text-center cardChoice" style="cursor:pointer" data-no="{{bcno}}">{{name}}</a></li>
+		{{/each}}
+	</ul>
+</li>
+
+
+</script>
+
+<script>
+
+$(document).ready(function(){
+  
+    userEmail = '';
+    userName = '';
+    cardElement = $('.cardChoice').text();
+    
+    cardArray = []; // 검색용 배열
+    
+    viewCardList();
+    
+    function viewCardList(){
+        
+    var contentHeight = $('.content-wrapper').css('height').replace("px","");
+    var profileHeight = $('.user-panel').css('height').replace("px","");
+    var searchHeight = $('.sidebar-form').css('height').replace("px","");
+    var buzicardSignPostHeight = $('#buzicard-list-signpost').css('height').replace("px","");
+    var footerHeight = $('.main-footer').css('height').replace("px","");
+    
+    busicardlistMaxHeight = parseInt(contentHeight) + parseInt(footerHeight) - profileHeight - buzicardSignPostHeight - searchHeight - 29
+    $('#maxHeight').css('height', busicardlistMaxHeight)
+    $.getJSON(serverAddr+'/app/businesscard/list',
+    		function(result){
+        	
+    	   	data = result;
+			
+    	   	userName = data.member.name;
+    	   	userEmail = data.member.email;
+    	   	
+    	   	if(result.state == 'success'){
+    	    
+    	   	$('.userName').html('님');
+    	   	$('.userName').eq(0).append(' 환영합니다.')
+    	   	
+    	   	$('.userName').prepend(userName);
+    		
+    	   	var liTemplateSrc = $('#li-template-src').text();
+    		var liTemplateFn = Handlebars.compile(liTemplateSrc);
+    		
+    		var index = 0;
+    		
+     		for(var first of data.maps){
+				
+     		    cardArray[index] = first
+     		   
+     		    // 해당 초음에 몇개의 리스트가 있는지
+     		    var firstLength = Object.keys(first).length;
+     		    
+    			var liListHTML = "";
+    			
+    			liListHTML = liTemplateFn({ no : data.chonames[index], list : first, firstLength})		
+    			
+  				$('#cardList').append(liListHTML) 
+    			  
+  				index ++;
+    			
+    		} 
+     		
+     		
+     		$('.cardChoice').eq(0).trigger('click');
+     		
+        	}else if(result.state == 'first'){
+         	   $('.userName').html('님');
+         	   $('.userName').eq(0).append(' 환영합니다.')
+         	   $('.userName').prepend(userName);
+         	   $('.centerSection').load(`${serverAddr}/Management/welcome.html`)
+        	   console.log('처음온 회원입니다 환영메시지 띄울 곳!')
+        	}
+    	   	
+    	   	
+        	
+    });
+    
+    } // viewCardList
+    
+    
+    
+    $("#search-box").keydown(function(event) {
+        
+        console.log('키이벤트들어옴')
+        
+       if (event.keyCode == 8){
+            
+            console.log('지우는중', $(this).val().length)
+            
+	        if($(this).val().length == 1){
+	            
+	            $('#cardList > *').remove();
+	            
+				console.log('다지워짐');	            
+	            viewCardList();
+	            
+	        }
+	        
+        }
+    }); // keydown
+    
+ })
+
+$(document).ready(function(){
+    
+    cInfo = [];
+    CPOSI = "";
+	NAME = "";
+	CNAME = "";
+	CADDR = "";
+	TEL = "";
+	MTEL = "";
+	FAX = "";
+	EMAIL = "";
+	HOMEPAGE = "";
+	IMG = "";
+	CARDSTATE = "";
+	
+    $(document).on('click','.cardChoice',function(){
+        
+        var cardNo = $(this).attr('data-no');
+    	
+        $.getJSON(serverAddr+'/app/businesscard/getCardInfo/'+cardNo
+        		,function(result){
+        	
+        	if(result.state=='success'){
+        	    $('.centerSection').load(`${serverAddr}/Management/cardform/DefaultCard.html`)
+        	    
+				cInfo.push(result.card)
+				
+        	    /*  CPOSI = result.card.cposi;
+        	    NAME = result.card.name;
+        	    CNAME = result.card.cname;
+        	    CADDR = result.card.caddr;
+        	    TEL = result.card.tel;
+        	    MTEL = result.card.mtel;
+        	    FAX = result.card.fax;
+        	    EMAIL = result.card.email;
+        	    HOMEPAGE = result.card.homepage;
+        	    */
+        	    console.log('담긴 배열은? = ',cInfo)
+        	    
+        	    IMG = result.card.img;
+        		CARDSTATE = 'read'
+        		
+        	}else{
+        		alert('로그인 후 다시 시도해주세요!')
+        	}
+        })
+    })
+    
+    $("#search-form").on("submit", function(event) {
+        event.preventDefault();
+        
+        $("#searchBtn").trigger('click');  // 실행할 이벤트
+    });
+       	
+})
+
+$("#excelDownload").attr("href", `${serverAddr}/app/excel/download`)
+
+$('#addBtn').click(function(){
+    $('.centerSection').load(`${serverAddr}/Management/cardform/DefaultCard.html`)
+    cardState = 'add';
+})
+
+$('.memberInfoChange').click(function(){ 
+    $('.centerSection').load(`${serverAddr}/Management/changeUserInfo.html`)
+})
+
+$('#membershipWithdrawal').click(function(){
+    $('.centerSection').load(`${serverAddr}/Management/withdrawal.html`)
+})
+
+$('#signOut').click(function(){
+	if(confirm('로그아웃 하시겠습니까?')){
+	    sessionStorage.clear();
+	    location.href = '../signIn.html';
+	}else{
+	 	console.log('안들어옴')   
+	 	console.log(sessionStorage.getItem("user"))
+	 	console.log(localStorage.getItem("user"))
+	}
+})
+
+$('#searchBtn').click(function(){
+	
+	var key = $('#search-box').val();
+	
+	existCardList = [];
+	
+	var elementcount1 = 0;
+	
+	
+ 	for(var element of cardArray){	
+ 		
+ 		console.log('들어온 요소들은?', element);
+ 		
+	   for(var i = 0; i < Object.keys(element).length; i++){
+
+		   
+		   for(ele in element[elementcount1]){
+			   var str = '';
+				str = String(element[elementcount1][ele]);
+				if(str!='' && str.indexOf(key)!=-1){
+				    console.log('일치하는 카테고리는..',element[elementcount1][ele])
+					existCardList.push(String(element[elementcount1]['bcno']));
+				}
+		  }
+		  elementcount1++;
+	  }
+	   
+	}
+ 	
+console.log('자르기 전 = ',existCardList)
+ 	
+ 	var arrayLength = existCardList.length
+ 	var jArrayLength = arrayLength -1;
+  	var kArrayLength = arrayLength -2;
+ 	
+  	
+ 	for(var j = jArrayLength; j >= 1; j--){
+ 		
+ 		for(var k = j-1; k >= 0; k--){
+ 			
+ 			if(existCardList[j]==existCardList[k]){
+ 				console.log('j는',j)
+ 				console.log('k는',k)
+ 				existCardList.slice(j, 1);
+ 			}
+ 			
+ 		}
+ 		
+ 	}
+	
+/* 로직 시작 */
+	console.log('로직 시작 기존 배열에 담은 것은? = ',cardArray) 
+	
+	elementcount1 = 0;
+	
+	$('#cardList > *').remove();
+
+ 	for(var element of cardArray){
+	    
+		elementcount2 = 0;
+	    
+		console.log('하나씩 뺴냄!! = ', element);
+		console.log('뺴낸거의 길이는?', Object.keys(element).length)    
+	
+		  for(elementcount2; elementcount2 < Object.keys(element).length; elementcount2++){
+				
+		      console.log(element[elementcount1]['bcno']);
+
+		      if(existCardList.indexOf(String(element[elementcount1]['bcno']))!= -1){
+		          
+			      console.log('일치하는 bno는 = ',element[elementcount1]['bcno']);
+			      
+			      $('#cardList').append(`<li><a class='text-center cardChoice' style='cursor:pointer' data-no=${element[elementcount1]['bcno']}>${element[elementcount1]['name']}</a></li>`); 
+			      
+		      }
+		      
+		      elementcount1++;
+		  }
+		
+		elementcount2 = 0;
+	        
+	} 
+	
+})
+
+</script>
+
+</body>
+</html>

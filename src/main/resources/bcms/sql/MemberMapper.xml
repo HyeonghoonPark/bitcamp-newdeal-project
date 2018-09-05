@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bcms.dao.MemberDao">
+
+	<insert id="insert" parameterType="Member">
+		insert into member(NAME, PWD, EMAIL, STATE, REGDATE) values (#{name}, password(#{pwd}), #{email}, #{rid}, now())
+	</insert>
+			
+	<update id="changeUserPassword" parameterType="Member">
+		update member set PWD = password(#{pwd}) where MNO = #{mno}
+	</update>
+	
+	<delete id="deleteUserMemberShip">
+		delete from member where MNO = #{mno}
+	</delete>
+	
+</mapper>
+
+
+
+

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bcms.dao.BusinessCardDao">
+
+    <resultMap type="BusinessCard" id="businesscardMap">
+    <id column="BCNO" property="bcno"/>
+    <result column="MNO" property="mno"/>
+    <result column="NAME" property="name"/>
+    <result column="MTEL" property="mtel"/>
+    <result column="TEL" property="tel"/>
+    <result column="FAX" property="fax"/>
+    <result column="EMAIL" property="email"/>
+    <result column="MEMO" property="memo"/>
+  </resultMap>
+  
+	<select id="getBusinessCardList" parameterType="int" resultMap="businesscardMap">
+		select NAME, BCNO, CNAME, CPOSI, CADDR, MTEL, TEL, FAX, EMAIL, HOMEPAGE, IMG from bizcard where MNO = #{mno} order by NAME
+	</select>
+		
+	<insert id="addBusinessCard" parameterType="BusinessCard">
+		insert into bizcard(MNO, BCN, NAME, CNAME, CPOSI, CADDR, MTEL, TEL, FAX, EMAIL, HOMEPAGE, PCARD, IMG) 
+		values(#{mno}, #{bcn}, #{name}, #{cname}, #{cposi}, #{caddr}, #{mtel}, #{tel}, #{fax}, #{email}, #{homepage}, #{pcard}, #{img})
+	</insert>
+	
+	<select id="getSingleBusinessCardInfo" parameterType="Map" resultType="BusinessCard">
+		select NAME, BCNO, CNAME, CPOSI, CADDR, MTEL, TEL, FAX, EMAIL, HOMEPAGE, IMG from bizcard where BCNO = #{cardNo} and MNO = #{mno}
+	</select>
+	
+</mapper>
+
+
+
+

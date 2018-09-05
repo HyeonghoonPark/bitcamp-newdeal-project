@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+        
+
+  <!-- 웹 컴포넌트(페이지 컨트롤러 등)만 관리한다. -->
+  <context:component-scan base-package="bcms.controller">
+  </context:component-scan>
+
+  <!-- Spring WebMVC 관련 애노테이션을 처리할 객체들을 등록한다. -->
+  <mvc:annotation-driven enable-matrix-variables="true"/>
+  
+  
+  <!-- AJAX 요청에 대한 Cross Domain 설정 -->
+  <mvc:cors>
+    
+    <mvc:mapping path="/**"
+        allowed-origins="*"
+        max-age="100" />
+  </mvc:cors>
+  
+  <bean id="beanNameViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver" />
+  <bean id="excelView" class="bcms.util.ExcelView"></bean>
+  
+</beans>
+
+
+
+
+
+
+

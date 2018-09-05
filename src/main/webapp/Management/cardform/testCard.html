@@ -1,0 +1,148 @@
+  <style>
+  * {
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.container {
+  padding: 2px 16px;
+}
+
+.card-flip {
+  -webkit-perspective: 1000px;
+          perspective: 1000px;
+}
+
+.card-flip:hover .flip {
+  -webkit-transform: rotateY(180deg);
+          transform: rotateY(180deg);
+}
+
+.flip {
+  transition: 0.6s;
+  position: relative;
+    -webkit-transform-style: preserve-3d;
+          transform-style: preserve-3d; 
+ }
+
+.front,
+.back {
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  position: absolute;
+}
+
+
+.front {
+  z-index: 2;
+  -webkit-transform: rotateY(0deg);
+          transform: rotateY(0deg);
+}
+
+.back {
+  -webkit-transform: rotateY(180deg);
+          transform: rotateY(180deg);
+}
+
+.card-flip, .card, .front, .back {
+  height: 500px;
+  width: 400px;
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  border-radius: 5px;
+  margin: 50px auto 50px auto;
+  transition: box-shadow 0.5s ease-in-out;
+}
+
+.front .card-body {
+  padding-top: 50px;
+  min-height: 300px;
+}
+
+img {
+  border-radius: 5px 5px 0 0;
+  max-width: 100%;
+  height: auto;
+}
+
+table {
+  width: 100%;
+}
+
+tr td {
+  border-bottom: 1px solid #ddd;
+}
+
+.table-td-border-bottom {
+  border-bottom: none;
+}
+
+tr:last-child td {
+   border-bottom: none;
+}
+
+td {
+  padding: 3px 15px;
+  text-align: left;
+}
+
+.outline {
+  border: solid 1px red;
+}
+  </style>
+  
+  
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+
+      <!-- Card Flip -->
+      <div class="card-flip">
+        <div class="flip">
+
+          <!-- Front Card -->
+          <div class="front">
+            <div class="card bg-info text-white text-center" id="card">
+              <div>
+                <div class="card-header">Trafalgar D Water Law</div>
+                <div class="card-body">
+                  <img src="https://otakukart.com/wp-content/uploads/2018/08/law-return.jpg">
+                </div>
+                <div class="card-footer">
+                  <div class="container">
+                    <table>
+                      <tr>
+                        <td>Attack</td>
+                        <td>100</td>
+                      </tr>
+                      <tr>
+                        <td>Defence</td>
+                        <td>100</td>
+                      </tr>
+                      <tr>
+                        <td>Coolness</td>
+                        <td>9000</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Back Card -->
+          <div class="back">
+            <div class="card">
+              <div class="card-body">
+                <img src="https://t00.deviantart.net/vsodLgg_kC-7LKMTROWq595e5cE=/fit-in/300x900/filters:no_upscale():origin()/pre00/6164/th/pre/f/2016/366/7/7/sworn_enemies___part_12__trafalgar_law_x_reader__by_writeron-datpx8q.jpg">
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-sm-2"></div>
+    </div>
+  </div>

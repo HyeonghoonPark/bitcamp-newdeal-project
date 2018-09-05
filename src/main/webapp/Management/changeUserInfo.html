@@ -1,0 +1,51 @@
+<div class="container">
+  	<hr>
+	<div class="row">
+      
+      <!-- edit form column -->
+      <div class="col-md-9 personal-info">
+        <div class="alert alert-info alert-dismissable">
+          <a class="panel-close close" data-dismiss="alert">×</a> 
+          <i class="fa fa-coffee"></i>
+          <strong>이메일</strong>을 변경하실 경우 문의 사항을 남겨주세요.
+        </div>
+        <h3>Personal info</h3>
+        
+        <form class="form-horizontal" role="form">
+          <div class="form-group">
+            <label class="col-lg-3 control-label">이메일:</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="email" id="userEmailForm" readonly>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-lg-3 control-label">현재 비밀번호:</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="password" id="userPassword">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-3 control-label">새 비밀번호:</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="password" id="changePassword1">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-3 control-label">새 비밀번호 확인:</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="password" id="changePassword2">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-12">
+              <input type="button" class="btn btn-primary" id="sbmBtn" value="변경하기">
+            </div>
+          </div>
+        </form>
+      </div>
+  </div>
+</div>
+<hr>
+
+<script src="./js/changeUserInfo.js"></script>
