@@ -34,5 +34,16 @@ public class BusinessCardServiceImpl implements BusinessCardService {
 		params.put("cardNo", cardNo);
 		return businessCardDao.getSingleBusinessCardInfo(params);
 	}
+
+	@Override
+	public int deleteCard(String bcno, int mno) {
+		
+		HashMap<String, Object> params = new HashMap<>();
+		
+		params.put("mno", mno);
+		params.put("bcno", bcno);
+		
+		return businessCardDao.deleteCard(params);
+	}
 	
 }

@@ -115,7 +115,7 @@ ul {
  
   <div class="col-md-7 col-sm-7 col-xs-8 right-text">
 
-  <ul id="ulId">
+  <ul id="ulId" value="">
   <li><input style="margin-top:25px" type="text" id="cposi" placeholder="부서 / 직책" value=""></li>
   <li><h3 style="margin-top:0px"><input type="text" id="name" placeholder="이름"></h3></li>
   
@@ -185,15 +185,15 @@ $('#fileupload').fileupload({
     console.log('submit()...');
     console.log($('#NAME').val());
     data.formData = {
-            cposi : $('#CPOSI').val(),
-    		name : $('#NAME').val(),
-    		cname : $('#CNAME').val(),
-    		caddr : $('#CADDR').val(),
-    		tel : $('#TEL').val(),
-    		mtel : $('#MTEL').val(),
-    		fax : $('#FAX').val(),
-    		email : $('#EMAIL').val(),
-    		homepage : $('#HOMEPAGE').val(),
+            cposi : $('#cposi').val(),
+    		name : $('#name').val(),
+    		cname : $('#cname').val(),
+    		caddr : $('#caddr').val(),
+    		tel : $('#tel').val(),
+    		mtel : $('#mtel').val(),
+    		fax : $('#fax').val(),
+    		email : $('#email').val(),
+    		homepage : $('#homepage').val(),
     		bcn : $('.businessCard').attr('card-form-no')
     };
   }, 
@@ -210,9 +210,20 @@ $('#fileupload').fileupload({
 });
 
 $('#delete-btn').click(function(){
-    $.getJSON(serverAddr+'/app/businesscard/deleteBziCard'),function(result){
-		console.log(result);        
-    }
+    $.getJSON(serverAddr+'/app/businesscard/deleteBziCard',{
+        bcno : $('#ulId').attr('value')
+    },
+    function(result){
+		console.log(result.state);
+		if(result.state == "success"){
+		    swal({
+                title: "삭제에 성공했습니다",
+                icon: "success",
+            }).then((value)=>{
+                location.href = `http://localhost:8080/bitcamp-newdeal-project/Management/list.html`
+            })
+		}
+    })
 })
 
 
@@ -220,27 +231,23 @@ $(document).ready(function(){
 	
 	if(CARDSTATE == 'read'){
 	$('#cardForm input').attr('readonly',true);
-	$('#CPOSI').attr('value', CPOSI)
-	$('#NAME').attr('value', NAME)
-	$('#CNAME').attr('value', CNAME)
-	$('#CADDR').attr('value', CADDR)
-	$('#TEL').attr('value', TEL)
-	$('#MTEL').attr('value', MTEL)
-	$('#FAX').attr('value', FAX)
-	$('#EMAIL').attr('value', EMAIL)
-	$('#HOMEPAGE').attr('value', HOMEPAGE)
+
 	
 	for(var i = 0; i < $('#ulId li').length; i ++){
 	    //console.log($('#ulId input').eq(i).attr('id'));
-	    console.log(cInfo[0].name);
+	    var id = $('#ulId input').eq(i).attr('id')
+	    var ele = cInfo[0][id];
+	    if(cInfo[0][id]==''){
+	    $('#ulId input').eq(i).css('display','none')
+	    }else{
+	    $('#ulId input').eq(i).attr('value', ele)
+	    }
 	    //console.log($('#ulId li').eq(i));
 	}
 	
-	if(HOMEPAGE==""){
-	    //console.log('hompage == 없음')
-	}
-	
 	$('#imgSrc').attr('src' , '../files/'+IMG)
+	$('#ulId').attr('value',BCNO);
+	
 	$('.imgZone input').hide();
 	$('.cardActionBtn').attr('id', 'modifyBtn').html('수정하기')
 	$('#title-detail').html('명함보기')
@@ -255,4 +262,22 @@ $(document).ready(function(){
 	
 })
  
+ 
+ $('#upload-btn').click(function(){
+     
+     $.getJSON(`${serverAddr}/app/businesscard/addBziCard`,{
+        cposi : $('#cposi').val(),
+ 		name : $('#name').val(),
+ 		cname : $('#cname').val(),
+ 		caddr : $('#caddr').val(),
+ 		tel : $('#tel').val(),
+ 		mtel : $('#mtel').val(),
+ 		fax : $('#fax').val(),
+ 		email : $('#email').val(),
+ 		homepage : $('#homepage').val(),
+ 		bcn : $('.businessCard').attr('card-form-no') 
+     },function(){
+         
+     })
+ })
 </script>

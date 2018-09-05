@@ -12,5 +12,7 @@ public interface BusinessCardService {
 
 	BusinessCard getSingleBusinessCardInfo(int mno, int cardNo);
 
+	int deleteCard(String bcno, int mno);
+
 	
 }

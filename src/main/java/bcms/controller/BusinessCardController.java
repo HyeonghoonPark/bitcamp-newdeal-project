@@ -289,11 +289,30 @@ public class BusinessCardController {
 	    }
 	
 	@RequestMapping("/deleteBziCard")
-	public Object deleteBziCard()throws Exception{
+	public Object deleteBziCard(String bcno, HttpSession session)throws Exception{
 		
-		System.out.println("컨트롤러 들어옴");
+		HashMap<String,Object> resultMap = new HashMap<>();
 		
-		return 0;
+		try {
+		
+		Member member = (Member)session.getAttribute("user");
+		
+		int mno = member.getMno();
+		
+		if(businessCardService.deleteCard(bcno, mno)==1) {
+			resultMap.put("state", "success");
+		}else throw new Exception("에러");
+		
+		}catch(Exception e) {
+
+			if(e.getMessage()=="에러") {
+				resultMap.put("state", "fail");
+			}else {
+				resultMap.put("state","error");
+			}
+		}
+		
+		return resultMap;
 	}
 	
 }

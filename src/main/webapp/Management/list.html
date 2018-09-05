@@ -359,19 +359,14 @@ $(document).ready(function(){
 $(document).ready(function(){
     
     cInfo = [];
-    CPOSI = "";
-	NAME = "";
-	CNAME = "";
-	CADDR = "";
-	TEL = "";
-	MTEL = "";
-	FAX = "";
-	EMAIL = "";
-	HOMEPAGE = "";
 	IMG = "";
+	BCNO = "";
 	CARDSTATE = "";
 	
     $(document).on('click','.cardChoice',function(){
+        
+        
+        cInfo = [];
         
         var cardNo = $(this).attr('data-no');
     	
@@ -383,18 +378,9 @@ $(document).ready(function(){
         	    
 				cInfo.push(result.card)
 				
-        	    /*  CPOSI = result.card.cposi;
-        	    NAME = result.card.name;
-        	    CNAME = result.card.cname;
-        	    CADDR = result.card.caddr;
-        	    TEL = result.card.tel;
-        	    MTEL = result.card.mtel;
-        	    FAX = result.card.fax;
-        	    EMAIL = result.card.email;
-        	    HOMEPAGE = result.card.homepage;
-        	    */
         	    console.log('담긴 배열은? = ',cInfo)
         	    
+        	    BCNO = result.card.bcno
         	    IMG = result.card.img;
         		CARDSTATE = 'read'
         		
