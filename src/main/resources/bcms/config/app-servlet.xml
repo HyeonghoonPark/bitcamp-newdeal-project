@@ -24,14 +24,6 @@
   <!-- Spring WebMVC 관련 애노테이션을 처리할 객체들을 등록한다. -->
   <mvc:annotation-driven enable-matrix-variables="true"/>
   
-  <!-- JSP 파일을 /WEB-INF/jsp 폴더에서 찾을 수 있도록 
-       ViewResolver를 교체한다. -->
-  <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-    <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-    <property name="prefix" value="/WEB-INF/jsp/"/>
-    <property name="suffix" value=".jsp"/>
-  </bean>
-  
  
    <!-- AJAX 요청에 대한 Cross Domain 설정 -->
   <mvc:cors>
@@ -40,6 +32,9 @@
         allowed-origins="*"
         max-age="100" />
   </mvc:cors>
+  
+    <bean id="beanNameViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver" />
+  <bean id="excelView" class="bcms.util.ExcelView"></bean>
   
 </beans>
 

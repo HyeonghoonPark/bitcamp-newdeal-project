@@ -143,6 +143,9 @@
     	</ul>
       <!-- search form -->
       <form class="sidebar-form" id="search-form">
+      	<input type="hidden" id="ssn_num" name="ssn_num" value="${empAllData.SSN_NUM}"/>
+      	<input type="hidden" id="frst_num" name="frst_num" value="${empAllData.FRST_NUM}"/>
+      	<input type="hidden" id="last_num" name="last_num" value="${empAllData.LAST_NUM}"/>
         <div class="input-group">
           <input type="text" id="search-box" class="form-control" placeholder="검색하기">
           <span class="input-group-btn">
@@ -153,8 +156,8 @@
       </form>
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
-      	<div id="maxHeight" style="width:230px; overflow-y:hidden; overflow-x:hidden; position:absolute;">
-    	<div id="scrollBlind" style="width:250px;  height:100%; overflow-y:scroll; overflow-x:hidden;">
+      	<div id="maxHeight" style="width:220px; overflow-y:hidden; overflow-x:hidden; position:absolute;">
+    	<div id="scrollBlind" style="width:260px;  height:100%; overflow-y:scroll; overflow-x:hidden;">
 	    <ul class="sidebar-menu" data-widget="tree" id="cardList">
         
         
@@ -211,7 +214,9 @@
     <!-- Tab panes -->
     <div class="tab-content">
     
+      <a id="excelDownload">
       <button class="btn btn-default" style="width:100%">엑셀파일 추출</button>
+      </a>
       <br>
 
       <button class="btn btn-default memberInfoChange" style="width:100%">개인정보 변경</button>
@@ -402,6 +407,8 @@ $(document).ready(function(){
     });
        	
 })
+
+$("#excelDownload").attr("href", `${serverAddr}/app/excel/download`)
 
 $('#addBtn').click(function(){
     CARDSTATE = 'add';

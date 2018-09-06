@@ -18,6 +18,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.AccessControlList;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.GroupGrantee;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.Permission;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+
 import bcms.domain.BusinessCard;
 import bcms.domain.Member;
 import bcms.service.BusinessCardService;
@@ -53,6 +67,8 @@ public class BusinessCardController {
 		
 		// return할 Map에 멤버 정보 담기
 		resultMap.put("member", member);
+		
+		System.out.println("카드리스트는?" +cardList);
 		
 		// 처음 사용한 유저이면 Exception으로 바로 메시지 넘기기
 		if(cardList.size() == 0)throw new Exception("firstUse");
@@ -245,7 +261,8 @@ public class BusinessCardController {
 	 public Object addBziCard(
 	            BusinessCard businessCard,
 	            MultipartFile[] files,
-	            HttpSession session) {
+	            HttpSession session,
+	            String ssn_num, String frst_nm, String last_nm) {
 	        
 	        System.out.println("upload01()...호출됨!");
 	        
@@ -266,18 +283,88 @@ public class BusinessCardController {
 	                if (file.isEmpty()) continue;
 	                
 	                String newfilename = UUID.randomUUID().toString(); 
-	                String path = sc.getRealPath("/files/" + newfilename);
-	                System.out.println(path);
+	                
+	                String extension = "."+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")+1,file.getOriginalFilename().length());
+	                
+	                System.out.println("들어온 확장자는?" + extension);
 	                
 	                businessCard.setMno(member.getMno());
-	                businessCard.setImg(newfilename);
+	                businessCard.setImg(newfilename+extension);
 	                
 	                int returnInt = businessCardService.addBusinessCard(businessCard);
 	                
 	                System.out.println("들어갓나?" + returnInt);
 	                
-	                file.transferTo(new File(path));
-	            }
+	                /*
+	                 * The ProfileCredentialsProvider will return your [default]
+	                 * credential profile by reading from the credentials file located at
+	                 * (~/.aws/credentials).
+	                 */
+	                AWSCredentials credentials = null;
+	                try {
+	                    credentials = new ProfileCredentialsProvider().getCredentials();
+	                } catch (Exception e) {
+	                    throw new AmazonClientException(
+	                            "Cannot load the credentials from the credential profiles file. " +
+	                            "Please make sure that your credentials file is at the correct " +
+	                            "location (~/.aws/credentials), and is in valid format.",
+	                            e);
+	                }
+
+	                AmazonS3 s3 = AmazonS3ClientBuilder.standard().withPathStyleAccessEnabled(true)
+	                    .withCredentials(new AWSStaticCredentialsProvider(credentials))
+	                    .withRegion("ap-northeast-2")
+	                    .build();
+
+	                System.out.println("===========================================");
+	                System.out.println("Getting Started with Amazon S3");
+	                System.out.println("===========================================\n");
+
+	                try {
+
+	                    /*
+	                     * Upload an object to your bucket - You can easily upload a file to
+	                     * S3, or upload directly an InputStream if you know the length of
+	                     * the data in the stream. You can also specify your own metadata
+	                     * when uploading to S3, which allows you set a variety of options
+	                     * like content-type and content-encoding, plus additional metadata
+	                     * specific to your applications.
+	                     */
+	                    String bucketName = "bcmbucket";
+	                    
+	                    AccessControlList acl = new AccessControlList();
+	                    acl.grantPermission(GroupGrantee.AllUsers, Permission.Read);
+	                    
+	                    ObjectMetadata omd = new ObjectMetadata();
+	                    omd.setContentLength(file.getSize());
+	                    
+	                    /*PutObjectRequest objRequest = new PutObjectRequest(
+	                            bucketName, "file5ss", file.getInputStream(), omd);
+	                    objRequest.setAccessControlList(acl);*/
+	                    
+	                    System.out.println("Uploading a new object to S3 from a file\n");
+	                    s3.putObject(new PutObjectRequest(
+	                            bucketName, newfilename+extension, file.getInputStream(), omd));
+	                    
+	                    System.out.println("업로드 완료!");
+
+	                } catch (AmazonServiceException ase) {
+	                    System.out.println("Caught an AmazonServiceException, which means your request made it "
+	                            + "to Amazon S3, but was rejected with an error response for some reason.");
+	                    System.out.println("Error Message:    " + ase.getMessage());
+	                    System.out.println("HTTP Status Code: " + ase.getStatusCode());
+	                    System.out.println("AWS Error Code:   " + ase.getErrorCode());
+	                    System.out.println("Error Type:       " + ase.getErrorType());
+	                    System.out.println("Request ID:       " + ase.getRequestId());
+	                } catch (AmazonClientException ace) {
+	                    System.out.println("Caught an AmazonClientException, which means the client encountered "
+	                            + "a serious internal problem while trying to communicate with S3, "
+	                            + "such as not being able to access the network.");
+	                    System.out.println("Error Message: " + ace.getMessage());
+	                    ace.printStackTrace();
+	                }
+	                
+	            } // 파일 for문
 	        	
 	        	resultMap.put("state", "success");
 	        	
@@ -325,18 +412,87 @@ public class BusinessCardController {
 	                }
 	                
 	                String newfilename = UUID.randomUUID().toString(); 
-	                String path = sc.getRealPath("/files/" + newfilename);
-	                System.out.println(path);
 	                
+	                String extension = "."+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")+1,file.getOriginalFilename().length());
+
 	                businessCard.setMno(member.getMno());
-	                businessCard.setImg(newfilename);
+	                businessCard.setImg(newfilename+extension);
 	                businessCard.setBcno(cardNo);
 	                
+		               
 	                int returnInt = businessCardService.updateBusinessCard(businessCard);
 	                
 	                System.out.println("들어갓나?" + returnInt);
 	                
-	                file.transferTo(new File(path));
+	                /*
+	                 * The ProfileCredentialsProvider will return your [default]
+	                 * credential profile by reading from the credentials file located at
+	                 * (~/.aws/credentials).
+	                 */
+	                AWSCredentials credentials = null;
+	                try {
+	                    credentials = new ProfileCredentialsProvider().getCredentials();
+	                } catch (Exception e) {
+	                    throw new AmazonClientException(
+	                            "Cannot load the credentials from the credential profiles file. " +
+	                            "Please make sure that your credentials file is at the correct " +
+	                            "location (~/.aws/credentials), and is in valid format.",
+	                            e);
+	                }
+
+	                AmazonS3 s3 = AmazonS3ClientBuilder.standard().withPathStyleAccessEnabled(true)
+	                    .withCredentials(new AWSStaticCredentialsProvider(credentials))
+	                    .withRegion("ap-northeast-2")
+	                    .build();
+
+	                System.out.println("===========================================");
+	                System.out.println("Getting Started with Amazon S3");
+	                System.out.println("===========================================\n");
+
+	                try {
+
+	                    /*
+	                     * Upload an object to your bucket - You can easily upload a file to
+	                     * S3, or upload directly an InputStream if you know the length of
+	                     * the data in the stream. You can also specify your own metadata
+	                     * when uploading to S3, which allows you set a variety of options
+	                     * like content-type and content-encoding, plus additional metadata
+	                     * specific to your applications.
+	                     */
+	                    String bucketName = "bcmbucket";
+	                    
+	                    AccessControlList acl = new AccessControlList();
+	                    acl.grantPermission(GroupGrantee.AllUsers, Permission.Read);
+	                    
+	                    ObjectMetadata omd = new ObjectMetadata();
+	                    omd.setContentLength(file.getSize());
+	                    
+	                    /*PutObjectRequest objRequest = new PutObjectRequest(
+	                            bucketName, "file5ss", file.getInputStream(), omd);
+	                    objRequest.setAccessControlList(acl);*/
+	                    
+	                    System.out.println("Uploading a new object to S3 from a file\n");
+	                    s3.putObject(new PutObjectRequest(
+	                            bucketName, newfilename+extension, file.getInputStream(), omd));
+	                    
+	                    System.out.println("업로드 완료!");
+
+	                } catch (AmazonServiceException ase) {
+	                    System.out.println("Caught an AmazonServiceException, which means your request made it "
+	                            + "to Amazon S3, but was rejected with an error response for some reason.");
+	                    System.out.println("Error Message:    " + ase.getMessage());
+	                    System.out.println("HTTP Status Code: " + ase.getStatusCode());
+	                    System.out.println("AWS Error Code:   " + ase.getErrorCode());
+	                    System.out.println("Error Type:       " + ase.getErrorType());
+	                    System.out.println("Request ID:       " + ase.getRequestId());
+	                } catch (AmazonClientException ace) {
+	                    System.out.println("Caught an AmazonClientException, which means the client encountered "
+	                            + "a serious internal problem while trying to communicate with S3, "
+	                            + "such as not being able to access the network.");
+	                    System.out.println("Error Message: " + ace.getMessage());
+	                    ace.printStackTrace();
+	                }
+	                
 	            }
 	        	
 	        	resultMap.put("state", "success");
@@ -355,7 +511,7 @@ public class BusinessCardController {
 	}
 	
 	@RequestMapping("/deleteBziCard")
-	public Object deleteBziCard(String bcno, HttpSession session)throws Exception{
+	public Object deleteBziCard(String bcno, String imgName, HttpSession session)throws Exception{
 		
 		HashMap<String,Object> resultMap = new HashMap<>();
 		
@@ -365,7 +521,63 @@ public class BusinessCardController {
 		
 		int mno = member.getMno();
 		
+		BusinessCard selectoneCard =  businessCardService.getSingleBusinessCardInfo(mno, Integer.parseInt(bcno));
+		
+		String imgNames = selectoneCard.getImg();
+		
 		if(businessCardService.deleteCard(bcno, mno)==1) {
+			
+			   /*
+	         * The ProfileCredentialsProvider will return your [default]
+	         * credential profile by reading from the credentials file located at
+	         * (~/.aws/credentials).
+	         */
+	        AWSCredentials credentials = null;
+	        try {
+	            credentials = new ProfileCredentialsProvider().getCredentials();
+	        } catch (Exception e) {
+	            throw new AmazonClientException(
+	                    "Cannot load the credentials from the credential profiles file. " +
+	                    "Please make sure that your credentials file is at the correct " +
+	                    "location (~/.aws/credentials), and is in valid format.",
+	                    e);
+	        }
+
+	        AmazonS3 s3 = AmazonS3ClientBuilder.standard()
+	            .withCredentials(new AWSStaticCredentialsProvider(credentials))
+	            .withRegion("ap-northeast-2")
+	            .build();
+
+	        System.out.println("===========================================");
+	        System.out.println("Getting Started with Amazon S3");
+	        System.out.println("===========================================\n");
+
+	        try {
+	            /*
+	             * Delete an object - Unless versioning has been turned on for your bucket,
+	             * there is no way to undelete an object, so use caution when deleting objects.
+	             */
+	            String bucketName = "bcmbucket";
+	            System.out.println("Deleting an object\n");
+	            s3.deleteObject(bucketName, imgNames);
+	            
+	            System.out.println("삭제되었다!");
+
+	        } catch (AmazonServiceException ase) {
+	            System.out.println("Caught an AmazonServiceException, which means your request made it "
+	                    + "to Amazon S3, but was rejected with an error response for some reason.");
+	            System.out.println("Error Message:    " + ase.getMessage());
+	            System.out.println("HTTP Status Code: " + ase.getStatusCode());
+	            System.out.println("AWS Error Code:   " + ase.getErrorCode());
+	            System.out.println("Error Type:       " + ase.getErrorType());
+	            System.out.println("Request ID:       " + ase.getRequestId());
+	        } catch (AmazonClientException ace) {
+	            System.out.println("Caught an AmazonClientException, which means the client encountered "
+	                    + "a serious internal problem while trying to communicate with S3, "
+	                    + "such as not being able to access the network.");
+	            System.out.println("Error Message: " + ace.getMessage());
+	        }
+	        
 			resultMap.put("state", "success");
 		}else throw new Exception("에러");
 		

@@ -1,15 +1,8 @@
 ﻿# bitcamp-newdeal-project
 
-## 프로젝트 명
+## 프로젝트 명 : BCS
 
-## 설명
+## 설명 : 명함관리시스템
+## 일상 생활에서 많이 주고 받는 명함들을 한번에 관리할 수 있는 명함 관리 시스템 'BMS'입니다.
 
-## 팀원
-
-### docs 폴더 생성하기
-  - usecase model
-  - dbmodel (model.exERD , ddl.sql, data.sql)
-  - ppt 발표자료도 넣을 것
-
-
-## 머지
+## 팀원 : 박형훈, 진민경

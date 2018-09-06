@@ -22,8 +22,6 @@ dependencies {
 
     providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
     
-	compile group: 'javax.mail', name: 'mail', version: '1.5.0-b01'
-
     compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.46'
     
     compile group: 'javax.servlet', name: 'jstl', version: '1.2'
@@ -46,8 +44,11 @@ dependencies {
 	
     compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.9.1'
 	
-	// https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk
-	compile group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.2.1'
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.401'
+	
+	compile "org.apache.poi:poi:3.17"
+	
+    compile "org.apache.poi:poi-ooxml:3.17"
 	
 	compile 'com.google.guava:guava:23.0'
 	testCompile 'junit:junit:4.12'

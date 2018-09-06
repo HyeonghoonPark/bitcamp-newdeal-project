@@ -176,7 +176,7 @@ $(document).ready(function(){
 	    }
 	}
 	
-		$('#imgSrc').attr('src' , '../files/'+IMG)
+		$('#imgSrc').attr('src' , 'https://s3.ap-northeast-2.amazonaws.com/bcmbucket/'+IMG)
 		$('#ulId').attr('value',BCNO);
 		
 		$('.imgZone input').hide();
@@ -211,7 +211,13 @@ $("button[name='sbmBtn']").click(function(){ // 버튼 클릭 이벤트
 	          data: formData,
 	          type: 'POST',
 	          success: function(result){
-	              console.log(result);
+	        	  console.log(result)
+	        		 swal({
+		        	      title: '등록이 완료됐습니다!',
+		        	      icon: 'success',
+		        	 }).then((value)=>{
+		        		 location.href = `${serverAddr}/Management/list.html`
+		             })	
 	          }
 	   });
         
