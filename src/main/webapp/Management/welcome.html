@@ -24,7 +24,7 @@ $(document).ready(function() {
     }, {
       title: "지금 바로 등록해보세요!",
       desc: [
-        ["<a id=`a`>명함 등록하러 가기</a>"], " Right Now!".split("")
+        ["<a id=firstBtn style=cursor:pointer>명함 등록하러 가기</a>"], " Right Now!".split("")
       ]
     }];
     var currentPage = 0;
@@ -152,5 +152,10 @@ $(document).ready(function() {
         }
       }
     }
+    
+    $('#firstBtn').click(function(){
+        $('#addBtn').trigger('click');
+    })  
+       
   });
 </script>

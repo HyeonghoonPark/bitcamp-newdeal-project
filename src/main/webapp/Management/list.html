@@ -235,6 +235,8 @@
 
 <!-- AdminLTE App -->
 <script src="./js/adminlte.js"></script>
+<!-- SessionChecking -->
+<script src="../commons/js/sessionChecking.js"></script>
 <!-- templates -->
 <script id="li-template-src" type="text/x-handlebars-template">
 
@@ -416,15 +418,9 @@ $('#membershipWithdrawal').click(function(){
 
 $('#signOut').click(function(){
 	if(confirm('로그아웃 하시겠습니까?')){
-	    var doc = document,
-	      domain = domain || doc.domain,
-	      path = path || '/',
-	      cookies = doc.cookie.split(';'),
-	      now = +(new Date);
-	  for (var i = cookies.length - 1; i >= 0; i--) {
-	    doc.cookie = cookies[i].split('=')[0] + '=; expires=' + now + '; domain=' + domain + '; path=' + path;
-	  }
-	    location.href = '../signIn.html';
+	    $.getJSON(serverAddr+'/app/auth/removeSession',function(){
+		    location.href = '../signIn.html';
+	    })
 	}else{
 	 	console.log('안들어옴')   
 	 	console.log(sessionStorage.getItem("user"))

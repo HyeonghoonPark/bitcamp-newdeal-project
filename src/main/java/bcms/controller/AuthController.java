@@ -78,4 +78,30 @@ public class AuthController {
 		
 	}
 	
+	@RequestMapping("/sessionChecking")
+	public Object sessionChecking(HttpSession session) {
+		
+		HashMap<String, Object> resultMap = new HashMap<>();
+		
+		Member member = (Member)session.getAttribute("user");
+
+		if(member == null) {
+			resultMap.put("state", "fail");
+		}else {
+			resultMap.put("state", "success");
+		}
+		return resultMap;
+		
+	}
+	
+	@RequestMapping("/removeSession")
+	public int removeSession(HttpSession session) {
+		
+		HashMap<String, Object> resultMap = new HashMap<>();
+		
+		session.removeAttribute("user");
+		
+		return 1;
+		
+	}
 }
