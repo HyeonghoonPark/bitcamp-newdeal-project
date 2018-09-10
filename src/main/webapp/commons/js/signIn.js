@@ -82,7 +82,7 @@ $('#btn').click(function(){
     },function(result){
         console.log(result.state);
         if(result.state=='success'){
-            location.href = "./Management/list.html";
+            location.href = serverAddr+"/Management/list.html";
         }else if(result.state=='notAuthEmail'){
             swal({
                 title: "이메일 인증을 하셔야 이용이 가능합니다.",

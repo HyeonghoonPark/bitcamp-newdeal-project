@@ -63,42 +63,21 @@
           <li class="dropdown notifications-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-bell-o"></i>
-              <span class="label label-warning">10</span>
+              <span class="label label-warning"></span>
             </a>
             <ul class="dropdown-menu">
-              <li class="header">You have 10 notifications</li>
+              
               <li>
                 <!-- inner menu: contains the actual data -->
                 <ul class="menu">
                   <li>
-                    <a href="#">
-                      <i class="fa fa-users text-aqua"></i> 5 new members joined today
+                    <a id="welcome-bar"  style="cursor:pointer">
+                      <i class="fa fa-users text-aqua"></i> 가입을 환영합니다!
                     </a>
                   </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the
-                      page and may cause design problems
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-users text-red"></i> 5 new members joined
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-shopping-cart text-green"></i> 25 sales made
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-user text-red"></i> You changed your username
-                    </a>
-                  </li>
+                 
                 </ul>
               </li>
-              <li class="footer"><a href="#">View all</a></li>
             </ul>
           </li>
      
@@ -157,7 +136,7 @@
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       	<div id="maxHeight" style="width:220px; overflow-y:hidden; overflow-x:hidden; position:absolute;">
-    	<div id="scrollBlind" style="width:260px;  height:100%; overflow-y:scroll; overflow-x:hidden;">
+    	<div id="scrollBlind" style="width:250px;  height:100%; overflow-y:scroll; overflow-x:hidden;">
 	    <ul class="sidebar-menu" data-widget="tree" id="cardList">
         
         
@@ -342,7 +321,9 @@ $(document).ready(function(){
     
     } // viewCardList
     
-    
+    $("#welcome-bar").click(function(){
+    	$('.centerSection').load(`${serverAddr}/Management/welcome.html`)
+    })
     
     $("#search-box").keydown(function(event) {
         

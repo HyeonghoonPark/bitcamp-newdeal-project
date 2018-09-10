@@ -119,12 +119,12 @@ ul {
 
   <ul id="ulId" value="">
   <li><input style="margin-top:25px" type="text" id="cposi" name="cposi" placeholder="부서 / 직책" value=""></li>
-  <li><h3 style="margin-top:0px"><input type="text" id="name" name="name" placeholder="이름"></h3></li>
+  <li style="margin-top:0px"><input type="text" id="name" name="name" placeholder="이름" style="font-size:20px;"></li>
   
     <li><input type="text" id="cname" name="cname" placeholder="회사명"></li>
  	
  	<li><i class="fa fa-building"></i>
- 	<input type="text" id="caddr" name="caddr" placeholder="회사주소"></li>
+ 	<input type="text" id="caddr" name="caddr" placeholder="회사주소"/></li>
  	
     <li><i class="fa fa-phone"></i>
  	<input type="text" id="tel" name="tel" placeholder="전화번호"></li>
@@ -172,10 +172,13 @@ $(document).ready(function(){
 	    if(cInfo[0][id]==''){
 	    $('#ulId li').eq(i).css('display','none')
 	    }else{
-	    $('#ulId input').eq(i).attr('value', ele)
+	    
+	    	
+	    	$('#ulId input').eq(i).attr('value', ele)
 	    }
 	}
-	
+	console.log(cInfo[0]);
+		
 		$('#imgSrc').attr('src' , 'https://s3.ap-northeast-2.amazonaws.com/bcmbucket/'+IMG)
 		$('#ulId').attr('value',BCNO);
 		
@@ -226,6 +229,7 @@ $("button[name='sbmBtn']").click(function(){ // 버튼 클릭 이벤트
 		$('#cardForm input').attr('readonly',false);
 		$('#title-detail').html('수정하기')
 		$('.cardActionBtn').html('저장하기')
+		$('#ulId li').css('display','')
 		$('#delete-btn').css('display','none')
 		$(this).attr('id','modify-sbm-btn');
 		$('#cposi').focus();		
